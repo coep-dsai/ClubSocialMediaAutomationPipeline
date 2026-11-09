@@ -7,7 +7,7 @@ const norm = (w) => String(w).toLowerCase().replace(/[^a-z0-9']+/g, '');
 export async function loadTiming() {
   const get = async (f) => {
     const r = await fetch(f, { cache: 'no-store' });
-    if (!r.ok) throw new Error(\missing \: run audio synthesis first\);
+    if (!r.ok) throw new Error('missing ' + f + ': run audio synthesis first');
     return r.json();
   };
   const lines = await get('data/lines.json'), words = await get('data/words.json');

@@ -1,78 +1,74 @@
 {
-  "title": "This Week In AI: Nvidia CEO Jensen Huang's letter to staff about affair",
+  "title": "This Week In AI: Anthropic Addresses Video Game Cloning With Minor Claud",
   "voice": "en-US-GuyNeural",
   "speed": 1.1,
   "lead": 0.3,
   "outro": 0.9,
   "gap": 0.2,
   "music": "synthwave",
-  "sources": [
-    "Hacker News: Nvidia CEO Jensen Huang's letter to staff about affair",
-    "Official Benchmark Evaluation Data 2026"
-  ],
   "lines": [
     {
-      "text": "This week, Nvidia CEO Jensen Huang's letter to staff about affair,",
+      "text": "This week, Anthropic Addresses Video Game Cloning With Minor Claud,",
       "gap": 0.22
     },
     {
-      "text": "and developers are scrambling to benchmark their clusters.",
+      "text": "disrupting what researchers thought was possible with current models.",
       "gap": 0.22
     },
     {
-      "text": "Sending shockwaves across the entire AI hardware market.",
+      "text": "And the biggest tech giants are scrambling.",
       "gap": 0.22
     },
     {
-      "text": "For years, companies poured billions into GPU farms,",
+      "text": "For years, companies believed making AI smarter",
       "gap": 0.22
     },
     {
-      "text": "assuming hardware speedups would continue without limits.",
+      "text": "meant burning millions on massive server farms.",
       "gap": 0.22
     },
     {
-      "text": "Then engineers discovered a surprising software bottleneck.",
+      "text": "Then researchers tested a brand new trick.",
       "gap": 0.22
     },
     {
-      "text": "Instead of blaming memory bandwidth or thermal limits,",
+      "text": "Instead of adding billions more parameters,",
       "gap": 0.22
     },
     {
-      "text": "they analyzed the kernel execution pathways.",
+      "text": "they reorganized the neural pathways.",
       "gap": 0.22
     },
     {
-      "text": "The result? Benchmarks revealed extreme speed variance",
+      "text": "The result? It scored at the very top",
       "gap": 0.22
     },
     {
-      "text": "across server workloads that usually run at peak compute.",
+      "text": "on benchmarks that usually crush flagship models.",
       "gap": 0.22
     },
     {
-      "text": "With optimized kernels running up to seventy times faster,",
+      "text": "It runs seventy times faster,",
       "gap": 0.22
     },
     {
-      "text": "saving millions in redundant server power,",
+      "text": "uses ninety percent less electricity,",
       "gap": 0.22
     },
     {
-      "text": "and proving that software optimization beats raw hardware.",
+      "text": "and can run locally on an everyday laptop.",
       "gap": 0.22
     },
     {
-      "text": "Engineers are calling this an urgent wake-up call for AI clusters.",
+      "text": "Which is why engineers are calling this a major turning point.",
       "gap": 0.22
     },
     {
-      "text": "Because the true speed of next-gen AI",
+      "text": "Because tomorrow's most powerful AI",
       "gap": 0.22
     },
     {
-      "text": "depends on code architecture, not just trillion dollar chips,",
+      "text": "might not come from a trillion dollar data center,",
       "gap": 0.22
     },
     {

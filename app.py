@@ -164,13 +164,20 @@ def get_active_project_dir(style_id: Optional[str] = None) -> Path:
         target_dir = PROJECT_ROOT / "projects" / f"{norm_name}_project"
         style_agent.scaffold_project(sid, f"{norm_name}_project")
 
-    # Ensure updated master mix.py is installed in target_dir
+    # Ensure updated master mix.py and resilient timing.js are installed in target_dir
     master_mix = PROJECT_ROOT / "projects" / "this_week_in_ai" / "tools" / "mix.py"
     dest_mix = target_dir / "tools" / "mix.py"
     if master_mix.exists():
         if not dest_mix.exists() or dest_mix.stat().st_size != master_mix.stat().st_size:
             dest_mix.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(master_mix, dest_mix)
+
+    master_timing = PROJECT_ROOT / "projects" / "this_week_in_ai" / "src" / "core" / "timing.js"
+    dest_timing = target_dir / "src" / "core" / "timing.js"
+    if master_timing.exists():
+        if not dest_timing.exists() or dest_timing.stat().st_size != master_timing.stat().st_size:
+            dest_timing.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(master_timing, dest_timing)
 
     return target_dir
 
