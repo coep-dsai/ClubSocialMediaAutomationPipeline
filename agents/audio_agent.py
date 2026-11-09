@@ -6,10 +6,10 @@ Uses Microsoft Neural TTS (edge-tts) for studio-grade human audio:
 - Offline fallback: Kokoro-82M (local model in ~/.faceless-shorts/kokoro)
 
 Features:
-- Sentence-level continuous synthesis (+18% rate for fast Shorts pacing).
+- Sentence-level continuous synthesis (+10% rate for natural, readable pacing).
 - Zero artificial dead-air between clauses: speech flows naturally across cuts.
 - Millisecond-accurate native WordBoundary timestamps directly from the stream.
-- Zero caption drift and zero dropped words.
+- Frame-exact concat demuxing with bit-exact silence gaps matching timestamp math.
 """
 
 import asyncio
@@ -19,22 +19,44 @@ import re
 import shutil
 import subprocess
 import sys
+import wave
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import edge_tts
 
 
-NORM = lambda w: re.sub(r"[^a-zA-Z0-9]+", "", w).lower()
+def NORM(w: str) -> str:
+    """Normalize word for robust matching."""
+    return re.sub(r"[^a-zA-Z0-9]+", "", w).lower()
+
+
+def make_silence_wav(path: Path, duration_sec: float, sample_rate: int = 48000):
+    """Create a pristine 16-bit stereo silent WAV file of exact duration."""
+    num_frames = max(1, int(round(duration_sec * sample_rate)))
+    with wave.open(str(path), "wb") as wf:
+        wf.setnchannels(2)
+        wf.setsampwidth(2)
+        wf.setframerate(sample_rate)
+        wf.writeframes(b"\x00" * (num_frames * 4))
 
 
 class AudioAgent:
-    def __init__(self, primary_voice: str = "en-US-GuyNeural", fallback_voice: str = "en-US-ChristopherNeural"):
+    """Studio-grade voiceover & millisecond-exact word alignment agent.
+    Uses edge-tts (GuyNeural / ChristopherNeural) with continuous sentence-level
+    cadence and native WordBoundary timestamp events.
+    """
+
+    def __init__(
+        self,
+        primary_voice: str = "en-US-GuyNeural",
+        fallback_voice: str = "en-US-ChristopherNeural",
+    ):
         self.primary_voice = primary_voice
         self.fallback_voice = fallback_voice
 
     async def _synthesize_sentence_edge(
-        self, text: str, voice: str, rate: str = "+18%"
+        self, text: str, voice: str, rate: str = "+10%"
     ) -> Tuple[bytes, List[Dict[str, Any]]]:
         """Synthesize a complete sentence with edge-tts and collect audio bytes + word timestamps."""
         comm = edge_tts.Communicate(text, voice, rate=rate, boundary="WordBoundary")
@@ -57,9 +79,9 @@ class AudioAgent:
         self,
         project_dir: Path,
         voice: Optional[str] = None,
-        rate: str = "+18%",
-        lead: float = 0.25,
-        outro: float = 0.8,
+        rate: str = "+10%",
+        lead: float = 0.3,
+        outro: float = 0.9,
     ) -> bool:
         project_dir = Path(project_dir)
         script_file = project_dir / "script.json"
@@ -74,6 +96,14 @@ class AudioAgent:
         target_voice = voice or script_data.get("voice") or self.primary_voice
         if target_voice.startswith("am_") or target_voice.startswith("af_") or target_voice.startswith("bm_"):
             target_voice = self.primary_voice
+
+        speed_val = script_data.get("speed")
+        if speed_val and not voice:
+            diff = int(round((float(speed_val) - 1.0) * 100))
+            rate = f"+{diff}%" if diff >= 0 else f"{diff}%"
+
+        lead = float(script_data.get("lead", lead))
+        outro = float(script_data.get("outro", outro))
 
         print(f"\n[AudioAgent] Synthesizing continuous voiceover with {target_voice} (rate: {rate})...")
 
@@ -111,19 +141,32 @@ class AudioAgent:
 
         all_words_output: List[Dict[str, Any]] = []
         line_records: List[Dict[str, Any]] = [None] * len(lines)
-        audio_file_list: List[Path] = []
+        audio_segments: List[Path] = []
+
+        # Lead silence segment
+        lead_wav = temp_dir / "lead_silence.wav"
+        make_silence_wav(lead_wav, lead)
+        audio_segments.append(lead_wav)
 
         current_time = lead
 
         for g_idx, g in enumerate(groups):
             sentence_text = " ".join(lines[i]["text"].strip() for i in g)
             mp3_path = temp_dir / f"sent_{g_idx:03d}.mp3"
+            wav_path = temp_dir / f"sent_{g_idx:03d}.wav"
 
             audio_bytes, heard_words = await self._synthesize_sentence_edge(sentence_text, voice, rate=rate)
             mp3_path.write_bytes(audio_bytes)
-            audio_file_list.append(mp3_path)
 
-            sentence_dur = self._get_audio_duration(mp3_path)
+            # Convert to standard 48kHz 16-bit stereo WAV
+            subprocess.run(
+                ["ffmpeg", "-v", "error", "-y", "-i", str(mp3_path), "-ar", "48000", "-ac", "2", str(wav_path)],
+                check=True
+            )
+            with wave.open(str(wav_path), "rb") as wf:
+                sentence_dur = wf.getnframes() / float(wf.getframerate())
+
+            audio_segments.append(wav_path)
             sent_start = current_time
             sent_end = current_time + sentence_dur
 
@@ -152,7 +195,7 @@ class AudioAgent:
                         w_start = round(sent_start + found_ev["start"], 3)
                         w_end = round(sent_start + found_ev["end"], 3)
                     else:
-                        # Interpolate if word boundary missed specific token
+                        # Fallback interpolation if word boundary missed token
                         prev_time = line_words_matched[-1]["e"] if line_words_matched else (all_words_output[-1]["e"] if all_words_output else sent_start)
                         w_start = prev_time
                         w_end = round(prev_time + 0.15, 3)
@@ -175,13 +218,26 @@ class AudioAgent:
                     "end": l_end,
                 }
 
-            # Pause after full sentence
-            gap = lines[g[-1]].get("gap", 0.22)
-            current_time = sent_end + gap
+            current_time = sent_end
 
-        # Combine all audio into narration.wav
-        total_audio_duration = current_time + outro
-        self._combine_audio(audio_file_list, data_dir / "narration.wav", lead_silence=lead, outro_silence=outro)
+            # Pause after full sentence if not the last sentence
+            if g_idx < len(groups) - 1:
+                gap = float(lines[g[-1]].get("gap", 0.22))
+                gap_wav = temp_dir / f"gap_{g_idx:03d}.wav"
+                make_silence_wav(gap_wav, gap)
+                audio_segments.append(gap_wav)
+                current_time += gap
+
+        # Outro silence segment
+        outro_wav = temp_dir / "outro_silence.wav"
+        make_silence_wav(outro_wav, outro)
+        audio_segments.append(outro_wav)
+        current_time += outro
+
+        total_audio_duration = current_time
+
+        # Combine all audio into narration.wav using exact concat list
+        self._combine_segments(audio_segments, data_dir / "narration.wav")
 
         # Write lines.json
         lines_json = {
@@ -204,31 +260,19 @@ class AudioAgent:
         shutil.rmtree(temp_dir, ignore_errors=True)
 
         print(f"[AudioAgent] Continuous voiceover complete! {len(line_records)} cuts, {len(all_words_output)} words.")
-        print(f"            Duration: {total_audio_duration:.2f}s (Natural conversational flow at {rate}).")
+        print(f"            Duration: {total_audio_duration:.2f}s (Frame-accurate sync at {rate}).")
         return True
 
-    def _get_audio_duration(self, audio_file: Path) -> float:
-        cmd = [
-            "ffprobe", "-v", "error", "-show_entries",
-            "format=duration", "-of", "default=noprint_wrappers=1:nokey=1",
-            str(audio_file),
-        ]
-        res = subprocess.run(cmd, capture_output=True, text=True)
-        if res.returncode == 0:
-            return float(res.stdout.strip())
-        return 2.0
-
-    def _combine_audio(self, mp3_files: List[Path], output_wav: Path, lead_silence: float = 0.25, outro_silence: float = 0.8):
+    def _combine_segments(self, wav_files: List[Path], output_wav: Path):
         concat_file = output_wav.parent / "concat_list.txt"
         with open(concat_file, "w", encoding="utf-8") as f:
-            for p in mp3_files:
+            for p in wav_files:
                 f.write(f"file '{p.resolve().as_posix()}'\n")
 
         cmd = [
             "ffmpeg", "-v", "error", "-y",
             "-f", "concat", "-safe", "0", "-i", str(concat_file),
-            "-af", f"adelay={int(lead_silence*1000)}|{int(lead_silence*1000)},apad=pad_dur={outro_silence}",
-            "-ar", "48000", "-ac", "2",
+            "-c", "copy",
             str(output_wav),
         ]
         subprocess.run(cmd, check=True)
@@ -250,7 +294,7 @@ class AudioAgent:
 def main():
     agent = AudioAgent()
     proj = Path("projects/this_week_in_ai")
-    agent.synthesize_project(proj, voice="en-US-GuyNeural", rate="+18%")
+    agent.synthesize_project(proj, voice="en-US-GuyNeural", rate="+10%")
 
 
 if __name__ == "__main__":

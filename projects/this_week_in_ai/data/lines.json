@@ -1,108 +1,108 @@
 {
   "voice": "en-US-GuyNeural",
-  "duration": 44.006,
+  "duration": 46.784,
   "lines": [
     {
       "i": 0,
       "text": "This week, a tiny three dollar AI experiment",
-      "start": 0.342,
-      "end": 2.535
+      "start": 0.395,
+      "end": 2.748
     },
     {
       "i": 1,
       "text": "just beat a hundred million dollar supercomputer.",
-      "start": 2.546,
-      "end": 4.611
+      "start": 2.759,
+      "end": 4.975
     },
     {
       "i": 2,
       "text": "And the biggest tech giants are scrambling.",
-      "start": 5.674,
-      "end": 7.496
+      "start": 6.087,
+      "end": 8.042
     },
     {
       "i": 3,
       "text": "See, for years, companies believed making AI smarter",
-      "start": 8.558,
-      "end": 11.08
+      "start": 9.163,
+      "end": 11.868
     },
     {
       "i": 4,
       "text": "meant burning millions on massive server farms.",
-      "start": 11.101,
-      "end": 13.029
+      "start": 11.891,
+      "end": 13.959
     },
     {
       "i": 5,
       "text": "Then researchers tested a brand new trick.",
-      "start": 14.106,
-      "end": 16.024
+      "start": 15.095,
+      "end": 17.152
     },
     {
       "i": 6,
       "text": "Instead of adding billions more parameters,",
-      "start": 17.086,
-      "end": 18.855
+      "start": 18.267,
+      "end": 20.165
     },
     {
       "i": 7,
       "text": "they reorganized the neural pathways.",
-      "start": 19.046,
-      "end": 20.752
+      "start": 20.37,
+      "end": 22.199
     },
     {
       "i": 8,
       "text": "The result? The model scored ninety-eight percent",
-      "start": 21.794,
-      "end": 24.626
+      "start": 23.311,
+      "end": 26.352
     },
     {
       "i": 9,
       "text": "on benchmarks that usually crush flagship models.",
-      "start": 24.636,
-      "end": 26.797
+      "start": 26.364,
+      "end": 28.682
     },
     {
       "i": 10,
       "text": "It runs seventy times faster,",
-      "start": 27.87,
-      "end": 29.247
+      "start": 29.819,
+      "end": 31.297
     },
     {
       "i": 11,
       "text": "uses ninety percent less electricity,",
-      "start": 29.385,
-      "end": 31.091
+      "start": 31.444,
+      "end": 33.274
     },
     {
       "i": 12,
       "text": "and can run locally on an everyday laptop.",
-      "start": 31.271,
-      "end": 33.146
+      "start": 33.467,
+      "end": 35.479
     },
     {
       "i": 13,
       "text": "Which is why engineers are calling this a turning point.",
-      "start": 34.21,
-      "end": 36.467
+      "start": 36.591,
+      "end": 39.012
     },
     {
       "i": 14,
       "text": "Because tomorrow's most powerful AI",
-      "start": 37.526,
-      "end": 39.094
+      "start": 40.123,
+      "end": 41.805
     },
     {
       "i": 15,
       "text": "might not come from a trillion dollar data center,",
-      "start": 39.105,
-      "end": 41.033
+      "start": 41.817,
+      "end": 43.885
     },
     {
       "i": 16,
       "text": "and it all started when...",
-      "start": 41.202,
-      "end": 42.156
+      "start": 44.067,
+      "end": 45.089
     }
   ]
 }
