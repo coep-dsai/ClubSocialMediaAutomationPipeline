@@ -33,6 +33,15 @@ class VideoScript(BaseModel):
     sources: List[str] = Field(default_factory=list)
     lines: List[ScriptLine]
 
+    def __getitem__(self, item: str):
+        return getattr(self, item)
+
+    def __setitem__(self, item: str, value: Any):
+        setattr(self, item, value)
+
+    def get(self, item: str, default: Any = None):
+        return getattr(self, item, default)
+
 
 class ScriptAgent:
     def __init__(self, output_dir: Optional[Path] = None):

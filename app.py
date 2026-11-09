@@ -204,16 +204,26 @@ def load_project_script(project_dir: Optional[Path] = None) -> Dict[str, Any]:
     }
 
 
-def save_project_script(script_dict: Dict[str, Any], project_dir: Optional[Path] = None):
+def save_project_script(script_data: Any, project_dir: Optional[Path] = None):
     pdir = project_dir or get_active_project_dir()
     script_file = pdir / "script.json"
     script_file.parent.mkdir(parents=True, exist_ok=True)
-    script_file.write_text(json.dumps(script_dict, indent=2), encoding="utf-8")
+
+    if hasattr(script_data, "model_dump"):
+        raw_dict = script_data.model_dump(by_alias=True, exclude_none=True)
+    elif hasattr(script_data, "dict"):
+        raw_dict = script_data.dict(by_alias=True, exclude_none=True)
+    elif isinstance(script_data, dict):
+        raw_dict = script_data
+    else:
+        raw_dict = dict(script_data)
+
+    script_file.write_text(json.dumps(raw_dict, indent=2), encoding="utf-8")
     # Mirror to this_week_in_ai as default project fallback
     fallback_file = PROJECT_ROOT / "projects" / "this_week_in_ai" / "script.json"
     if pdir != fallback_file.parent:
         fallback_file.parent.mkdir(parents=True, exist_ok=True)
-        fallback_file.write_text(json.dumps(script_dict, indent=2), encoding="utf-8")
+        fallback_file.write_text(json.dumps(raw_dict, indent=2), encoding="utf-8")
 
 
 def scan_rendered_videos() -> List[Dict[str, Any]]:
@@ -438,9 +448,9 @@ with tabs[0]:
                         story_summary=story.get("summary", ""),
                         source=story.get("source", "AI News"),
                     )
-                    tailored["voice"] = selected_voice_code
-                    tailored["speed"] = round(1.0 + (speed_percent / 100.0), 2)
-                    tailored["music"] = bg_music
+                    tailored.voice = selected_voice_code
+                    tailored.speed = round(1.0 + (speed_percent / 100.0), 2)
+                    tailored.music = bg_music
 
                     # Save to currently active project workspace
                     active_proj = get_active_project_dir(selected_style_id)
@@ -478,9 +488,9 @@ with tabs[1]:
                 story_summary=sel.get("summary", ""),
                 source=sel.get("source", "AI News"),
             )
-            tailored["voice"] = selected_voice_code
-            tailored["speed"] = round(1.0 + (speed_percent / 100.0), 2)
-            tailored["music"] = bg_music
+            tailored.voice = selected_voice_code
+            tailored.speed = round(1.0 + (speed_percent / 100.0), 2)
+            tailored.music = bg_music
             save_project_script(tailored, active_proj)
             st.session_state["script_version"] = st.session_state.get("script_version", 0) + 1
             st.rerun()
