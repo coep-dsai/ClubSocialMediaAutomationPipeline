@@ -1,0 +1,61 @@
+{
+  "title": "What Happens When an Indian AI Beats Silicon Valley?",
+  "voice": "en-US-GuyNeural",
+  "speed": 1.10,
+  "lead": 0.35,
+  "outro": 1.0,
+  "gap": 0.25,
+  "music": "tension",
+  "sources": [
+    "ET Entrepreneur, 'Indian AI lab Sthanika\\'s Sieve-31Bv3 ties for first globally, beats Perplexity and Jev on decision benchmarks'",
+    "Artificial Analysis & Decision Arena benchmarks (Sieve-31Bv3 scoring parity with tier-1 frontier models)",
+    "COEP Data Science and AI Club research intelligence report (@dsai_coep)"
+  ],
+  "lines": [
+    {
+      "text": "What happens when a 31-billion parameter AI takes on Silicon Valley's giant supercomputers?",
+      "caps": "What *happens | when a *31 billion | parameter *AI | takes on *giants?",
+      "gap": 0.25
+    },
+    {
+      "text": "An Indian AI lab named Sthanika just shocked the world.",
+      "caps": "Indian lab *Sthanika | shocks the *world.",
+      "gap": 0.25
+    },
+    {
+      "text": "Instead of spending hundreds of millions on brute force, they re-engineered the decision cortex.",
+      "caps": "Instead of *millions | re-engineered | the *decision cortex.",
+      "gap": 0.25
+    },
+    {
+      "text": "Inside the model, trillions of neural weights prune away noise at blinding speed.",
+      "caps": "Trillions of *weights | prune away *noise | at *blinding speed.",
+      "gap": 0.25
+    },
+    {
+      "text": "When tested on grueling real-world decision benchmarks,",
+      "caps": "Tested on *grueling | decision *benchmarks,",
+      "gap": 0.2
+    },
+    {
+      "text": "Sieve-31Bv3 beat Perplexity and Jev,",
+      "caps": "Sieve *31Bv3 | beat *Perplexity | and *Jev,",
+      "gap": 0.2
+    },
+    {
+      "text": "tying for first place globally with the biggest models on Earth.",
+      "caps": "Tying *first globally | with the *biggest models.",
+      "gap": 0.25
+    },
+    {
+      "text": "Proving that intelligent architecture beats pure compute every single time.",
+      "caps": "Intelligent *architecture | beats *pure compute | every single *time.",
+      "gap": 0.3
+    },
+    {
+      "text": "Follow COEP DSAI for the real future of artificial intelligence.",
+      "caps": "Follow *DSAI COEP | for the *future | of *intelligence.",
+      "gap": 0.5
+    }
+  ]
+}

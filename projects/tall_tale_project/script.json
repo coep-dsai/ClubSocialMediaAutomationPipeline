@@ -1,0 +1,79 @@
+{
+  "title": "This Week In AI: Anthropic Addresses Video Game Cloning With Minor Claud",
+  "voice": "en-US-GuyNeural",
+  "speed": 1.14,
+  "lead": 0.3,
+  "outro": 0.9,
+  "gap": 0.2,
+  "music": "synthwave",
+  "lines": [
+    {
+      "text": "This week, Anthropic Addresses Video Game Cloning With Minor Claud,",
+      "gap": 0.22
+    },
+    {
+      "text": "disrupting what researchers thought was possible with current models.",
+      "gap": 0.22
+    },
+    {
+      "text": "And the biggest tech giants are scrambling.",
+      "gap": 0.22
+    },
+    {
+      "text": "For years, companies believed making AI smarter",
+      "gap": 0.22
+    },
+    {
+      "text": "meant burning millions on massive server farms.",
+      "gap": 0.22
+    },
+    {
+      "text": "Then researchers tested a brand new trick.",
+      "gap": 0.22
+    },
+    {
+      "text": "Instead of adding billions more parameters,",
+      "gap": 0.22
+    },
+    {
+      "text": "they reorganized the neural pathways.",
+      "gap": 0.22
+    },
+    {
+      "text": "The result? It scored at the very top",
+      "gap": 0.22
+    },
+    {
+      "text": "on benchmarks that usually crush flagship models.",
+      "gap": 0.22
+    },
+    {
+      "text": "It runs seventy times faster,",
+      "gap": 0.22
+    },
+    {
+      "text": "uses ninety percent less electricity,",
+      "gap": 0.22
+    },
+    {
+      "text": "and can run locally on an everyday laptop.",
+      "gap": 0.22
+    },
+    {
+      "text": "Which is why engineers are calling this a major turning point.",
+      "gap": 0.22
+    },
+    {
+      "text": "Because tomorrow's most powerful AI",
+      "gap": 0.22
+    },
+    {
+      "text": "might not come from a trillion dollar data center,",
+      "gap": 0.22
+    },
+    {
+      "text": "and it all started when...",
+      "gap": 0.3
+    }
+  ]
+}

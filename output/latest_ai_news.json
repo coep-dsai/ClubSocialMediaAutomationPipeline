@@ -1,0 +1,384 @@
+[
+  {
+    "title": "Google says there’s no way to use Search without using artificial intelligence - The Guardian",
+    "source": "The Guardian",
+    "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQejExRlAwVmpXSkJOMFppQ3NXOFRGT2lkOGQ3LURUVS16UjRQa3llY01OY3FxdW1TYWVHZUR4c3NXbTRIT0pUQ2hIZGxlYzRFS2Q1ZG5qRTNNbDV0cnZJMHJaOFRfU1RzTzkzWFF1OVhUaUVhWFh1anhEV0JTb2lSLWJ0UEo5X3pyeWhNTkFSMWMtUQ?oc=5",
+    "published": "Tue, 03 Nov 2026 21:47:00 GMT",
+    "summary": "Google says there’s no way to use Search without using artificial intelligence The Guardian",
+    "score": 4.5,
+    "virality_score": 4.5,
+    "virality_cues": [
+      "google"
+    ]
+  },
+  {
+    "title": "A Once-in-a-Decade Opportunity: 1 Artificial Intelligence (AI) Stock to Buy Before It Soars 60%, According to Wall Street - The Motley Fool",
+    "source": "The Motley Fool",
+    "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQQTVMRFpjZFBvTUg0LXl3RjBSZUxNRlo5VnJOVEd5MlhtdV9YOFF2UlB6b2NNRk9PZGp4cmNvamtsSFV6SV9SVUVZZkVRb0M1MzhvUHBsYnpxR2F1ak1QMnIzZXZFaE40Vlozd0FhdlpFMjZ2S0tVZEo3U3BraHpBaGJCTElmbndoTXJuYWh4YkdJMzBKdTYzdw?oc=5",
+    "published": "Tue, 03 Nov 2026 11:10:00 GMT",
+    "summary": "A Once-in-a-Decade Opportunity: 1 Artificial Intelligence (AI) Stock to Buy Before It Soars 60%, According to Wall Street The Motley Fool",
+    "score": 4.5,
+    "virality_score": 4.5,
+    "virality_cues": [
+      "concrete_metrics"
+    ]
+  },
+  {
+    "title": "LongBanana: An Expert-Verified Benchmark for Long-Context Multi-Reference Image Synthesis",
+    "source": "Hugging Face Daily Papers",
+    "url": "https://huggingface.co/papers/2611.06856",
+    "published": "2026-11-09",
+    "summary": "We introduce LongBanana, to our knowledge the first expert-designed and expert-verified benchmark for long-context multi-reference image synthesis in the age of agent-driven image generation. The task requires retrieving dispersed visual evidence, re",
+    "score": 4.4,
+    "virality_score": 4.4,
+    "virality_cues": [
+      "benchmark"
+    ]
+  },
+  {
+    "title": "Little Friends: Artificial Intelligence and Human Services… a Lot To Think About! - Positively Naperville",
+    "source": "Positively Naperville",
+    "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxNdXFsQ2t6aW1VX0ZEUDFmdkxmMFZEMHhYMzBDNVR1ZnY3WWwtUG5SZXM1LTVuUlU5bkp2c3RqamdpQzdUeGFXY1NjNlNqdmR1WVFiTTh4eFhIVGZsNWY4TWQ0RXdKS3VvT1dsMFFiUnIxbUZvRXZvZzR2QWVLMXhsWFVnWHF1bVBVc0ZLb1FNVUVNWGF6dlZlZ3ZxSUxuWDdKVHJhdExsYXR0aVdnM1BXYnNOaGZZbFhuclpKeEt1cGgwUXIxWlVYZ0N0TzVWZw?oc=5",
+    "published": "Wed, 04 Nov 2026 18:13:52 GMT",
+    "summary": "Little Friends: Artificial Intelligence and Human Services… a Lot To Think About! Positively Naperville",
+    "score": 4.0,
+    "virality_score": 4.0,
+    "virality_cues": [
+      "human"
+    ]
+  },
+  {
+    "title": "SplatAnything: Gaussian Spacing Normalization for Feed-forward 3DGS across Arbitrary Scenes",
+    "source": "Hugging Face Daily Papers",
+    "url": "https://huggingface.co/papers/2611.08264",
+    "published": "2026-11-09",
+    "summary": "We identify a key limitation of existing feed-forward 3DGS methods: Gaussian attributes are typically predicted in a radial-distance-normalized space that canonicalizes a global radial statistic of the reconstructed geometry, while the spacing betwee",
+    "score": 4.0,
+    "virality_score": 4.0,
+    "virality_cues": []
+  },
+  {
+    "title": "Launch HN: Momentic (YC W24) – Agents that catch bugs by using your app",
+    "source": "Hacker News",
+    "url": "https://momentic.ai/",
+    "published": "2026-11-02T17:05:25Z",
+    "summary": "HN discussion with 167 points and 134 comments.",
+    "score": 3.34,
+    "virality_score": 3.34,
+    "virality_cues": []
+  },
+  {
+    "title": "P^2-MOPD: Accelerating Multi-Teacher On-Policy Distillation via Parameter Priors",
+    "source": "Hugging Face Daily Papers",
+    "url": "https://huggingface.co/papers/2611.03953",
+    "published": "2026-11-09",
+    "summary": "Multi-teacher on-policy distillation consolidates expert capabilities by supervising student-generated trajectories, whereas task arithmetic offers a training-free alternative through linear parameter combinations. We view the linear combination of s",
+    "score": 3.3,
+    "virality_score": 3.3,
+    "virality_cues": []
+  },
+  {
+    "title": "Pennsylvania Enacts Artificial Intelligence Deceptive Advertising Act: New Disclosure Requirements for AI-Generated Advertising - Consumer Finance Monitor",
+    "source": "Consumer Finance Monitor",
+    "url": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxNRGpJYy1BOGF3QWFlRWJUbC1oSWlKZXpLNWpZTU5tdUlGeW9kZWFSWHViQm0zakFNVHB2ZVVMYnF0Q0wtd2lJemdEVF9hUlJMcW9GM0lfTTRNTXNYblMyY2JfQkdEd21EQmlXNUpQa25jZmkyU3NiVGdkM29iT2NXZnBmRDc2VVNYeHhiaTlFT1VTcXdGb0o4cjdKM19vbVB1bFVzZ3BScTJnRDBMRHB3ZHFaOW5qdUlGNGlaVmk3bnFWTFNPMHFObFVSd0dKVFloVHhrR3ZHTEtHWHluN2hIUVBGMkNHRlR3OTkyMzNqZlFQSS0yM0FpaVRMcVJZWmpKNTZzMkRXdzU?oc=5",
+    "published": "Mon, 02 Nov 2026 20:57:53 GMT",
+    "summary": "Pennsylvania Enacts Artificial Intelligence Deceptive Advertising Act: New Disclosure Requirements for AI-Generated Advertising Consumer Finance Monitor",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "Frequently asked questions: Artificial Intelligence (AI) in the military domain - ICRC",
+    "source": "ICRC",
+    "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxON3hZV0w1YzZQLWlhZzZvWXNVeUJUbmtQeDFwUnhHRHFOY182a3ZxRnNIZkpBX0JCWHZnVE8zUUxqNHU1d1hvU1NPZjFxUW9mTjdtcWpPdGZxZ0tSNzN4eEtuX0x4dmp1Rk8wMFJzaWJoVGdsWnFDZ0VOSHFDR2RCY0d6THE?oc=5",
+    "published": "Fri, 06 Nov 2026 08:00:00 GMT",
+    "summary": "Frequently asked questions: Artificial Intelligence (AI) in the military domain ICRC",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "Responsible use of artificial intelligence - Nature",
+    "source": "Nature",
+    "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFA1MWNlUnlUc3NDTjV5dk5zQUZHYkU4aVk1N1B0ZFAxRVYyR3V4T2ttS2x2SEZhdXNfSnBrZElyM2J0OVJCUEdqX0pRaHhFa25MY2FxOGpodVZEX2ltYnVR?oc=5",
+    "published": "Thu, 05 Nov 2026 18:14:45 GMT",
+    "summary": "Responsible use of artificial intelligence Nature",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "Artificial Intelligence in Earth Science Data Systems - NASA Earthdata (.gov)",
+    "source": "NASA Earthdata (.gov)",
+    "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE1fM3hZSzRWbWFxeXdEYmpRT0Z3RVI3Q19ScWtvbTFBdmtJOEFrSmJGVjM4Ui1CM1hGdXJwWlVaRlNjSGNfRUNkR3RNNjh5QXlCRGNRWGhPQWpKdXd3?oc=5",
+    "published": "Tue, 03 Nov 2026 18:03:34 GMT",
+    "summary": "Artificial Intelligence in Earth Science Data Systems NASA Earthdata (.gov)",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "Artificial intelligence in a Jesuit University: A student conversation - Marquette Today",
+    "source": "Marquette Today",
+    "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQbnJXdC1hTXNGZGdJRUFMOEV0SVhsank1eG5IUEtkUS1Qa1FEZ05GbUxwTGtlaW9ieVlxSmdRbVBOWDlrcUJQZ1lHSjdkLU5tX3Z1djQ2c0MzU0NabldzTlI5bDJETHFPdHVWYk1ncW5xeTVYdHlDUFFyR25DdS1tZi0yck0ybENMeERhQ1VhNmQzX1FKcHg2b1JkbnVrSENoZi14aXptazF0MzA?oc=5",
+    "published": "Wed, 04 Nov 2026 08:00:00 GMT",
+    "summary": "Artificial intelligence in a Jesuit University: A student conversation Marquette Today",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "AHA launches new homepage on artificial intelligence policy and advocacy - American Hospital Association",
+    "source": "American Hospital Association",
+    "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxQS2hOYm9TTEV0OHpMcnNrMVlqY0JmNldjdE5lS2RnRjJNbDlMUmJpUXRPZDRyaGtVVXJnT0hpazFvcGxMQXJadC1BQnphNU4wTlViWkJ2M2c3OVVxVm9hVi11dkZoMHZNSy1tSzZVRXdBUlNwNzR3NWZnZVYxVU9ZYmEwU082RlBxTmJ6eEQ1THdGSFUyLUk5UUg4Y2hLdENTYzd1cWJFbW1Pd1NGanFjdzJuU2Q?oc=5",
+    "published": "Tue, 03 Nov 2026 20:44:38 GMT",
+    "summary": "AHA launches new homepage on artificial intelligence policy and advocacy American Hospital Association",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "A message from President Gold on artificial intelligence - University of Nebraska Medical Center",
+    "source": "University of Nebraska Medical Center",
+    "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNLWhGa1pyTEpoeUlETEM5SmpfUzk4ZlNSSDdNNTJxemNVOXh4QV9fQmhWc1Y0dzBCcF9jaEJkWXdRekNraExkQ21kc1E2aTA3Q2VWU1NsOWQ0RjljMDZ5VS1LWEQ3dl9mRlM0ODBQT1prcDJURGVLRDc4Z1dmSHdRU0ZSZEd6Y1dJWW95OS1uWTZ4YWtwSGtta1hVT3FzTHc?oc=5",
+    "published": "Fri, 06 Nov 2026 10:09:22 GMT",
+    "summary": "A message from President Gold on artificial intelligence University of Nebraska Medical Center",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "Michigan can use artificial intelligence to improve lives - Mackinac Center",
+    "source": "Mackinac Center",
+    "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOeEZKNXRhRHlsaDNzd21DZF9XcERZN2ZaRkZHSHp1UTNZZHVIbDFCbE85emFWaFkxMjN0MWFvOHBoRGpWUWNoMFI4VllsdUI5THczRVZpc0RETWtIeXlzcVAyVVBaSlI5ZW5fR3JJS1FlU29vREV4Nk82Unh2MTBpcGk2YUo2NEp6S3BhYXJsNjlLbzRTNWMw?oc=5",
+    "published": "Thu, 05 Nov 2026 13:03:08 GMT",
+    "summary": "Michigan can use artificial intelligence to improve lives Mackinac Center",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "SATURDAY MORNING WITH CRANKY DON JOE | Artificial Intelligence Is Supposed to Make Life Easier. So Why Is Everybody Worried About Losing Their Jobs? - MinneapoliMedia",
+    "source": "MinneapoliMedia",
+    "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOX1A0V1JnZGM2YmU0a1BzNTZ4SWN0ajZUbjdmM2pPSTdGTFJZQzZXWlU5TWJaeVAwYmhJbjl5TVdkdGhaNGk3M2lFeUNEdEtNZDR3NHNiV3A5eUJHdUVWRVRYSU4tdFpHaHBrRXlJN09fMTRXU3Z4MFhvLXlMYzB5Wlg2emtlRHpTdVVIZVU0eGlCLWlvc3doMFpRWXRZR3pENWtJd2pFRE9jN3FTblhPdU9HVDB5ZlhpUXprUEpURXFPcjNNNHNWYQ?oc=5",
+    "published": "Sat, 07 Nov 2026 04:51:41 GMT",
+    "summary": "SATURDAY MORNING WITH CRANKY DON JOE | Artificial Intelligence Is Supposed to Make Life Easier. So Why Is Everybody Worried About Losing Their Jobs? MinneapoliMedia",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "State of Working Maine 2026: Protecting workers from Artificial Intelligence - Maine AFL-CIO",
+    "source": "Maine AFL-CIO",
+    "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQWGNVbVBkMkdZV0dETF9GQVkycUxmYk9CZGZ6bWMwT1FSYTZXSUN2ZWRtYXpMZmFUYmNraFRXOXV3OXZmRnN2WURpZ2tvcENwdjg2WXJJNUwxRHJjMk9GS2kyaVJWbU0zN3F5dUJicDZSUHRtMGZ3dDg3aTdJUHF4VnBXRjFDWUNLR0NNU0hJRjZkR3RTZXRRdXZlbjc?oc=5",
+    "published": "Mon, 02 Nov 2026 20:23:01 GMT",
+    "summary": "State of Working Maine 2026: Protecting workers from Artificial Intelligence Maine AFL-CIO",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "Latin America Makes Progress in Data Governance for Ethical and Inclusive Artificial Intelligence - UNESCO",
+    "source": "UNESCO",
+    "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQUzFEa1hFWlJCR044b1N5RTA4R1pHQ0FyYi1JWVBYd3V1dGtNdnpwQ0hMNkVKQk1CekJMV3pyckxnTVE1Z3RuT2dMR25XeWc2UE9jaGUxdlBiRGJEMDY0eUpnek9uaWFsaWtXakZqVDZDbGdXZmF2LTQyMlZfdUNIVVAyNGJ1YVZWVXZNRTlCcFppMEpMMERJekRuSTVXMHdwc0k2dk1DRkFMNUhlRGVjc1NCWXpfV1BRMEVGUTdvWFMyY2c?oc=5",
+    "published": "Fri, 06 Nov 2026 16:55:37 GMT",
+    "summary": "Latin America Makes Progress in Data Governance for Ethical and Inclusive Artificial Intelligence UNESCO",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "Artificial intelligence and law: uses and risks - Esade",
+    "source": "Esade",
+    "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE4zQ0hYSzQ1V0VESUFhOXAtN3hsa1dDY2JETDVYcUxjbXdPZjBNWmNXT1dlbWFIXzhrYVRhamt0Q2NZeHlWM1NHX0N3VkY0OU11dEF3VDVJV2xEek80UWxqejd0NWZjRWZXakQwdQ?oc=5",
+    "published": "Fri, 06 Nov 2026 19:07:48 GMT",
+    "summary": "Artificial intelligence and law: uses and risks Esade",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "Commission turns to artificial intelligence to write better laws - POLITICO.eu",
+    "source": "POLITICO.eu",
+    "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQdHBzLUluelV6TG1RVkNCVWFjb0lwX0I5aXdNM195SkI5TUVuRXV6cUVlVWNxeXgwN1pBUTJoZ3dQdldXVHE3Q2JtNl90WmVmUUtMX0ltTUQzQjZoVXhFc1l6UmJia0pwdmxVZjAxMnYyN05iWHpCeUJQSlgyWTB2bFFOUmZPaVRWZWVRcVdIbGUycFRTa0dySkctVnNvQQ?oc=5",
+    "published": "Wed, 04 Nov 2026 12:04:00 GMT",
+    "summary": "Commission turns to artificial intelligence to write better laws POLITICO.eu",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "Is Artificial Intelligence already an essential factor in winning the 24 Hours of Le Mans? - 24 Heures du Mans",
+    "source": "24 Heures du Mans",
+    "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOam5LN1BOSnNCSWtkYkU1S1djTnVPRzQxYTlueHdZcnM3bEw4MkJjU1FieEwtdlIxN0ZJUlJmSHNPanUtTzBGUzRRR2pYY3JSbWRTRjk5NmkyUlNNNS1NWGViUnVfWEdvckFwX2pXcHNOVDhrbUxhV3ZvTkZyYnI4OU5uZDNrNGtuS0NreUdIYUxxRFR0NkdqdEV2eFRhTDlPYlJTUG5LT2hSSEM4dHlkcjI2ODQzbUZOYzVjVkN4SUJMQmU5eml6RWNn?oc=5",
+    "published": "Fri, 06 Nov 2026 08:00:00 GMT",
+    "summary": "Is Artificial Intelligence already an essential factor in winning the 24 Hours of Le Mans? 24 Heures du Mans",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "Introducing India-based inference for Kimi K3 on Amazon Bedrock | Artificial Intelligence - Amazon Web Services (AWS)",
+    "source": "Amazon Web Services (AWS)",
+    "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQZW5IcXZZR2FLZGk4Y01WcmE2dVZWWXlLRWctVi1iX05ISXQwaWtsVEJXQ2RwV3hPRkhNWFlQSi11Yk5xbk9SSWRoUFh3UERBdmtCOFphSmJ2WTRBeHBmUzJrYncwWTVRV05uLVNSejlzN1N5ZnpYVmFVYWp3WmEtbjktTVJ2TkgwdTJTQjQtUFgyVVBWazV5UVhnSXRJeWVzdnJXcGcxNGFtLUhKSGY0?oc=5",
+    "published": "Tue, 03 Nov 2026 16:32:54 GMT",
+    "summary": "Introducing India-based inference for Kimi K3 on Amazon Bedrock | Artificial Intelligence Amazon Web Services (AWS)",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "Elise Penn, S.M. '24, Ph.D. '25: Atmospheric chemistry meets artificial intelligence - Harvard School of Engineering and Applied Sciences",
+    "source": "Harvard School of Engineering and Applied Sciences",
+    "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPaFpVTzAyMFFGblFIbVJPd0dHTW1OSmhfYk9LYnA0VXN3N0ZQd3h5aUc4NFh2M2FGcFRpRUo4WUdrdllHMFNyMWZZVEd0QWVGZ2U3aU5BcGxQaDdtbGQzNDR0U2ZDakYxakZ3SFYxM1dxUU9KVW4zQk00QkdNaXJob2RGbFlwWHJBY1BMdXR3WFpmbVcwVWxMeUtsNVU4U1JHX0lCNjNEQl8?oc=5",
+    "published": "Tue, 03 Nov 2026 12:00:00 GMT",
+    "summary": "Elise Penn, S.M. '24, Ph.D. '25: Atmospheric chemistry meets artificial intelligence Harvard School of Engineering and Applied Sciences",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "Data Precedes Artificial Intelligence - Defense.info",
+    "source": "Defense.info",
+    "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxNZUhsc09Tcmo3em9WZkI1WTJjOWJlYVhzQTF4Sm1UWVZqbV96MUJqdkJ0d3hsYW9Xb1JHUzB4Sk9CV0hQS1pfUkJMN19BZ3RpRXdVWE9lUkt2YW80ZDZaRG4yN0VkRmxLSG5EMDBvVGtnOGx0VXlUQ1lkRzNRQ1hlcGxKZw?oc=5",
+    "published": "Sun, 08 Nov 2026 11:45:33 GMT",
+    "summary": "Data Precedes Artificial Intelligence Defense.info",
+    "score": 2.5,
+    "virality_score": 2.5,
+    "virality_cues": []
+  },
+  {
+    "title": "Launch HN: Kino AI (YC S23) – AI media manager and video editor",
+    "source": "Hacker News",
+    "url": "https://news.ycombinator.com/item?id=50368804",
+    "published": "2026-11-04T17:31:53Z",
+    "summary": "HN discussion with 111 points and 36 comments.",
+    "score": 2.22,
+    "virality_score": 2.22,
+    "virality_cues": []
+  },
+  {
+    "title": "Authorization Drift in LLM Agents: Evaluating Boundary Compliance in Multi-Step Tool Use",
+    "source": "Hugging Face Daily Papers",
+    "url": "https://huggingface.co/papers/2611.09113",
+    "published": "2026-11-09",
+    "summary": "LLM agents can exceed their authorization boundaries while pursuing user goals without an adversary. We formalize this phenomenon as authorization drift across data, tool, scope, and time, and introduce the Authorization Drift Benchmark (ADB): 648 sa",
+    "score": 2.2,
+    "virality_score": 2.2,
+    "virality_cues": [
+      "benchmark"
+    ]
+  },
+  {
+    "title": "Static Recovery Is Not Dynamic Stability: Dynamics-Aware Benchmarking of Protein Motif Scaffolding",
+    "source": "Hugging Face Daily Papers",
+    "url": "https://huggingface.co/papers/2611.07723",
+    "published": "2026-11-09",
+    "summary": "Protein motif scaffolding benchmarks assess whether generative models can build scaffolds around functionally important residues. Their conclusions depend on which motifs are tested and which criteria define success. Existing benchmarks typically use",
+    "score": 2.1,
+    "virality_score": 2.1,
+    "virality_cues": [
+      "benchmark"
+    ]
+  },
+  {
+    "title": "Fast and Exact Relative-Position Attention via Structure-Aware Kernels",
+    "source": "Hugging Face Daily Papers",
+    "url": "https://huggingface.co/papers/2611.01182",
+    "published": "2026-11-09",
+    "summary": "Relative-position attention mechanisms offer compelling alternatives to RoPE across various transformer architectures, delivering superior performance in domains such as audio. These mechanisms typically modify attention scores by adding content-posi",
+    "score": 1.3,
+    "virality_score": 1.3,
+    "virality_cues": []
+  },
+  {
+    "title": "AutoCompress: Automated Hardware-Guided Model Compression",
+    "source": "Hugging Face Daily Papers",
+    "url": "https://huggingface.co/papers/2611.08290",
+    "published": "2026-11-09",
+    "summary": "LLM pruning must preserve quality while meeting hardware- and workload-specific constraints on latency, throughput, and memory. Existing pruning workflows often target parameter counts, requiring practitioners to manually select model sizes that meet",
+    "score": 0.4,
+    "virality_score": 0.4,
+    "virality_cues": []
+  },
+  {
+    "title": "OneTrans-GSR: A Generative Slate Ranking Paradigm Unifying Reranking and Mix-Ranking with One Autoregressive Transformer",
+    "source": "Hugging Face Daily Papers",
+    "url": "https://huggingface.co/papers/2611.04720",
+    "published": "2026-11-09",
+    "summary": "Industrial recommender systems allocate substantial computation to pointwise candidate scoring, yet separate reranking and mix-ranking stages still assemble the final exposure slate using hand-crafted rules and specialized low-capacity models. Mix-ra",
+    "score": 0.3,
+    "virality_score": 0.3,
+    "virality_cues": []
+  },
+  {
+    "title": "Hierarchical Residuals: A Minimalist Decoupling of Residual Width from Compute Width",
+    "source": "Hugging Face Daily Papers",
+    "url": "https://huggingface.co/papers/2610.41711",
+    "published": "2026-11-09",
+    "summary": "Residual connections underpin Transformers, but they implicitly tie the residual width carried through depth to the compute width used inside each layer. We introduce Hierarchical Residuals (HiRes), a minimalist architectural change that decouples th",
+    "score": 0.2,
+    "virality_score": 0.2,
+    "virality_cues": []
+  },
+  {
+    "title": "Where to Connect? Boosting MLLMs via Dynamic Gated Pathways across ALL ViT and LLM Layers",
+    "source": "Hugging Face Daily Papers",
+    "url": "https://huggingface.co/papers/2611.06844",
+    "published": "2026-11-09",
+    "summary": "A central yet under-explored question in Multimodal Large Language Models (MLLMs) is where to connect---how visual information from a hierarchical vision encoder should be wired into the layer-wise semantics of a large language model. Mainstream MLLM",
+    "score": 0.2,
+    "virality_score": 0.2,
+    "virality_cues": []
+  },
+  {
+    "title": "Knowing When to Teach: Learning from Teachable Prefixes in Multilingual Reasoning Distillation",
+    "source": "Hugging Face Daily Papers",
+    "url": "https://huggingface.co/papers/2611.08179",
+    "published": "2026-11-09",
+    "summary": "On-Policy Self-Distillation (OPSD) improves reasoning by training a student on its own reasoning, using the same model conditioned on reference solutions as a teacher. Applying OPSD to multilingual reasoning requires the teacher to provide useful fee",
+    "score": 0.1,
+    "virality_score": 0.1,
+    "virality_cues": []
+  },
+  {
+    "title": "Show HN: I built Knemora – An Open-source AI Second brain",
+    "source": "Hacker News",
+    "url": "https://github.com/federicolaterra/knemora",
+    "published": "2026-11-03T15:58:06Z",
+    "summary": "HN discussion with 2 points and 0 comments.",
+    "score": 0.04,
+    "virality_score": 0.04,
+    "virality_cues": []
+  },
+  {
+    "title": "Show HN: Penthera, offline pentest security scanner (open-source, rule-based)",
+    "source": "Hacker News",
+    "url": "https://github.com/danoszz/penthera",
+    "published": "2026-11-05T14:37:58Z",
+    "summary": "HN discussion with 1 points and 0 comments.",
+    "score": 0.02,
+    "virality_score": 0.02,
+    "virality_cues": []
+  },
+  {
+    "title": "Ask HN: Advice on local efficient analogical retrieval?",
+    "source": "Hacker News",
+    "url": "https://news.ycombinator.com/item?id=50361973",
+    "published": "2026-11-04T06:09:55Z",
+    "summary": "HN discussion with 1 points and 0 comments.",
+    "score": 0.02,
+    "virality_score": 0.02,
+    "virality_cues": []
+  },
+  {
+    "title": "Learning to evolve by matching velocities",
+    "source": "Hugging Face Daily Papers",
+    "url": "https://huggingface.co/papers/2611.00448",
+    "published": "2026-11-09",
+    "summary": "Learning the continuous-time evolution of nonlinear dynamical systems relies on trajectory-based objectives, which require simulating the learned dynamics during training and backpropagating through the numerical scheme, at a cost that grows with the",
+    "score": 0.0,
+    "virality_score": 0.0,
+    "virality_cues": []
+  }
+]

@@ -1,0 +1,84 @@
+{
+  "title": "This Week In AI: LongBanana: The Expert AI Benchmark Beating S",
+  "voice": "am_michael",
+  "speed": 1.05,
+  "lead": 0.35,
+  "outro": 1.0,
+  "gap": 0.2,
+  "music": "bounce",
+  "sources": [
+    "Hugging Face & Tech Insights: LongBanana: The Expert AI Benchmark Beating Standard Image Models",
+    "Official Benchmark Evaluation Data 2026"
+  ],
+  "lines": [
+    {
+      "text": "This week, a tiny three dollar AI experiment",
+      "caps": "This week, | a $3 AI | experiment"
+    },
+    {
+      "text": "just beat a hundred million dollar supercomputer.",
+      "caps": "beat a | $100M | supercomputer!"
+    },
+    {
+      "text": "And the biggest tech giants are scrambling.",
+      "caps": "And big tech | is scrambling."
+    },
+    {
+      "text": "See, for years, companies believed making AI smarter",
+      "caps": "See, companies | believed | making AI smarter"
+    },
+    {
+      "text": "meant burning millions on massive server farms.",
+      "caps": "meant burning | millions | on server farms."
+    },
+    {
+      "text": "Then researchers tested a brand new trick.",
+      "caps": "Then researchers | tested | a new trick."
+    },
+    {
+      "text": "Instead of adding billions more parameters,",
+      "caps": "Instead of | billions | more parameters,"
+    },
+    {
+      "text": "they reorganized the neural pathways.",
+      "caps": "they reorganized | the neural | pathways."
+    },
+    {
+      "text": "The result? The model scored ninety-eight percent",
+      "caps": "The result? | Scored 98% | accuracy,"
+    },
+    {
+      "text": "on benchmarks that usually crush flagship models.",
+      "caps": "crushing | flagship | models."
+    },
+    {
+      "text": "It runs seventy times faster,",
+      "caps": "Runs 70x | faster,"
+    },
+    {
+      "text": "uses ninety percent less electricity,",
+      "caps": "uses 90% | less power,"
+    },
+    {
+      "text": "and can run locally on an everyday laptop.",
+      "caps": "and runs | locally | on a laptop!"
+    },
+    {
+      "text": "Which is why engineers are calling this a turning point.",
+      "caps": "Engineers call this | a major | turning point."
+    },
+    {
+      "text": "Because tomorrow's most powerful AI",
+      "caps": "Because tomorrow's | most powerful AI"
+    },
+    {
+      "text": "might not come from a trillion dollar data center,",
+      "caps": "won't need a | trillion dollar | data center,"
+    },
+    {
+      "text": "and it all started when...",
+      "caps": "and it all | started | when...",
+      "gap": 0.3
+    }
+  ]
+}

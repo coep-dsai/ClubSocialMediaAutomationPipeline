@@ -1,0 +1,60 @@
+{
+  "voice": "en-US-GuyNeural",
+  "duration": 39.86,
+  "lines": [
+    {
+      "i": 0,
+      "text": "What happens when a 31-billion parameter AI takes on Silicon Valley's giant supercomputers?",
+      "start": 0.445,
+      "end": 5.298
+    },
+    {
+      "i": 1,
+      "text": "An Indian AI lab named Sthanika just shocked the world.",
+      "start": 6.455,
+      "end": 9.251
+    },
+    {
+      "i": 2,
+      "text": "Instead of spending hundreds of millions on brute force, they re-engineered the decision cortex.",
+      "start": 10.401,
+      "end": 14.89
+    },
+    {
+      "i": 3,
+      "text": "Inside the model, trillions of neural weights prune away noise at blinding speed.",
+      "start": 16.027,
+      "end": 19.823
+    },
+    {
+      "i": 4,
+      "text": "When tested on grueling real-world decision benchmarks,",
+      "start": 20.981,
+      "end": 23.311
+    },
+    {
+      "i": 5,
+      "text": "Sieve-31Bv3 beat Perplexity and Jev,",
+      "start": 23.527,
+      "end": 25.834
+    },
+    {
+      "i": 6,
+      "text": "tying for first place globally with the biggest models on Earth.",
+      "start": 26.084,
+      "end": 28.731
+    },
+    {
+      "i": 7,
+      "text": "Proving that intelligent architecture beats pure compute every single time.",
+      "start": 29.895,
+      "end": 33.43
+    },
+    {
+      "i": 8,
+      "text": "Follow COEP DSAI for the real future of artificial intelligence.",
+      "start": 34.635,
+      "end": 38.045
+    }
+  ]
+}
