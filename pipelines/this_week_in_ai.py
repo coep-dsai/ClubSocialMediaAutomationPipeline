@@ -23,13 +23,16 @@ from agents.audio_agent import AudioAgent
 ROOT_DIR = Path(__file__).resolve().parent.parent
 PROJECT_DIR = ROOT_DIR / "projects" / "this_week_in_ai"
 SKILL_DIR = ROOT_DIR / "faceless-shorts-skill" / "faceless-shorts"
-VENV_PYTHON = Path.home() / ".faceless-shorts" / "venv" / "Scripts" / "python.exe"
+LOCAL_VENV_PYTHON = ROOT_DIR / ".venv" / "Scripts" / "python.exe"
+GLOBAL_VENV_PYTHON = Path.home() / ".faceless-shorts" / "venv" / "Scripts" / "python.exe"
 OUTPUT_DIR = ROOT_DIR / "output"
 
 
 def get_python_bin() -> str:
-    if VENV_PYTHON.exists():
-        return str(VENV_PYTHON)
+    if LOCAL_VENV_PYTHON.exists():
+        return str(LOCAL_VENV_PYTHON)
+    if GLOBAL_VENV_PYTHON.exists():
+        return str(GLOBAL_VENV_PYTHON)
     return sys.executable
 
 

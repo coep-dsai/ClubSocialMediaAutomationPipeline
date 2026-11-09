@@ -221,7 +221,11 @@ class AudioAgent:
         """Offline fallback to Kokoro voice synthesis."""
         skill_voice = Path(__file__).resolve().parent.parent / "faceless-shorts-skill" / "faceless-shorts" / "scripts" / "voice.py"
         skill_words = Path(__file__).resolve().parent.parent / "faceless-shorts-skill" / "faceless-shorts" / "scripts" / "words.py"
-        py = str(Path.home() / ".faceless-shorts" / "venv" / "Scripts" / "python.exe")
+        local_py = Path(__file__).resolve().parent.parent / ".venv" / "Scripts" / "python.exe"
+        if local_py.exists():
+            py = str(local_py)
+        else:
+            py = str(Path.home() / ".faceless-shorts" / "venv" / "Scripts" / "python.exe")
         subprocess.run([py, str(skill_voice), str(project_dir)], check=True)
         subprocess.run([py, str(skill_words), str(project_dir)], check=True)
         return True
