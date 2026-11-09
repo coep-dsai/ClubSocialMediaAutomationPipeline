@@ -5,59 +5,75 @@
   "lead": 0.3,
   "outro": 0.9,
   "gap": 0.2,
-  "music": "bounce",
+  "music": "synthwave",
   "sources": [
     "ET Entrepreneur: Indian AI lab Sth\u0101nika's Sieve-31Bv3 ties for first globally, beats Perplexity and Jev on decision benchmar..",
     "Official Benchmark Evaluation Data 2026"
   ],
   "lines": [
     {
-      "text": "This week, Indian AI lab Sthanika unveiled Sieve version three,"
+      "text": "This week, Indian AI lab Sthanika unveiled Sieve version three,",
+      "gap": 0.22
     },
     {
-      "text": "and it just tied for first globally on decision benchmarks,"
+      "text": "and it just tied for first globally on decision benchmarks,",
+      "gap": 0.22
     },
     {
-      "text": "beating established giants like Perplexity and Jev."
+      "text": "beating established giants like Perplexity and Jev.",
+      "gap": 0.22
     },
     {
-      "text": "For years, the industry assumed top frontier intelligence"
+      "text": "For years, the industry assumed top frontier intelligence",
+      "gap": 0.22
     },
     {
-      "text": "demanded billions of dollars from Silicon Valley monopolies."
+      "text": "demanded billions of dollars from Silicon Valley monopolies.",
+      "gap": 0.22
     },
     {
-      "text": "Then Sthanika's engineering team tested a new paradigm."
+      "text": "Then Sthanika's engineering team tested a new paradigm.",
+      "gap": 0.22
     },
     {
-      "text": "Instead of blindly throwing brute-force parameters at the model,"
+      "text": "Instead of blindly throwing brute-force parameters at the model,",
+      "gap": 0.22
     },
     {
-      "text": "they streamlined the internal reasoning pathways."
+      "text": "they streamlined the internal reasoning pathways.",
+      "gap": 0.22
     },
     {
-      "text": "The result? It scored number one globally"
+      "text": "The result? It scored number one globally",
+      "gap": 0.22
     },
     {
-      "text": "on complex decision benchmarks that crush larger systems."
+      "text": "on complex decision benchmarks that crush larger systems.",
+      "gap": 0.22
     },
     {
-      "text": "It delivers lightning-fast inference,"
+      "text": "It delivers lightning-fast inference,",
+      "gap": 0.22
     },
     {
-      "text": "uses ninety percent less electricity,"
+      "text": "uses ninety percent less electricity,",
+      "gap": 0.22
     },
     {
-      "text": "and can run locally on an everyday workstation."
+      "text": "and can run locally on an everyday workstation.",
+      "gap": 0.22
     },
     {
-      "text": "Which is why researchers call this India's biggest AI milestone."
+      "text": "Which is why researchers call this India's biggest AI milestone.",
+      "gap": 0.22
     },
     {
-      "text": "Because tomorrow's most powerful AI"
+      "text": "Because tomorrow's most powerful AI",
+      "gap": 0.22
     },
     {
-      "text": "is no longer locked behind a trillion dollar data center,"
+      "text": "is no longer locked behind a trillion dollar data center,",
+      "gap": 0.22
     },
     {
       "text": "and it all started when...",

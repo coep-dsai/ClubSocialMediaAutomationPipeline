@@ -627,6 +627,8 @@ with tabs[3]:
     st.markdown("#### 📱 Finished Video Preview & Download")
 
     available_videos: Dict[str, Path] = {}
+    if (OUTPUT_DIR / "deep_dive_latest.mp4").exists():
+        available_videos["🔬 Deep Dive 3D (Zack D Style - Sthanika Sieve-31Bv3 - 39.9s)"] = OUTPUT_DIR / "deep_dive_latest.mp4"
     if (OUTPUT_DIR / "tall_tale_cartoon_short.mp4").exists():
         available_videos["🎨 Tall Tale 3D Cartoon Short (Idaho Mail Girl - 51.7s)"] = OUTPUT_DIR / "tall_tale_cartoon_short.mp4"
     if (OUTPUT_DIR / "latest_short.mp4").exists():
@@ -645,7 +647,9 @@ with tabs[3]:
         video_path = OUTPUT_DIR / "latest_short.mp4"
 
     # Corresponding contact sheet
-    if "tall_tale" in str(video_path).lower():
+    if "deep_dive" in str(video_path).lower():
+        contact_sheet_path = OUTPUT_DIR / "deep_dive_contact_sheet.jpg"
+    elif "tall_tale" in str(video_path).lower():
         contact_sheet_path = OUTPUT_DIR / "tall_tale_contact_sheet.jpg"
     else:
         contact_sheet_path = OUTPUT_DIR / "review_v4_contact_sheet.jpg"
