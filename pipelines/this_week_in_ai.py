@@ -18,6 +18,7 @@ from pathlib import Path
 
 from agents.news_agent import AINewsScraper
 from agents.script_agent import ScriptAgent
+from agents.audio_agent import AudioAgent
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 PROJECT_DIR = ROOT_DIR / "projects" / "this_week_in_ai"
@@ -75,20 +76,26 @@ def step_script(story_index: int = 0):
     return script
 
 
-def step_voice():
-    print("\n========== [Step 3/5] Synthesizing Voiceover (Kokoro) & Timing (Whisper) ==========")
-    py = get_python_bin()
-    voice_script = SKILL_DIR / "scripts" / "voice.py"
-    words_script = SKILL_DIR / "scripts" / "words.py"
+def step_voice(voice: str = "en-US-GuyNeural", engine: str = "edge-tts"):
+    print(f"\n========== [Step 3/5] Synthesizing Voiceover ({voice} via {engine}) ==========")
+    if engine == "edge-tts":
+        agent = AudioAgent(primary_voice=voice, fallback_voice="en-US-ChristopherNeural")
+        success = agent.synthesize_project(PROJECT_DIR, voice=voice)
+        if not success:
+            raise RuntimeError("AudioAgent synthesis failed")
+    else:
+        py = get_python_bin()
+        voice_script = SKILL_DIR / "scripts" / "voice.py"
+        words_script = SKILL_DIR / "scripts" / "words.py"
 
-    code1 = run_cmd([py, str(voice_script), str(PROJECT_DIR)])
-    if code1 != 0:
-        raise RuntimeError("voice.py failed")
+        code1 = run_cmd([py, str(voice_script), str(PROJECT_DIR)])
+        if code1 != 0:
+            raise RuntimeError("voice.py failed")
 
-    code2 = run_cmd([py, str(words_script), str(PROJECT_DIR)])
-    if code2 != 0:
-        raise RuntimeError("words.py failed")
-    print("Voiceover & Whisper alignment complete!")
+        code2 = run_cmd([py, str(words_script), str(PROJECT_DIR)])
+        if code2 != 0:
+            raise RuntimeError("words.py failed")
+    print("Voiceover & frame-exact timing alignment complete!")
 
 
 def step_mix():
