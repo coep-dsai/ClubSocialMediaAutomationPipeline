@@ -22,7 +22,10 @@ from agents.audio_agent import AudioAgent
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 PROJECT_DIR = ROOT_DIR / "projects" / "this_week_in_ai"
-SKILL_DIR = ROOT_DIR / "faceless-shorts-skill" / "faceless-shorts"
+_skills_root = ROOT_DIR / "faceless-shorts-skills"
+if not _skills_root.exists():
+    _skills_root = ROOT_DIR / "faceless-shorts-skill"
+SKILL_DIR = _skills_root / "faceless-shorts"
 LOCAL_VENV_PYTHON = ROOT_DIR / ".venv" / "Scripts" / "python.exe"
 GLOBAL_VENV_PYTHON = Path.home() / ".faceless-shorts" / "venv" / "Scripts" / "python.exe"
 OUTPUT_DIR = ROOT_DIR / "output"

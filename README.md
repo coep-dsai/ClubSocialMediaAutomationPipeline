@@ -29,7 +29,9 @@ ClubSocialMediaAutomationPipeline/
 │       ├── src/shots.js       # Animated cartoon shots & pop info cards
 │       ├── tools/capture.mjs  # Headless Chrome frame-exact renderer
 │       └── tools/mix.py       # Procedural audio & Foley SFX mixer
-├── faceless-shorts-skill/     # Core rendering engine & style presets
+├── faceless-shorts-skills/    # Creative skills repository
+│   ├── faceless-shorts/       # 3D faceless animated shorts engine & 7 style presets
+│   └── ai-video-editor/       # Talking-head editing, silence/mistake cutter & motion graphics
 ├── output/                    # Final exported videos & QA contact sheets
 ├── data/                      # Cached news stories & scripts
 └── requirements.txt           # Project dependencies

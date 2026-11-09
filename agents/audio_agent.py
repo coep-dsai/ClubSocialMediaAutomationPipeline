@@ -279,8 +279,12 @@ class AudioAgent:
         concat_file.unlink(missing_ok=True)
 
     def _synthesize_with_kokoro(self, project_dir: Path) -> bool:
-        skill_voice = Path(__file__).resolve().parent.parent / "faceless-shorts-skill" / "faceless-shorts" / "scripts" / "voice.py"
-        skill_words = Path(__file__).resolve().parent.parent / "faceless-shorts-skill" / "faceless-shorts" / "scripts" / "words.py"
+        base_dir = Path(__file__).resolve().parent.parent
+        skills_root = base_dir / "faceless-shorts-skills"
+        if not skills_root.exists():
+            skills_root = base_dir / "faceless-shorts-skill"
+        skill_voice = skills_root / "faceless-shorts" / "scripts" / "voice.py"
+        skill_words = skills_root / "faceless-shorts" / "scripts" / "words.py"
         local_py = Path(__file__).resolve().parent.parent / ".venv" / "Scripts" / "python.exe"
         if local_py.exists():
             py = str(local_py)

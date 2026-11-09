@@ -243,7 +243,10 @@ class StyleAgent:
 
     def __init__(self, workspace_root: Optional[Path] = None):
         self.workspace_root = workspace_root or Path(__file__).resolve().parent.parent
-        self.skill_styles_dir = self.workspace_root / "faceless-shorts-skill" / "faceless-shorts" / "styles"
+        skills_root = self.workspace_root / "faceless-shorts-skills"
+        if not skills_root.exists():
+            skills_root = self.workspace_root / "faceless-shorts-skill"
+        self.skill_styles_dir = skills_root / "faceless-shorts" / "styles"
         self.projects_dir = self.workspace_root / "projects"
 
     def get_styles(self) -> Dict[str, StyleDefinition]:

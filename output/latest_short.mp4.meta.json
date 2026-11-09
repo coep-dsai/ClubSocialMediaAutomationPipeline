@@ -1,12 +1,16 @@
 {
-  "title": "Nvidia CEO Jensen Huang's Letter to Staff on Cluster Bottlenecks",
-  "style_id": "neon-explainer",
-  "style_name": "Neon 3D Explainer",
-  "style_icon": "⚡",
-  "style_badge": "COEP DSAI Special",
+  "title": "This Week In AI: Anthropic Addresses Video Game Cloning With Minor Claud",
+  "style_id": "tall-tale",
+  "style_name": "Tall Tale 3D",
+  "style_icon": "\ud83c\udfa8",
+  "style_badge": "Most Popular",
   "voice": "en-US-GuyNeural",
-  "speed": "+10%",
+  "speed": "+14%",
+  "music": "synthwave",
   "cuts_count": 17,
-  "filename": "latest_short.mp4",
-  "sheet_filename": "review_v4_contact_sheet.jpg"
+  "timestamp": "2026-11-09T19:34:56.725865",
+  "rendered_time_display": "07:34:56 PM",
+  "filename": "tall-tale_this_week_in_ai_anthropic_addresses__20261109_193240.mp4",
+  "sheet_filename": "tall-tale_this_week_in_ai_anthropic_addresses__20261109_193240_sheet.jpg",
+  "size_mb": 27.98
 }
