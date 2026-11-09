@@ -1,0 +1,109 @@
+{
+ "duration": 49.137,
+ "voice": "am_michael",
+ "speed": 1.05,
+ "lines": [
+  {
+   "i": 0,
+   "text": "This week, a tiny three dollar AI experiment",
+   "start": 0.35,
+   "end": 3.06
+  },
+  {
+   "i": 1,
+   "text": "just beat a hundred million dollar supercomputer.",
+   "start": 3.13,
+   "end": 6.568
+  },
+  {
+   "i": 2,
+   "text": "And the biggest tech giants are scrambling.",
+   "start": 6.768,
+   "end": 8.766
+  },
+  {
+   "i": 3,
+   "text": "See, for years, companies believed making AI smarter",
+   "start": 8.966,
+   "end": 12.766
+  },
+  {
+   "i": 4,
+   "text": "meant burning millions on massive server farms.",
+   "start": 12.936,
+   "end": 15.723
+  },
+  {
+   "i": 5,
+   "text": "Then researchers tested a brand new trick.",
+   "start": 15.923,
+   "end": 18.322
+  },
+  {
+   "i": 6,
+   "text": "Instead of adding billions more parameters,",
+   "start": 18.522,
+   "end": 20.742
+  },
+  {
+   "i": 7,
+   "text": "they reorganized the neural pathways.",
+   "start": 21.142,
+   "end": 23.472
+  },
+  {
+   "i": 8,
+   "text": "The result? The model scored ninety-eight percent",
+   "start": 23.672,
+   "end": 26.222
+  },
+  {
+   "i": 9,
+   "text": "on benchmarks that usually crush flagship models.",
+   "start": 26.322,
+   "end": 29.799
+  },
+  {
+   "i": 10,
+   "text": "It runs seventy times faster,",
+   "start": 29.999,
+   "end": 31.829
+  },
+  {
+   "i": 11,
+   "text": "uses ninety percent less electricity,",
+   "start": 32.289,
+   "end": 34.479
+  },
+  {
+   "i": 12,
+   "text": "and can run locally on an everyday laptop.",
+   "start": 34.959,
+   "end": 37.465
+  },
+  {
+   "i": 13,
+   "text": "Which is why engineers are calling this a turning point.",
+   "start": 37.665,
+   "end": 40.723
+  },
+  {
+   "i": 14,
+   "text": "Because tomorrow's most powerful AI",
+   "start": 40.923,
+   "end": 43.373
+  },
+  {
+   "i": 15,
+   "text": "might not come from a trillion dollar data center,",
+   "start": 43.523,
+   "end": 46.073
+  },
+  {
+   "i": 16,
+   "text": "and it all started when...",
+   "start": 46.543,
+   "end": 47.837
+  }
+ ]
+}

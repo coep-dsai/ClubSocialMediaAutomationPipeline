@@ -216,3 +216,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Video automation outputs
+output/*.mp4
+output/*.jpg
+projects/*/renders/
+projects/*/review/
+projects/*/data/*.wav
+data/*.wav
