@@ -39,7 +39,7 @@ export function buildShots(E) {
   };
 
   const LOOKS = {
-    cyber: { bloom: 0.75, bloomThreshold: 0.2, aperture: 0.0008, maxblur: 0.006, sat: 1.3, vig: 0.4 },
+    cyber: { bloom: 0.75, bloomThreshold: 0.2, aperture: 0.0015, maxblur: 0.006, sat: 1.3, vig: 0.4 },
     warning: { bloom: 0.85, bloomThreshold: 0.15, aperture: 0.001, maxblur: 0.007, sat: 1.4, vig: 0.5 },
     clean: { bloom: 0.55, bloomThreshold: 0.25, aperture: 0.0005, maxblur: 0.005, sat: 1.25, vig: 0.35 },
   };
@@ -74,7 +74,7 @@ export function buildShots(E) {
   };
 
   // ── Glass HUD Card Helper ─────────────────────────────────────────────
-  const drawCard = (x, y, w, h, borderCol = '#00F0FF', sc = 1) => {
+  const drawCard = (x, y, w, h, borderCol = '#FACC15', sc = 1) => {
     ctx.save();
     ctx.translate(x, y);
     ctx.scale(sc, sc);
@@ -118,8 +118,8 @@ export function buildShots(E) {
 
     // Glowing cyan pulse dot
     const pulse = 0.6 + 0.4 * Math.sin(t * 4);
-    ctx.fillStyle = '#00F0FF';
-    ctx.shadowColor = '#00F0FF';
+    ctx.fillStyle = '#FACC15';
+    ctx.shadowColor = '#FACC15';
     ctx.shadowBlur = 12 * pulse;
     ctx.beginPath();
     ctx.arc(-205, 0, 7, 0, Math.PI * 2);
@@ -143,7 +143,7 @@ export function buildShots(E) {
   sceneDuel.background = new THREE.Color('#030712');
   sceneDuel.fog = new THREE.FogExp2('#030712', 0.04);
   sceneDuel.add(new THREE.AmbientLight('#1E293B', 1.0));
-  const duelGrid = new THREE.GridHelper(100, 50, '#00F0FF', '#1E1B4B');
+  const duelGrid = new THREE.GridHelper(100, 50, '#FACC15', '#1E1B4B');
   duelGrid.position.y = -2;
   sceneDuel.add(duelGrid);
 
@@ -153,7 +153,7 @@ export function buildShots(E) {
   const baseMesh = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.08, 1.3), new THREE.MeshStandardMaterial({ color: '#1E293B', metalness: 0.9, roughness: 0.2 }));
   const trackpad = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.01, 0.35), new THREE.MeshStandardMaterial({ color: '#334155', metalness: 0.8 }));
   trackpad.position.set(0, 0.045, 0.4);
-  const screenMesh = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.1, 0.06), new THREE.MeshStandardMaterial({ color: '#00F0FF', emissive: '#0284C7', emissiveIntensity: 1.4 }));
+  const screenMesh = new THREE.Mesh(new THREE.BoxGeometry(1.8, 1.1, 0.06), new THREE.MeshStandardMaterial({ color: '#FACC15', emissive: '#D97706', emissiveIntensity: 1.4 }));
   screenMesh.position.set(0, 0.55, -0.65);
   screenMesh.rotation.x = -0.25;
   laptopGroup.add(baseMesh, trackpad, screenMesh);
@@ -179,7 +179,7 @@ export function buildShots(E) {
 
   const rackGeo = new THREE.BoxGeometry(1.6, 7.5, 2.5);
   const rackMat = new THREE.MeshStandardMaterial({ color: '#0B0F19', metalness: 0.85, roughness: 0.25 });
-  const ledMatBlue = new THREE.MeshBasicMaterial({ color: '#38BDF8' });
+  const ledMatBlue = new THREE.MeshBasicMaterial({ color: '#F59E0B' });
   const ledMatGreen = new THREE.MeshBasicMaterial({ color: '#10B981' });
 
   for (let z = -40; z <= 20; z += 5) {
@@ -201,7 +201,7 @@ export function buildShots(E) {
   sceneNeural.fog = new THREE.FogExp2('#030712', 0.03);
   sceneNeural.add(new THREE.AmbientLight('#1E1B4B', 1.2));
 
-  const neuralFloorGrid = new THREE.GridHelper(80, 40, '#0284C7', '#0F172A');
+  const neuralFloorGrid = new THREE.GridHelper(80, 40, '#D97706', '#0F172A');
   neuralFloorGrid.position.y = -3.8;
   sceneNeural.add(neuralFloorGrid);
 
@@ -215,8 +215,8 @@ export function buildShots(E) {
 
   const nodeGeo = new THREE.SphereGeometry(0.24, 20, 20);
   const nodeMat = new THREE.MeshStandardMaterial({
-    color: '#00F0FF',
-    emissive: '#0284C7',
+    color: '#FACC15',
+    emissive: '#D97706',
     emissiveIntensity: 2.2,
     roughness: 0.2,
   });
@@ -249,7 +249,7 @@ export function buildShots(E) {
 
   const neuralLineGeo = new THREE.BufferGeometry();
   neuralLineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
-  const neuralLineMat = new THREE.LineBasicMaterial({ color: '#38BDF8', transparent: true, opacity: 0.45 });
+  const neuralLineMat = new THREE.LineBasicMaterial({ color: '#F59E0B', transparent: true, opacity: 0.45 });
   const neuralLines = new THREE.LineSegments(neuralLineGeo, neuralLineMat);
   sceneNeural.add(neuralLines);
 
@@ -308,13 +308,13 @@ export function buildShots(E) {
   sceneSpeed.fog = new THREE.FogExp2('#020617', 0.04);
   sceneSpeed.add(new THREE.AmbientLight('#0F172A', 1.0));
 
-  const speedGrid = new THREE.GridHelper(100, 50, '#38BDF8', '#1E293B');
+  const speedGrid = new THREE.GridHelper(100, 50, '#F59E0B', '#1E293B');
   speedGrid.position.y = -2;
   sceneSpeed.add(speedGrid);
 
   const turbineGroup = new THREE.Group();
   turbineGroup.position.set(0, 0.8, -4);
-  const ringMat = new THREE.MeshStandardMaterial({ color: '#38BDF8', emissive: '#0284C7', emissiveIntensity: 1.5 });
+  const ringMat = new THREE.MeshStandardMaterial({ color: '#F59E0B', emissive: '#D97706', emissiveIntensity: 1.5 });
   const turbineRing1 = new THREE.Mesh(new THREE.TorusGeometry(2.0, 0.1, 16, 48), ringMat);
   const turbineRing2 = new THREE.Mesh(new THREE.TorusGeometry(1.3, 0.08, 16, 48), ringMat);
   turbineGroup.add(turbineRing1, turbineRing2);
@@ -370,8 +370,8 @@ export function buildShots(E) {
         const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.3, 1.0, eob(pop));
-          drawCard(540, 500, 860, 240, '#00F0FF', sc);
-          drawFittedText('⚡ THIS WEEK IN AI', 0, -48, 800, '900 38px Inter, sans-serif', '#38BDF8');
+          drawCard(540, 500, 860, 240, '#FACC15', sc);
+          drawFittedText('⚡ THIS WEEK IN AI', 0, -48, 800, '900 38px Inter, sans-serif', '#F59E0B');
           drawFittedText(lineText(0).toUpperCase(), 0, 30, 800, '900 62px Inter, sans-serif', '#FACC15');
           ctx.restore();
         }
@@ -514,9 +514,9 @@ export function buildShots(E) {
         const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.3, 1.0, eob(pop));
-          drawCard(540, 480, 860, 240, '#00F0FF', sc);
+          drawCard(540, 480, 860, 240, '#FACC15', sc);
           drawFittedText('SCIENTIFIC DISCOVERY', 0, -45, 800, '900 38px Inter, sans-serif', '#67E8F9');
-          drawFittedText(lineText(5).toUpperCase(), 0, 30, 800, '900 62px Inter, sans-serif', '#00F0FF');
+          drawFittedText(lineText(5).toUpperCase(), 0, 30, 800, '900 62px Inter, sans-serif', '#FACC15');
           ctx.restore();
         }
       }
@@ -558,7 +558,7 @@ export function buildShots(E) {
       id: 'S07', at: st, note: 'Scene 3: Synapses pulse bright gold as pathways rewire dynamically',
       draw(lt, d, t, blit) {
         const k = eio(clamp(lt / d));
-        neuralLineMat.color.set(t % 0.4 > 0.2 ? '#FACC15' : '#00F0FF');
+        neuralLineMat.color.set(t % 0.4 > 0.2 ? '#FACC15' : '#FACC15');
         neuralNodes.forEach((n, i) => n.scale.setScalar(1.0 + 0.18 * Math.sin(t * 8 + i)));
         shoot(sceneNeural, V3(3.8, 1.2, 13.0), V3(0, 0.2, 11.5), V3(0, 0, 0), null, k, { ...LOOKS.cyber, fov: 42 });
         blit();
@@ -679,8 +679,8 @@ export function buildShots(E) {
           ctx.arc(0, 10, 95, Math.PI * 0.8, Math.PI * 2.2);
           ctx.stroke();
 
-          ctx.strokeStyle = '#38BDF8';
-          ctx.shadowColor = '#38BDF8';
+          ctx.strokeStyle = '#F59E0B';
+          ctx.shadowColor = '#F59E0B';
           ctx.shadowBlur = 22;
           ctx.beginPath();
           ctx.arc(0, 10, 95, Math.PI * 0.8, Math.PI * 0.8 + speedAnim * Math.PI * 1.4);
@@ -764,7 +764,7 @@ export function buildShots(E) {
           ctx.lineWidth = 2;
           ctx.strokeRect(-380, -5, 760, 115);
 
-          drawFittedText('> python run_inference.py --weights active', -350, 25, 700, '600 22px Courier New', '#38BDF8', 'left');
+          drawFittedText('> python run_inference.py --weights active', -350, 25, 700, '600 22px Courier New', '#F59E0B', 'left');
           drawFittedText('[OK] Latency: 4.8ms | Cost: $0.00 | Status: Optimal', -350, 70, 700, '600 22px Courier New', '#4ADE80', 'left');
 
           drawFittedText('ACCESSIBLE HARDWARE DEPLOYMENT', 0, 140, 800, '800 26px Inter, sans-serif', '#C4B5FD');
@@ -859,8 +859,8 @@ export function buildShots(E) {
         const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.3, 1.0, eob(pop));
-          drawCard(540, 520, 880, 320, '#00F0FF', sc);
-          drawFittedText('FOLLOW FOR WEEKLY AI RESEARCH', 0, -85, 820, '900 36px Inter, sans-serif', '#38BDF8');
+          drawCard(540, 520, 880, 320, '#FACC15', sc);
+          drawFittedText('FOLLOW FOR WEEKLY AI RESEARCH', 0, -85, 820, '900 36px Inter, sans-serif', '#F59E0B');
           drawFittedText('@dsai_coep', 0, -20, 820, '900 80px Inter, sans-serif', '#FACC15');
           drawFittedText("COEP'S DATA SCIENCE & AI CLUB", 0, 60, 820, '800 32px Inter, sans-serif', '#FFFFFF');
           drawFittedText('Looping to beginning...', 0, 115, 820, '600 24px Inter, sans-serif', '#94A3B8');

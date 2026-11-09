@@ -25,6 +25,7 @@ import streamlit as st
 
 from agents.news_agent import AINewsScraper, NewsScraperAgent
 from agents.script_agent import ScriptAgent
+from agents.style_agent import StyleAgent, STYLES as ALL_STYLES
 
 # Setup paths
 PROJECT_ROOT = Path(__file__).resolve().parent
@@ -34,6 +35,8 @@ SCRAPER_CACHE = OUTPUT_DIR / "latest_ai_news.json"
 VENV_PYTHON = PROJECT_ROOT / ".venv" / "Scripts" / "python.exe"
 if not VENV_PYTHON.exists():
     VENV_PYTHON = Path(sys.executable)
+
+style_agent = StyleAgent(workspace_root=PROJECT_ROOT)
 
 # Available Visual Styles (100% verified compatible with This Week in AI pipeline)
 STYLES = {
@@ -215,21 +218,34 @@ def switch_style(style_id: str) -> bool:
 with st.sidebar:
     st.markdown("### 🎛️ Pipeline Presets")
 
-    # Visual Style Selector
-    selected_style_name = st.selectbox(
-        "Visual 3D Style Preset",
-        options=list(STYLES.keys()),
+    STYLE_CHOICES = {
+        f"{s.icon} {s.name} ({s.badge})": s.id
+        for s in ALL_STYLES.values()
+    }
+    selected_style_label = st.selectbox(
+        "Visual Style Engine",
+        options=list(STYLE_CHOICES.keys()),
         index=0,
-        help="Select the 3D aesthetic theme, lighting, and camera DOF.",
+        help="Select any of the 6 official Faceless Shorts styles or the COEP Neon Explainer.",
     )
-    style_info = STYLES[selected_style_name]
-    st.caption(f"{style_info['badge']}: {style_info['desc']}")
+    selected_style_id = STYLE_CHOICES[selected_style_label]
+    selected_style_def = ALL_STYLES[selected_style_id]
+    st.caption(f"**{selected_style_def.name}**: {selected_style_def.tagline}")
 
-    if st.button("Apply Selected Style to Engine", use_container_width=True):
-        if switch_style(style_info["id"]):
-            st.success(f"Activated theme: {selected_style_name}!")
-        else:
-            st.warning("Preset loaded.")
+    col_btn1, col_btn2 = st.columns(2)
+    with col_btn1:
+        if st.button("Apply Style", use_container_width=True):
+            if switch_style(selected_style_id):
+                st.success(f"Activated {selected_style_def.name}!")
+            else:
+                st.info(f"Loaded {selected_style_def.name} settings.")
+    with col_btn2:
+        if st.button("🏗️ Scaffold", use_container_width=True, help="Clone full template into projects/"):
+            try:
+                scaffold_path = style_agent.scaffold_project(selected_style_id, f"{selected_style_id}_demo")
+                st.success(f"Scaffolded to `projects/{selected_style_id}_demo`!")
+            except Exception as e:
+                st.error(f"Scaffolding failed: {e}")
 
     st.markdown("---")
     st.markdown("### 🎙️ Audio & Voiceover")
@@ -436,6 +452,32 @@ with tabs[1]:
             save_project_script(current_script)
             st.success(f"Saved {len(updated_lines)} cuts to `script.json` successfully!")
 
+    st.markdown("---")
+    st.markdown("### 📋 Antigravity Director Prompt Generator (Autonomous Agent Mode)")
+    st.write(
+        "Copy this prompt and paste it directly into your Antigravity chat with **Gemini 3.8 Flash High**. "
+        "The prompt instructs the agent to autonomously scaffold, script, code Three.js character animations in `shots.js`, "
+        "mix procedural foley, and render your video using the faceless-shorts skill."
+    )
+    active_story_context = st.session_state.get("selected_story", {
+        "title": current_script.get("title", "A Massive Breakthrough in Artificial Intelligence"),
+        "summary": " ".join([ln.get("text", "") for ln in current_script.get("lines", [])]),
+        "source": "AI Research & Industry Radar",
+        "url": "https://coep-dsai.org",
+    })
+    director_prompt = style_agent.generate_director_prompt(
+        story=active_story_context,
+        style_id=selected_style_id,
+        club_handle=club_handle,
+        target_duration=40,
+    )
+    st.text_area(
+        "📋 Copyable Antigravity Director Prompt",
+        value=director_prompt,
+        height=320,
+        help="Click inside, press Ctrl+A, then Ctrl+C to copy directly into chat!",
+    )
+
 
 # ═════════════════════════════════════════════════════════════════════════
 # TAB 3: STYLE & AUDIO CUSTOMIZER
@@ -471,6 +513,26 @@ with tabs[2]:
         - **Cadence Protocol:** Sentence-level continuous synthesis with bit-exact WAV silence concatenation
         - **Timestamp Sync:** Microsoft Speech native `WordBoundary` events mapped to script tokens
         """)
+
+    st.markdown("---")
+    st.markdown("### 🏛️ Complete Visual Style Architecture Catalog")
+    st.write("Browse all 6 authentic Faceless Shorts styles plus the custom COEP Neon Explainer. Each style features distinct character rigs, 3D worlds, caption typography, and procedural foley.")
+
+    style_cols = st.columns(3)
+    for idx, (s_key, s_item) in enumerate(ALL_STYLES.items()):
+        col_target = style_cols[idx % 3]
+        with col_target:
+            st.markdown(f"""
+            <div class="news-card" style="height: 360px; overflow-y: auto;">
+                <h4 style="margin: 0; color: #38BDF8;">{s_item.icon} {s_item.name}</h4>
+                <div style="margin: 6px 0;"><span class="badge-pill badge-green">{s_item.badge}</span></div>
+                <p style="font-size: 13px; color: #F1F5F9; margin-bottom: 6px;"><b>Visual Look:</b> {s_item.visual_look}</p>
+                <p style="font-size: 12px; color: #94A3B8; margin-bottom: 4px;"><b>Characters:</b> {s_item.characters}</p>
+                <p style="font-size: 12px; color: #94A3B8; margin-bottom: 4px;"><b>World / Sets:</b> {s_item.world}</p>
+                <p style="font-size: 12px; color: #94A3B8; margin-bottom: 4px;"><b>Captions:</b> {s_item.captions}</p>
+                <p style="font-size: 12px; color: #CBD5E1; margin-bottom: 4px;"><b>Best Topics:</b> {s_item.best_topics}</p>
+            </div>
+            """, unsafe_allow_html=True)
 
 
 # ═════════════════════════════════════════════════════════════════════════
@@ -564,11 +626,29 @@ with tabs[3]:
     st.markdown("---")
     st.markdown("#### 📱 Finished Video Preview & Download")
 
-    video_path = OUTPUT_DIR / "latest_short.mp4"
-    if not video_path.exists():
-        video_path = OUTPUT_DIR / "this_week_in_ai_v4.mp4"
+    available_videos: Dict[str, Path] = {}
+    if (OUTPUT_DIR / "tall_tale_cartoon_short.mp4").exists():
+        available_videos["🎨 Tall Tale 3D Cartoon Short (Idaho Mail Girl - 51.7s)"] = OUTPUT_DIR / "tall_tale_cartoon_short.mp4"
+    if (OUTPUT_DIR / "latest_short.mp4").exists():
+        available_videos["⚡ Neon Cyber 3D Short (Sthanika Sieve v3 - 52.0s)"] = OUTPUT_DIR / "latest_short.mp4"
+    if (OUTPUT_DIR / "this_week_in_ai_v4.mp4").exists():
+        available_videos["🌐 This Week in AI (v4 Archive)"] = OUTPUT_DIR / "this_week_in_ai_v4.mp4"
 
-    contact_sheet_path = OUTPUT_DIR / "review_v4_contact_sheet.jpg"
+    if available_videos:
+        chosen_video_label = st.selectbox(
+            "Select Rendered Short to Watch & Download",
+            options=list(available_videos.keys()),
+            index=0,
+        )
+        video_path = available_videos[chosen_video_label]
+    else:
+        video_path = OUTPUT_DIR / "latest_short.mp4"
+
+    # Corresponding contact sheet
+    if "tall_tale" in str(video_path).lower():
+        contact_sheet_path = OUTPUT_DIR / "tall_tale_contact_sheet.jpg"
+    else:
+        contact_sheet_path = OUTPUT_DIR / "review_v4_contact_sheet.jpg"
 
     col_vid, col_sheet = st.columns([1, 1.2])
 
@@ -578,21 +658,21 @@ with tabs[3]:
             file_bytes = video_path.read_bytes()
             st.video(file_bytes)
             st.download_button(
-                label="⬇️ Download MP4 (1080×1920 Short)",
+                label=f"⬇️ Download MP4 ({video_path.name})",
                 data=file_bytes,
-                file_name="this_week_in_ai_short.mp4",
+                file_name=video_path.name,
                 mime="video/mp4",
                 type="primary",
                 use_container_width=True,
             )
             render_ts = st.session_state.get("last_render_time", "Latest Build")
-            st.caption(f"Status: Fresh Render ({render_ts}) | Size: {len(file_bytes) / (1024 * 1024):.2f} MB | Aspect: 9:16 (1080×1920)")
+            st.caption(f"Status: Fresh Render ({render_ts}) | File: `{video_path.name}` | Size: {len(file_bytes) / (1024 * 1024):.2f} MB | Aspect: 9:16 (1080×1920)")
         else:
             st.info("No rendered video found in `output/` yet. Click 'Render Full Short' above to generate one!")
 
     with col_sheet:
         if contact_sheet_path.exists():
             sheet_bytes = contact_sheet_path.read_bytes()
-            st.image(sheet_bytes, caption="Multi-Scene Contact Sheet (Frame-by-Frame Progression)", use_container_width=True)
+            st.image(sheet_bytes, caption=f"Contact Sheet: {contact_sheet_path.name}", use_container_width=True)
         else:
             st.caption("Contact sheet will appear here after render.")
