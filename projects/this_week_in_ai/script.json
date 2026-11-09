@@ -1,32 +1,83 @@
 {
   "title": "This Week In AI: The $3 Experiment That Disrupted Big Tech",
   "voice": "en-US-GuyNeural",
-  "speed": 1.10,
-  "lead": 0.30,
-  "outro": 0.90,
-  "gap": 0.20,
-  "music": "bounce",
+  "speed": 1.1,
+  "lead": 0.3,
+  "outro": 0.9,
+  "gap": 0.2,
+  "music": "synthwave",
   "sources": [
     "Hugging Face & Tech Insights 2026",
     "Benchmark Evaluation Data"
   ],
   "lines": [
-    { "text": "This week, a tiny three dollar AI experiment" },
-    { "text": "just beat a hundred million dollar supercomputer." },
-    { "text": "And the biggest tech giants are scrambling." },
-    { "text": "See, for years, companies believed making AI smarter" },
-    { "text": "meant burning millions on massive server farms." },
-    { "text": "Then researchers tested a brand new trick." },
-    { "text": "Instead of adding billions more parameters," },
-    { "text": "they reorganized the neural pathways." },
-    { "text": "The result? The model scored ninety-eight percent" },
-    { "text": "on benchmarks that usually crush flagship models." },
-    { "text": "It runs seventy times faster," },
-    { "text": "uses ninety percent less electricity," },
-    { "text": "and can run locally on an everyday laptop." },
-    { "text": "Which is why engineers are calling this a turning point." },
-    { "text": "Because tomorrow's most powerful AI" },
-    { "text": "might not come from a trillion dollar data center," },
-    { "text": "and it all started when...", "gap": 0.3 }
+    {
+      "text": "This week, a tiny three dollar AI experiment",
+      "gap": 0.22
+    },
+    {
+      "text": "just beat a hundred million dollar supercomputer.",
+      "gap": 0.22
+    },
+    {
+      "text": "And the biggest tech giants are scrambling.",
+      "gap": 0.22
+    },
+    {
+      "text": "See, for years, companies believed making AI smarter",
+      "gap": 0.22
+    },
+    {
+      "text": "meant burning millions on massive server farms.",
+      "gap": 0.22
+    },
+    {
+      "text": "Then researchers tested a brand new trick.",
+      "gap": 0.22
+    },
+    {
+      "text": "Instead of adding billions more parameters,",
+      "gap": 0.22
+    },
+    {
+      "text": "they reorganized the neural pathways.",
+      "gap": 0.22
+    },
+    {
+      "text": "The result? The model scored ninety-eight percent",
+      "gap": 0.22
+    },
+    {
+      "text": "on benchmarks that usually crush flagship models.",
+      "gap": 0.22
+    },
+    {
+      "text": "It runs seventy times faster,",
+      "gap": 0.22
+    },
+    {
+      "text": "uses ninety percent less electricity,",
+      "gap": 0.22
+    },
+    {
+      "text": "and can run locally on an everyday laptop.",
+      "gap": 0.22
+    },
+    {
+      "text": "Which is why engineers are calling this a turning point.",
+      "gap": 0.22
+    },
+    {
+      "text": "Because tomorrow's most powerful AI",
+      "gap": 0.22
+    },
+    {
+      "text": "might not come from a trillion dollar data center,",
+      "gap": 0.22
+    },
+    {
+      "text": "and it all started when...",
+      "gap": 0.3
+    }
   ]
 }

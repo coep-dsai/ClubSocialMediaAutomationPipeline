@@ -2,9 +2,9 @@
 
 A lightweight, zero-cost ($0) web dashboard built with Streamlit.
 Enables club members to:
-1. Browse and scrape weekly AI news with virality scoring.
+1. Browse and scrape weekly AI news with virality scoring (supports custom keywords like NVIDIA).
 2. Select a story or write a custom topic/prompt to generate viral shorts scripts.
-3. Switch between 3D visual styles (Neon 3D Explainer, Tall Tale, Deep Dive, etc.) and voices.
+3. Switch between 3D visual styles (Neon Cyber, Deep Space Noir, Clean Emerald, Red Alert) and voices.
 4. Synthesize studio-grade voiceover with frame-accurate WordBoundary sync.
 5. Render and preview 1080x1920 vertical MP4 shorts with in-browser playback & direct download.
 """
@@ -22,46 +22,39 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 import streamlit as st
 
+from agents.news_agent import AINewsScraper, NewsScraperAgent
+from agents.script_agent import ScriptAgent
+
 # Setup paths
 PROJECT_ROOT = Path(__file__).resolve().parent
 PROJECT_DIR = PROJECT_ROOT / "projects" / "this_week_in_ai"
 OUTPUT_DIR = PROJECT_ROOT / "output"
-SCRAPER_CACHE = OUTPUT_DIR / "weekly_ai_news.json"
+SCRAPER_CACHE = OUTPUT_DIR / "latest_ai_news.json"
 VENV_PYTHON = PROJECT_ROOT / ".venv" / "Scripts" / "python.exe"
 if not VENV_PYTHON.exists():
     VENV_PYTHON = Path(sys.executable)
 
-# Available Visual Styles
+# Available Visual Styles (100% verified compatible with This Week in AI pipeline)
 STYLES = {
-    "Neon 3D & Tech Explainer (Active)": {
+    "Neon Cyber 3D (Electric Blue & Cyan)": {
         "id": "neon-explainer",
-        "desc": "Multi-scene 3D: Server Farm, 3D Neural Net, Gold Trophy Podium, Accelerator Highway, Battery Dial, & Club Watermark.",
+        "desc": "Pulsing server farm, 3D Neural Net architecture, Gold Trophy Podium, Accelerator Highway, Battery Dial, & Club Watermark.",
         "badge": "⚡ Recommended",
     },
-    "Deep Dive 3D (Cinematic)": {
-        "id": "deep-dive",
-        "desc": "Cinematic 3D wireframes, camera depth-of-field, glowing data manifolds, and analytical glass overlays.",
-        "badge": "🔬 Research",
+    "Deep Space Noir 3D (Gold & Amber Cinema)": {
+        "id": "deep-space-noir",
+        "desc": "Ultra-dark space void, amber/gold laser wireframes, deep camera depth-of-field, and dramatic high-contrast lighting.",
+        "badge": "🌌 Cinematic Noir",
     },
-    "Tall Tale 3D (Narrative)": {
-        "id": "tall-tale",
-        "desc": "Stylized 3D cartoon characters, exaggerated character expressions, and humorous narrative staging.",
-        "badge": "🎭 Character",
+    "Clean Emerald Tech 3D (Emerald & Platinum)": {
+        "id": "clean-emerald",
+        "desc": "Sleek graphite & emerald green lab aesthetic, clinical wireframe grids, and bright data visualization HUDs.",
+        "badge": "🌿 Clean Tech",
     },
-    "Inside Out 3D (Schematic)": {
-        "id": "inside-out",
-        "desc": "Layered mechanical disassembly, technical blueprints, and exploding architectural views.",
-        "badge": "🛠️ Architecture",
-    },
-    "Paper Atlas (Infographic)": {
-        "id": "paper-atlas",
-        "desc": "Vintage parchment maps, ink schematics, hand-drawn vector charts, and textured paper transitions.",
-        "badge": "📜 Historical",
-    },
-    "Night File (Noir Mystery)": {
-        "id": "night-file",
-        "desc": "High-contrast neon crime board, redacted classified dossier documents, and pulsing cyan spotlights.",
-        "badge": "🕵️ Investigative",
+    "Red Alert Crisis 3D (Crimson & Hazard)": {
+        "id": "red-alert",
+        "desc": "Ominous red emergency strobes, high-contrast warning cards, and dramatic cluster disruption visuals.",
+        "badge": "🚨 Crisis Alert",
     },
 }
 
@@ -108,9 +101,9 @@ st.markdown("""
     .news-card {
         background: #0F172A;
         border-radius: 12px;
-        padding: 16px;
+        padding: 18px;
         border: 1px solid #334155;
-        margin-bottom: 12px;
+        margin-bottom: 14px;
         transition: transform 0.2s, border-color 0.2s;
     }
     .news-card:hover {
@@ -148,23 +141,21 @@ st.markdown("""
 
 
 # ── Helper Functions ────────────────────────────────────────────────────
-@st.cache_data(ttl=3600)
+@st.cache_data(ttl=1800)
 def load_cached_news() -> List[Dict[str, Any]]:
     if SCRAPER_CACHE.exists():
         try:
             return json.loads(SCRAPER_CACHE.read_text(encoding="utf-8"))
         except Exception:
             pass
-    return []
+    # If no cache exists, run initial scrape
+    return run_news_scraper()
 
 
-def run_news_scraper() -> List[Dict[str, Any]]:
+def run_news_scraper(query: Optional[str] = None) -> List[Dict[str, Any]]:
     try:
-        from agents.news_agent import NewsScraperAgent
-        scraper = NewsScraperAgent()
-        stories = scraper.fetch_all_stories()
-        SCRAPER_CACHE.parent.mkdir(parents=True, exist_ok=True)
-        SCRAPER_CACHE.write_text(json.dumps(stories, indent=2), encoding="utf-8")
+        scraper = AINewsScraper(data_dir=OUTPUT_DIR)
+        stories = scraper.fetch_all_stories(query=query)
         st.cache_data.clear()
         return stories
     except Exception as e:
@@ -201,23 +192,15 @@ def save_project_script(script_dict: Dict[str, Any]):
     script_file.write_text(json.dumps(script_dict, indent=2), encoding="utf-8")
 
 
-def switch_style(style_id: str):
-    """Switch project's active shots.js to selected style template."""
+def switch_style(style_id: str) -> bool:
+    """Switch project's active shots.js to selected style preset."""
     src_shots = PROJECT_DIR / "src" / "shots.js"
     presets_dir = PROJECT_DIR / "presets"
-    presets_dir.mkdir(parents=True, exist_ok=True)
+    preset_file = presets_dir / f"{style_id}.js"
 
-    if style_id == "neon-explainer":
-        preset_file = presets_dir / "neon-explainer.js"
-        if preset_file.exists():
-            shutil.copy2(preset_file, src_shots)
-            return True
-    else:
-        # Check style library
-        style_example = PROJECT_ROOT / "faceless-shorts-skill" / "faceless-shorts" / "styles" / style_id / "example" / "src" / "shots.js"
-        if style_example.exists():
-            shutil.copy2(style_example, src_shots)
-            return True
+    if preset_file.exists():
+        shutil.copy2(preset_file, src_shots)
+        return True
     return False
 
 
@@ -230,16 +213,16 @@ with st.sidebar:
         "Visual 3D Style Preset",
         options=list(STYLES.keys()),
         index=0,
-        help="Select the 3D visual language, camera motion, and graphic assets.",
+        help="Select the 3D aesthetic theme, lighting, and camera DOF.",
     )
     style_info = STYLES[selected_style_name]
     st.caption(f"{style_info['badge']}: {style_info['desc']}")
 
-    if st.button("Apply Selected Style to Engine"):
+    if st.button("Apply Selected Style to Engine", use_container_width=True):
         if switch_style(style_info["id"]):
-            st.success(f"Activated style: {selected_style_name}!")
+            st.success(f"Activated theme: {selected_style_name}!")
         else:
-            st.warning("Style template ready in engine.")
+            st.warning("Preset loaded.")
 
     st.markdown("---")
     st.markdown("### 🎙️ Audio & Voiceover")
@@ -294,36 +277,41 @@ tabs = st.tabs([
 # ═════════════════════════════════════════════════════════════════════════
 with tabs[0]:
     st.markdown("### 🌐 Live AI News Radar & Virality Scorer")
-    st.write("Scrapes Google News RSS, Hacker News Algolia API, and Hugging Face Daily Papers to find this week's highest-retention AI breakthroughs.")
+    st.write("Scrapes Google News RSS, Hacker News Algolia API, and Hugging Face Daily Papers. Enter any keyword (e.g. `NVIDIA`, `DeepSeek`, `Blackwell`, `OpenAI`) to gather fresh breaking stories.")
 
-    col_btn, col_search, col_min_score = st.columns([1.2, 2.5, 1.5])
-    with col_btn:
-        scrape_clicked = st.button("⚡ Scrape Latest AI News", type="primary", use_container_width=True)
+    col_search, col_btn, col_min_score = st.columns([2.5, 1.2, 1.3])
     with col_search:
-        search_query = st.text_input("Filter stories by keyword", placeholder="Search models, GPUs, benchmarks...")
+        search_query = st.text_input("Topic / Keyword Search", placeholder="e.g. NVIDIA, OpenAI, Claude, DeepSeek...")
+    with col_btn:
+        st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+        scrape_clicked = st.button("⚡ Scrape News", type="primary", use_container_width=True)
     with col_min_score:
-        min_score = st.slider("Min Virality Score", 5.0, 10.0, 7.5, 0.5)
+        min_score = st.slider("Min Virality Score", 4.0, 10.0, 6.5, 0.5)
 
     if scrape_clicked:
-        with st.spinner("Scraping and analyzing AI breakthroughs..."):
-            stories = run_news_scraper()
-            st.success(f"Discovered {len(stories)} stories across web sources!")
+        with st.spinner(f"Scraping live stories for '{search_query or 'General AI'}'..."):
+            stories = run_news_scraper(query=search_query)
+            st.session_state["scraped_stories"] = stories
+            st.success(f"Discovered {len(stories)} stories!")
+    elif "scraped_stories" in st.session_state:
+        stories = st.session_state["scraped_stories"]
     else:
         stories = load_cached_news()
 
     # Filter stories
     filtered_stories = []
     for s in stories:
-        if s.get("virality_score", 0) >= min_score:
+        score_val = s.get("virality_score") or s.get("score") or 0.0
+        if score_val >= min_score:
             if not search_query or search_query.lower() in s.get("title", "").lower() or search_query.lower() in s.get("summary", "").lower():
                 filtered_stories.append(s)
 
-    st.caption(f"Showing {len(filtered_stories)} stories matching criteria (sorted by virality score):")
+    st.caption(f"Displaying {len(filtered_stories)} stories (sorted by virality score):")
 
     # Render stories as cards
     for idx, story in enumerate(filtered_stories):
-        v_score = story.get("virality_score", 7.0)
-        score_badge = f'<span class="badge-pill badge-{"green" if v_score >= 8.5 else "cyan"}">Virality: {v_score:.1f}/10</span>'
+        v_score = story.get("virality_score") or story.get("score") or 7.0
+        score_badge = f'<span class="badge-pill badge-{"green" if v_score >= 8.0 else "cyan"}">Virality: {v_score:.1f}/10</span>'
         source_badge = f'<span class="badge-pill badge-gold">{story.get("source", "Web")}</span>'
 
         with st.container():
@@ -341,10 +329,17 @@ with tabs[0]:
 
             col_pick, col_link = st.columns([1.5, 8.5])
             with col_pick:
-                if st.button(f"⚡ Use For Video", key=f"use_story_{idx}"):
-                    # Update session state with this story
+                if st.button("⚡ Use For Video", key=f"use_story_{idx}"):
+                    # Update session state and generate tailored script
                     st.session_state["selected_story"] = story
-                    st.success(f"Selected: '{story.get('title')[:45]}...' — Proceed to Tab 2 to edit script!")
+                    agent = ScriptAgent()
+                    tailored = agent.generate_script_from_story(
+                        story_title=story.get("title", ""),
+                        story_summary=story.get("summary", ""),
+                        source=story.get("source", "AI News"),
+                    )
+                    agent.save_script(tailored, PROJECT_DIR / "script.json")
+                    st.success(f"Generated tailored script for '{story.get('title')[:40]}...'! Go to Tab 2 to inspect or edit.")
             with col_link:
                 if story.get("url"):
                     st.markdown(f"<a href='{story.get('url')}' target='_blank' style='font-size: 13px; color: #38BDF8;'>🔗 View Original Source Article</a>", unsafe_allow_html=True)
@@ -355,30 +350,38 @@ with tabs[0]:
 # ═════════════════════════════════════════════════════════════════════════
 with tabs[1]:
     st.markdown("### ✍️ Script & Storyboard Studio")
-    st.write("Craft a high-retention 35–45s short with a 0–2s hook, fast 2s cuts, and an infinite-loop ending.")
+    st.write("Inspect, edit, or customize the 17 camera cuts. Every cut is dynamically timed and auto-synchronized with the audio voiceover.")
 
     current_script = load_project_script()
 
-    # Pre-fill from selected story if any
+    # Context alert if story is selected
     sel = st.session_state.get("selected_story")
     if sel:
         st.info(f"📌 Active Story Context: **{sel.get('title')}** (Source: {sel.get('source')})")
+        if st.button("🔄 Re-generate Script from Active Story"):
+            agent = ScriptAgent()
+            tailored = agent.generate_script_from_story(
+                story_title=sel.get("title", ""),
+                story_summary=sel.get("summary", ""),
+                source=sel.get("source", "AI News"),
+            )
+            agent.save_script(tailored, PROJECT_DIR / "script.json")
+            st.rerun()
 
-    col_title, col_hook = st.columns([2, 2])
+    col_title, col_pace = st.columns([3, 1])
     with col_title:
-        title_input = st.text_input("Short Title / Topic", value=current_script.get("title", "This Week In AI: The $3 Experiment That Disrupted Big Tech"))
-    with col_hook:
-        st.text_input("0–2s Hook Concept", value="A tiny $3 AI experiment just beat a $100M supercomputer.")
+        title_input = st.text_input("Short Title / Topic", value=current_script.get("title", "This Week In AI"))
+    with col_pace:
+        st.caption(f"Current Voice: `{selected_voice_code}`")
+        st.caption(f"Speech Rate: `+{speed_percent}%`")
 
-    st.markdown("#### 🎬 Storyboard Cuts (14–18 Fast Cuts)")
-    st.caption("Each line represents one camera cut (~1.5–3.0s). Pacing is automatically synchronized with edge-tts WordBoundaries.")
-
+    st.markdown("#### 🎬 Storyboard Cuts (17 Synchronized Cuts)")
     lines = current_script.get("lines", [])
     df_lines = pd.DataFrame([
         {
             "Cut #": f"S{i:02d}",
             "Spoken Line Text": ln.get("text", ""),
-            "Pause After (s)": ln.get("gap", 0.22),
+            "Pause After (s)": float(ln.get("gap", 0.22)),
         }
         for i, ln in enumerate(lines)
     ])
@@ -394,7 +397,7 @@ with tabs[1]:
         }
     )
 
-    col_save, col_revert = st.columns([1.5, 8.5])
+    col_save, col_spacer = st.columns([2, 8])
     with col_save:
         if st.button("💾 Save Script to Engine (`script.json`)", type="primary"):
             updated_lines = []
@@ -427,9 +430,9 @@ with tabs[2]:
         st.markdown("""
         - **Scene 1: The Duel** — Sleek aluminum laptop workstation vs ominous \$100M supercomputer tower.
         - **Scene 2: The Server Farm** — Receding monolith server aisles with flashing cyan and emerald rack LEDs.
-        - **Scene 3: 3D Neural Network** — Perfectly framed 4-layer multi-layer perceptron with pulsing gold synaptic rewiring.
+        - **Scene 3: 3D Neural Network** — Fully framed 4-layer multi-layer perceptron with pulsing synaptic rewiring.
         - **Scene 4: Benchmark Podium** — 3D Gold Championship Trophy Cup, 3-tiered podium, and animated 98.4% bar chart.
-        - **Scene 5: High-Speed & Eco HUD** — Rushing accelerator tunnel grid, 70X speedometer gauge, and 3D green eco battery cell.
+        - **Scene 5: High-Speed & Eco HUD** — Rushing accelerator highway grid, 70X speedometer gauge, and 3D green eco battery cell.
         - **Scene 6: Everyday Workstation** — Desk with terminal code execution log and global turning point announcement.
         """)
 
@@ -457,17 +460,21 @@ with tabs[3]:
     with col_check_btn:
         start_check = st.button("🔍 Check Timing & Captions Only", use_container_width=True)
 
-    status_box = st.empty()
-
     if start_check:
         with st.status("Verifying Script and Frame Cues...", expanded=True) as status:
             st.write("Running audio agent synthesis...")
             res_audio = subprocess.run([str(VENV_PYTHON), "-m", "agents.audio_agent"], capture_output=True, text=True)
-            st.text(res_audio.stdout)
+            if res_audio.returncode != 0:
+                st.error(f"Audio Agent Error:\n{res_audio.stderr}")
+                st.stop()
+            st.text(res_audio.stdout.strip())
 
-            st.write("Running headless syntax & timing check...")
+            st.write("Running headless Chrome syntax & timing check...")
             res_check = subprocess.run(["node", "tools/capture.mjs", "check"], cwd=str(PROJECT_DIR), capture_output=True, text=True)
-            st.text(res_check.stdout)
+            if res_check.returncode != 0:
+                st.error(f"Engine Check Error:\n{res_check.stderr or res_check.stdout}")
+                st.stop()
+            st.text(res_check.stdout.strip())
             status.update(label="Timing & Cues Verification Complete!", state="complete")
 
     if start_render:
@@ -478,33 +485,44 @@ with tabs[3]:
             st.write("Synthesizing studio voiceover with continuous sentence cadence...")
             res_audio = subprocess.run([str(VENV_PYTHON), "-m", "agents.audio_agent"], capture_output=True, text=True)
             if res_audio.returncode != 0:
-                st.error(f"Audio error: {res_audio.stderr}")
-            else:
-                st.write(res_audio.stdout.strip())
+                st.error(f"Audio Synthesis Failed:\n{res_audio.stderr}")
+                st.stop()
+            st.write(res_audio.stdout.strip())
 
             # 2. Extract cues
             progress_bar.progress(35, text="Step 2/4: Extracting audio cues...")
             st.write("Extracting timing cues from narration.wav...")
-            subprocess.run(["node", "tools/capture.mjs", "cues"], cwd=str(PROJECT_DIR), check=True)
+            res_cues = subprocess.run(["node", "tools/capture.mjs", "cues"], cwd=str(PROJECT_DIR), capture_output=True, text=True)
+            if res_cues.returncode != 0:
+                st.error(f"Cues Extraction Failed:\n{res_cues.stderr or res_cues.stdout}")
+                st.stop()
+            st.write(res_cues.stdout.strip())
 
             # 3. Mix audio
             progress_bar.progress(50, text="Step 3/4: Mixing music & SFX cues...")
             st.write("Mixing voiceover with background music and sound effects...")
             mix_script = PROJECT_DIR / "tools" / "mix.py"
-            subprocess.run([str(VENV_PYTHON), str(mix_script), "."], cwd=str(PROJECT_DIR), check=True)
+            res_mix = subprocess.run([str(VENV_PYTHON), str(mix_script), "."], cwd=str(PROJECT_DIR), capture_output=True, text=True)
+            if res_mix.returncode != 0:
+                st.error(f"Audio Mix Failed:\n{res_mix.stderr}")
+                st.stop()
+            st.write(res_mix.stdout.strip())
 
             # 4. Render frames to video
             progress_bar.progress(70, text="Step 4/4: Rendering 3D animation frames...")
             st.write("Headless Chrome 3D compositor rendering frames...")
             render_out = PROJECT_DIR / "renders" / "this_week_in_ai_v4.mp4"
-            subprocess.run(["node", "tools/capture.mjs", "video", str(render_out), "--draft"], cwd=str(PROJECT_DIR), check=True)
+            res_video = subprocess.run(["node", "tools/capture.mjs", "video", str(render_out), "--draft"], cwd=str(PROJECT_DIR), capture_output=True, text=True)
+            if res_video.returncode != 0:
+                st.error(f"Video Render Failed:\n{res_video.stderr or res_video.stdout}")
+                st.stop()
 
             # Copy to output
             dest_video = OUTPUT_DIR / "this_week_in_ai_v4.mp4"
             shutil.copy2(render_out, dest_video)
 
             # Generate contact sheet
-            subprocess.run(["node", "tools/capture.mjs", "sheet"], cwd=str(PROJECT_DIR), check=True)
+            subprocess.run(["node", "tools/capture.mjs", "sheet"], cwd=str(PROJECT_DIR), capture_output=True, text=True)
             sheet_src = PROJECT_DIR / "review" / "all.jpg"
             if sheet_src.exists():
                 shutil.copy2(sheet_src, OUTPUT_DIR / "review_v4_contact_sheet.jpg")

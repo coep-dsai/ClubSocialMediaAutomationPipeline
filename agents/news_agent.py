@@ -1,7 +1,7 @@
 """AI News Scraper Agent for "This Week in AI".
 
 Fetches, filters, scores, and ranks top weekly AI stories from:
-1. Google News AI RSS feed
+1. Google News AI RSS feed (supports dynamic keyword search, e.g. "NVIDIA", "DeepSeek", "OpenAI")
 2. Hacker News Algolia API (top voted AI discussions)
 3. Hugging Face Daily Papers (top research breakthroughs)
 """
@@ -27,7 +27,15 @@ class AIStory(BaseModel):
     published: str
     summary: str
     score: float = 0.0
+    virality_score: float = 0.0
     virality_cues: List[str] = Field(default_factory=list)
+
+    def __init__(self, **data):
+        super().__init__(**data)
+        if not self.virality_score and self.score:
+            self.virality_score = self.score
+        elif not self.score and self.virality_score:
+            self.score = self.virality_score
 
 
 VIRALITY_KEYWORDS = {
@@ -49,6 +57,12 @@ VIRALITY_KEYWORDS = {
     "gemini": 2.5,
     "claude": 2.5,
     "anthropic": 2.5,
+    "nvidia": 2.5,
+    "blackwell": 3.0,
+    "gpu": 2.0,
+    "b200": 3.0,
+    "h100": 2.0,
+    "cuda": 2.0,
     "robot": 2.5,
     "loophole": 3.0,
     "autonomous": 2.0,
@@ -60,7 +74,7 @@ VIRALITY_KEYWORDS = {
 
 class AINewsScraper:
     def __init__(self, data_dir: Optional[Path] = None):
-        self.data_dir = data_dir or Path("data")
+        self.data_dir = data_dir or Path("output")
         self.data_dir.mkdir(parents=True, exist_ok=True)
         self.cache_file = self.data_dir / "latest_ai_news.json"
 
@@ -81,15 +95,20 @@ class AINewsScraper:
             if kw in combined:
                 score += weight
                 matched_cues.append(kw)
-        # Bonus for numbers and percentages in title
+        # Bonus for numbers, percentages, and dollar amounts in title
         if re.search(r"\$\d+|\d+%", title):
             score += 2.0
             matched_cues.append("concrete_metrics")
         return round(score, 2), matched_cues
 
-    def fetch_google_news(self, query: str = "artificial intelligence", max_items: int = 15) -> List[AIStory]:
+    def fetch_google_news(self, query: str = "artificial intelligence", max_items: int = 20) -> List[AIStory]:
         stories = []
-        url = f"https://news.google.com/rss/search?q={requests.utils.quote(query)}+when:7d&hl=en-US&gl=US&ceid=US:en"
+        search_term = query.strip()
+        if "ai" not in search_term.lower() and "intelligence" not in search_term.lower():
+            search_term = f"{search_term} AI"
+        q_encoded = requests.utils.quote(search_term)
+        url = f"https://news.google.com/rss/search?q={q_encoded}+when:7d&hl=en-US&gl=US&ceid=US:en"
+
         try:
             feed = feedparser.parse(url)
             for entry in feed.entries[:max_items]:
@@ -99,7 +118,7 @@ class AINewsScraper:
                 published = entry.get("published", "")
                 source = entry.get("source", {}).get("title", "Google News")
 
-                score, cues = self.score_story(title, summary, base_score=2.0)
+                score, cues = self.score_story(title, summary, base_score=2.5)
                 stories.append(
                     AIStory(
                         title=title,
@@ -108,6 +127,7 @@ class AINewsScraper:
                         published=published,
                         summary=summary,
                         score=score,
+                        virality_score=score,
                         virality_cues=cues,
                     )
                 )
@@ -115,11 +135,13 @@ class AINewsScraper:
             print(f"[Warning] Google News fetch failed: {e}", file=sys.stderr)
         return stories
 
-    def fetch_hacker_news_ai(self, max_items: int = 15) -> List[AIStory]:
+    def fetch_hacker_news_ai(self, query: Optional[str] = None, max_items: int = 15) -> List[AIStory]:
         stories = []
         seven_days_ago = int(time.time()) - (7 * 24 * 3600)
+        hn_query = query.strip() if query else "AI OR LLM OR model"
+        q_encoded = requests.utils.quote(hn_query)
         url = (
-            f"https://hn.algolia.com/api/v1/search?query=AI+OR+LLM+OR+model"
+            f"https://hn.algolia.com/api/v1/search?query={q_encoded}"
             f"&tags=story&numericFilters=created_at_i>{seven_days_ago}&hitsPerPage={max_items}"
         )
         try:
@@ -143,6 +165,7 @@ class AINewsScraper:
                             published=created_at,
                             summary=summary,
                             score=score,
+                            virality_score=score,
                             virality_cues=cues,
                         )
                     )
@@ -150,7 +173,7 @@ class AINewsScraper:
             print(f"[Warning] Hacker News fetch failed: {e}", file=sys.stderr)
         return stories
 
-    def fetch_huggingface_papers(self, max_items: int = 10) -> List[AIStory]:
+    def fetch_huggingface_papers(self, max_items: int = 12) -> List[AIStory]:
         stories = []
         url = "https://huggingface.co/api/daily_papers"
         try:
@@ -174,6 +197,7 @@ class AINewsScraper:
                             published=datetime.date.today().isoformat(),
                             summary=summary,
                             score=score,
+                            virality_score=score,
                             virality_cues=cues,
                         )
                     )
@@ -181,8 +205,8 @@ class AINewsScraper:
             print(f"[Warning] Hugging Face fetch failed: {e}", file=sys.stderr)
         return stories
 
-    def get_top_stories(self, force_refresh: bool = False) -> List[AIStory]:
-        if not force_refresh and self.cache_file.exists():
+    def get_top_stories(self, query: Optional[str] = None, force_refresh: bool = False) -> List[AIStory]:
+        if not force_refresh and not query and self.cache_file.exists():
             try:
                 cached = json.loads(self.cache_file.read_text(encoding="utf-8"))
                 return [AIStory(**s) for s in cached]
@@ -190,8 +214,9 @@ class AINewsScraper:
                 pass
 
         all_stories: List[AIStory] = []
-        all_stories.extend(self.fetch_google_news())
-        all_stories.extend(self.fetch_hacker_news_ai())
+        default_q = query.strip() if query else "artificial intelligence"
+        all_stories.extend(self.fetch_google_news(query=default_q))
+        all_stories.extend(self.fetch_hacker_news_ai(query=query))
         all_stories.extend(self.fetch_huggingface_papers())
 
         # Deduplicate by normalized title
@@ -206,24 +231,31 @@ class AINewsScraper:
         # Sort descending by virality score
         deduped.sort(key=lambda s: s.score, reverse=True)
 
-        # Cache results
-        self.cache_file.write_text(
-            json.dumps([s.model_dump() for s in deduped], indent=2, ensure_ascii=False),
-            encoding="utf-8",
-        )
+        # Cache results if default run
+        if not query:
+            self.cache_file.write_text(
+                json.dumps([s.model_dump() for s in deduped], indent=2, ensure_ascii=False),
+                encoding="utf-8",
+            )
         return deduped
+
+    def fetch_all_stories(self, query: Optional[str] = None) -> List[Dict[str, Any]]:
+        """Convenience helper returning raw dictionaries for UI consumption."""
+        stories = self.get_top_stories(query=query, force_refresh=True)
+        return [s.model_dump() for s in stories]
+
+
+# Compatibility aliases
+NewsScraperAgent = AINewsScraper
 
 
 def main():
     scraper = AINewsScraper()
-    print("Fetching top AI news from this week...")
-    stories = scraper.get_top_stories(force_refresh=True)
-    print(f"\nSuccessfully gathered and ranked {len(stories)} AI stories:")
-    for i, s in enumerate(stories[:5], 1):
-        print(f"\n[{i}] (Score: {s.score}) {s.title}")
-        print(f"    Source: {s.source} | Date: {s.published}")
-        print(f"    Cues: {', '.join(s.virality_cues) if s.virality_cues else 'none'}")
-        print(f"    Summary: {s.summary[:140]}...")
+    print("Testing scraper for NVIDIA stories...")
+    stories = scraper.get_top_stories(query="NVIDIA", force_refresh=True)
+    print(f"Gathered {len(stories)} stories:")
+    for s in stories[:5]:
+        print(f" - [{s.score}] {s.title} ({s.source})")
 
 
 if __name__ == "__main__":
