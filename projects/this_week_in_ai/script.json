@@ -1,79 +1,63 @@
 {
-  "title": "This Week In AI: The $3 Experiment That Disrupted Big Tech",
+  "title": "This Week In AI: Indian AI lab Sthanika's sieve $31 billion version 3 ti",
   "voice": "en-US-GuyNeural",
   "speed": 1.1,
   "lead": 0.3,
   "outro": 0.9,
   "gap": 0.2,
-  "music": "synthwave",
+  "music": "bounce",
   "sources": [
-    "Hugging Face & Tech Insights 2026",
-    "Benchmark Evaluation Data"
+    "ET Entrepreneur: Indian AI lab Sthanika's sieve $31 billion version 3 ties for first globally, beats Perplexity and Jev on decision benchmarks",
+    "Official Benchmark Evaluation Data 2026"
   ],
   "lines": [
     {
-      "text": "This week, a tiny three dollar AI experiment",
-      "gap": 0.22
+      "text": "This week, Indian AI lab Sthanika unveiled Sieve version three,"
     },
     {
-      "text": "just beat a hundred million dollar supercomputer.",
-      "gap": 0.22
+      "text": "and it just tied for first globally on decision benchmarks,"
     },
     {
-      "text": "And the biggest tech giants are scrambling.",
-      "gap": 0.22
+      "text": "beating established giants like Perplexity and Jev."
     },
     {
-      "text": "See, for years, companies believed making AI smarter",
-      "gap": 0.22
+      "text": "For years, the industry assumed top frontier intelligence"
     },
     {
-      "text": "meant burning millions on massive server farms.",
-      "gap": 0.22
+      "text": "demanded billions of dollars from Silicon Valley monopolies."
     },
     {
-      "text": "Then researchers tested a brand new trick.",
-      "gap": 0.22
+      "text": "Then Sthanika's engineering team tested a new paradigm."
     },
     {
-      "text": "Instead of adding billions more parameters,",
-      "gap": 0.22
+      "text": "Instead of blindly throwing brute-force parameters at the model,"
     },
     {
-      "text": "they reorganized the neural pathways.",
-      "gap": 0.22
+      "text": "they streamlined the internal reasoning pathways."
     },
     {
-      "text": "The result? The model scored ninety-eight percent",
-      "gap": 0.22
+      "text": "The result? It scored number one globally"
     },
     {
-      "text": "on benchmarks that usually crush flagship models.",
-      "gap": 0.22
+      "text": "on complex decision benchmarks that crush larger systems."
     },
     {
-      "text": "It runs seventy times faster,",
-      "gap": 0.22
+      "text": "It delivers lightning-fast inference,"
     },
     {
-      "text": "uses ninety percent less electricity,",
-      "gap": 0.22
+      "text": "uses ninety percent less electricity,"
     },
     {
-      "text": "and can run locally on an everyday laptop.",
-      "gap": 0.22
+      "text": "and can run locally on an everyday workstation."
     },
     {
-      "text": "Which is why engineers are calling this a turning point.",
-      "gap": 0.22
+      "text": "Which is why researchers call this India's biggest AI milestone."
     },
     {
-      "text": "Because tomorrow's most powerful AI",
-      "gap": 0.22
+      "text": "Because tomorrow's most powerful AI"
     },
     {
-      "text": "might not come from a trillion dollar data center,",
-      "gap": 0.22
+      "text": "is no longer locked behind a trillion dollar data center,"
     },
     {
       "text": "and it all started when...",

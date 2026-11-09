@@ -1,9 +1,9 @@
 // THIS WEEK IN AI: Multi-Scene 3D Tech Explainer & Motion Graphics Engine
 // Features: 3D Server Aisles, 3D Neural Network Architecture, 3D Gold Trophy Podium,
-// 3D Accelerator Turbine, 3D Eco Battery, Laptop Workstation, Animated Charts, & COEP DSAI Club Branding.
+// 3D Accelerator Turbine, 3D Eco Battery, Laptop Workstation, Dynamic Story Cards, & COEP DSAI Club Branding.
 import * as THREE from 'three';
 import { ctx, clamp, lerp, seg, eo, eio, eob } from './core/lib.js';
-import { L, Wd, T } from './core/timing.js';
+import { L, Wd, Le, T } from './core/timing.js';
 import { camera } from './core/engine.js';
 
 const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
@@ -13,6 +13,30 @@ export function buildShots(E) {
   const S = [], CUES = [], add = (o) => (S.push(o), o), cue = (t, type, o = {}) => CUES.push({ t: +t.toFixed(3), type, ...o });
   const cut = (i) => (i === 0 ? 0 : L(i) - 0.05);
   const cam = camera(40);
+
+  // ── Safe Word Trigger / Fallback (Never throws, auto-synchronizes) ────
+  const safeWd = (word, line, fallbackFraction = 0.35) => {
+    try {
+      if (word) return Wd(word, line);
+    } catch (e) {}
+    try {
+      const s = L(line);
+      const e = Le(line);
+      return s + (e - s) * fallbackFraction;
+    } catch (err) {
+      return 0.5;
+    }
+  };
+
+  // ── Dynamic Line Text Accessor ────────────────────────────────────────
+  const lineText = (line, fallback = '') => {
+    try {
+      if (T.lines && T.lines[line] && T.lines[line].text) {
+        return T.lines[line].text;
+      }
+    } catch (e) {}
+    return fallback;
+  };
 
   const LOOKS = {
     cyber: { bloom: 0.75, bloomThreshold: 0.2, aperture: 0.0008, maxblur: 0.006, sat: 1.3, vig: 0.4 },
@@ -102,18 +126,18 @@ export function buildShots(E) {
     ctx.fill();
     ctx.shadowBlur = 0;
 
-    // Text: COEP DSAI CLUB • THIS WEEK IN AI
+    // Text: DSAI COEP • THIS WEEK IN AI
     ctx.font = '800 24px Inter, sans-serif';
     ctx.fillStyle = '#F8FAFC';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('⚡ COEP DSAI CLUB  |  THIS WEEK IN AI', 18, 0);
+    ctx.fillText('⚡ DSAI COEP  |  THIS WEEK IN AI', 18, 0);
 
     ctx.restore();
   };
 
   // ═════════════════════════════════════════════════════════════════════
-  // ── 3D SCENE 1: The Duel (Tiny Laptop vs $100M Supercomputer) ────────
+  // ── 3D SCENE 1: The Duel (Workstation vs Supercomputer Cluster) ──────
   // ═════════════════════════════════════════════════════════════════════
   const sceneDuel = new THREE.Scene();
   sceneDuel.background = new THREE.Color('#030712');
@@ -135,7 +159,7 @@ export function buildShots(E) {
   laptopGroup.add(baseMesh, trackpad, screenMesh);
   sceneDuel.add(laptopGroup);
 
-  // Right: Massive $100M Supercomputer tower with blinking rack modules
+  // Right: Massive Supercomputer tower with blinking rack modules
   const superGroup = new THREE.Group();
   superGroup.position.set(2.8, 1.5, -5);
   const superMesh = new THREE.Mesh(new THREE.BoxGeometry(2.6, 6.8, 3.2), new THREE.MeshStandardMaterial({ color: '#0B0F19', metalness: 0.92, roughness: 0.2 }));
@@ -172,7 +196,6 @@ export function buildShots(E) {
   // ═════════════════════════════════════════════════════════════════════
   // ── 3D SCENE 3: Fully Framed 3D Neural Network Architecture ──────────
   // ═════════════════════════════════════════════════════════════════════
-  // Perfectly centered at (0, 0, 0). Width spans -4.2 to +4.2; Height spans -2.6 to +2.6.
   const sceneNeural = new THREE.Scene();
   sceneNeural.background = new THREE.Color('#030712');
   sceneNeural.fog = new THREE.FogExp2('#030712', 0.03);
@@ -242,13 +265,11 @@ export function buildShots(E) {
   const podiumGroup = new THREE.Group();
   podiumGroup.position.set(0, -0.6, -2);
 
-  // 3-Tier Podium Base: #1 (center tall), #2 (left), #3 (right)
   const mat1st = new THREE.MeshStandardMaterial({ color: '#1E293B', metalness: 0.8, roughness: 0.3 });
   const base1 = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.8, 1.4, 32), mat1st);
   base1.position.set(0, 0, 0);
   podiumGroup.add(base1);
 
-  // Golden Trophy Model on top of #1 base
   const trophyGroup = new THREE.Group();
   trophyGroup.position.set(0, 1.6, 0);
 
@@ -272,7 +293,6 @@ export function buildShots(E) {
   const handleR = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.08, 12, 24), handleMat);
   handleR.position.set(0.95, 1.45, 0);
 
-  // Rotating Star emblem inside/above the cup
   const trophyStar = new THREE.Mesh(new THREE.OctahedronGeometry(0.38, 0), goldMat);
   trophyStar.position.y = 2.3;
 
@@ -292,7 +312,6 @@ export function buildShots(E) {
   speedGrid.position.y = -2;
   sceneSpeed.add(speedGrid);
 
-  // 3D Accelerator Turbine Ring
   const turbineGroup = new THREE.Group();
   turbineGroup.position.set(0, 0.8, -4);
   const ringMat = new THREE.MeshStandardMaterial({ color: '#34D399', emissive: '#059669', emissiveIntensity: 1.5 });
@@ -301,7 +320,6 @@ export function buildShots(E) {
   turbineGroup.add(turbineRing1, turbineRing2);
   sceneSpeed.add(turbineGroup);
 
-  // 3D Green Battery Cell for Eco Efficiency (Shot 11)
   const batteryGroup = new THREE.Group();
   batteryGroup.position.set(0, 0.8, -3.5);
 
@@ -333,14 +351,14 @@ export function buildShots(E) {
   sceneWorkstation.add(deskMesh, laptopOnDesk);
 
   // ═════════════════════════════════════════════════════════════════════
-  // ── SHOT DEFINITIONS (17 Cuts, Synced Pacing, Frame-Exact HUDs) ──────
+  // ── SHOT DEFINITIONS (17 Cuts, Synced Pacing, Dynamic Story Cards) ───
   // ═════════════════════════════════════════════════════════════════════
 
-  // ── Shot 00 (Line 0): "This week, a tiny three dollar AI experiment" ──
+  // ── Shot 00 (Line 0): Opening Hook ──────────────────────────────────
   {
-    const st = cut(0), wTiny = Wd('tiny', 0);
+    const st = cut(0), wPop = safeWd(null, 0, 0.3);
     add({
-      id: 'S00', at: st, note: 'Scene 1: Push toward $3 glowing laptop workstation',
+      id: 'S00', at: st, note: 'Scene 1: Push toward glowing laptop workstation',
       draw(lt, d, t, blit) {
         const k = eio(clamp(lt / d));
         laptopGroup.rotation.y = Math.sin(t * 1.5) * 0.15;
@@ -349,26 +367,25 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        // 2D Glass Card: $3 AI EXPERIMENT
-        const pop = clamp((t - wTiny) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.3, 1.0, eob(pop));
-          drawCard(540, 500, 840, 240, '#10B981', sc);
-          drawFittedText('⚡ THIS WEEK IN AI', 0, -48, 780, '900 40px Inter, sans-serif', '#34D399');
-          drawFittedText('$3 AI EXPERIMENT', 0, 30, 780, '900 82px Inter, sans-serif', '#FACC15');
+          drawCard(540, 500, 860, 240, '#10B981', sc);
+          drawFittedText('⚡ THIS WEEK IN AI', 0, -48, 800, '900 38px Inter, sans-serif', '#34D399');
+          drawFittedText(lineText(0).toUpperCase(), 0, 30, 800, '900 62px Inter, sans-serif', '#FACC15');
           ctx.restore();
         }
       }
     });
     cue(st + 0.02, 'whoosh', { gain: 0.7 });
-    cue(wTiny, 'ding', { gain: 0.9 });
+    cue(wPop, 'ding', { gain: 0.9 });
   }
 
-  // ── Shot 01 (Line 1): "just beat a hundred million dollar supercomputer." ──
+  // ── Shot 01 (Line 1): Clashing with Supercomputer Cluster ───────────
   {
-    const st = cut(1), wBeat = Wd('beat', 1), wSuper = Wd('supercomputer', 1);
+    const st = cut(1), wPop = safeWd(null, 1, 0.35);
     add({
-      id: 'S01', at: st, note: 'Scene 1: Whip pan across to massive $100M red supercomputer',
+      id: 'S01', at: st, note: 'Scene 1: Whip pan across to massive supercomputer tower',
       draw(lt, d, t, blit) {
         const k = eo(clamp(lt / d));
         superMesh.rotation.y = Math.sin(t * 2) * 0.05;
@@ -377,25 +394,24 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        const pop = clamp((t - wBeat) / 0.18);
+        const pop = clamp((t - wPop) / 0.18);
         if (pop > 0) {
           const sc = lerp(1.4, 1.0, eob(pop));
           drawCard(540, 510, 860, 280, '#EF4444', sc);
-          drawFittedText('CLUSTER DISRUPTED', 0, -60, 800, '900 38px Inter, sans-serif', '#F87171');
-          drawFittedText('BEATS $100M SUPERCOMPUTER', 0, 20, 800, '900 64px Inter, sans-serif', '#FFFFFF');
-          drawFittedText('EFFICIENCY RATIO: 33,000,000X', 0, 85, 800, '800 32px Inter, sans-serif', '#FACC15');
+          drawFittedText('FRONTIER BENCHMARKS DISRUPTED', 0, -60, 800, '900 36px Inter, sans-serif', '#F87171');
+          drawFittedText(lineText(1).toUpperCase(), 0, 20, 800, '900 58px Inter, sans-serif', '#FFFFFF');
+          drawFittedText('EFFICIENCY RATIO: 33,000,000X', 0, 85, 800, '800 30px Inter, sans-serif', '#FACC15');
           ctx.restore();
         }
       }
     });
     cue(st, 'whoosh');
-    cue(wBeat, 'stamp', { gain: 1.0 });
-    cue(wSuper, 'ding', { gain: 0.8 });
+    cue(wPop, 'stamp', { gain: 1.0 });
   }
 
-  // ── Shot 02 (Line 2): "And the biggest tech giants are scrambling." ──
+  // ── Shot 02 (Line 2): Big Tech / Market Reaction ────────────────────
   {
-    const st = cut(2), wScram = Wd('scrambling', 2);
+    const st = cut(2), wPop = safeWd(null, 2, 0.35);
     add({
       id: 'S02', at: st, note: 'Scene 2: Red market alert & plunging stock line chart HUD',
       draw(lt, d, t, blit) {
@@ -405,15 +421,14 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        const pop = clamp((t - wScram) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.3, 1.0, eob(pop));
           drawCard(540, 520, 860, 340, '#F59E0B', sc);
-          drawFittedText('MARKET REACTION', 0, -105, 800, '900 38px Inter, sans-serif', '#FDE68A');
-          drawFittedText('BIG TECH SCRAMBLING', 0, -48, 800, '900 68px Inter, sans-serif', '#EF4444');
+          drawFittedText('INDUSTRY REACTION', 0, -105, 800, '900 38px Inter, sans-serif', '#FDE68A');
+          drawFittedText(lineText(2).toUpperCase(), 0, -48, 800, '900 60px Inter, sans-serif', '#EF4444');
 
-          // Plunging red market chart line
-          const chartProg = eo(clamp((t - wScram - 0.15) / 0.45));
+          const chartProg = eo(clamp((t - wPop - 0.15) / 0.45));
           ctx.strokeStyle = '#EF4444';
           ctx.lineWidth = 6;
           ctx.beginPath();
@@ -423,18 +438,18 @@ export function buildShots(E) {
           ctx.lineTo(lerp(50, 330, chartProg), lerp(15, 110, chartProg));
           ctx.stroke();
 
-          drawFittedText('AI CAPEX INDEX: -18.4%', 0, 128, 800, '800 30px Inter, sans-serif', '#F87171');
+          drawFittedText('AI HARDWARE INDEX: -18.4%', 0, 128, 800, '800 30px Inter, sans-serif', '#F87171');
           ctx.restore();
         }
       }
     });
     cue(st, 'whoosh');
-    cue(wScram, 'pop', { gain: 0.8 });
+    cue(wPop, 'pop', { gain: 0.8 });
   }
 
-  // ── Shot 03 (Line 3): "See, for years, companies believed making AI smarter" ──
+  // ── Shot 03 (Line 3): Previous Belief in Compute Scaling ─────────────
   {
-    const st = cut(3), wSmart = Wd('smarter', 3);
+    const st = cut(3), wPop = safeWd(null, 3, 0.4);
     add({
       id: 'S03', at: st, note: 'Scene 2: Camera flies down deep server farm aisles',
       draw(lt, d, t, blit) {
@@ -444,12 +459,12 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        const pop = clamp((t - wSmart) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.3, 1.0, eob(pop));
-          drawCard(540, 500, 840, 240, '#A855F7', sc);
-          drawFittedText('PREVIOUS INDUSTRY BELIEF', 0, -45, 780, '900 38px Inter, sans-serif', '#E9D5FF');
-          drawFittedText('MORE SERVERS = SMARTER AI?', 0, 30, 780, '900 60px Inter, sans-serif', '#C084FC');
+          drawCard(540, 500, 860, 240, '#A855F7', sc);
+          drawFittedText('PREVIOUS INDUSTRY DOGMA', 0, -45, 800, '900 36px Inter, sans-serif', '#E9D5FF');
+          drawFittedText(lineText(3).toUpperCase(), 0, 30, 800, '900 54px Inter, sans-serif', '#C084FC');
           ctx.restore();
         }
       }
@@ -457,9 +472,9 @@ export function buildShots(E) {
     cue(st, 'whoosh');
   }
 
-  // ── Shot 04 (Line 4): "meant burning millions on massive server farms." ──
+  // ── Shot 04 (Line 4): Brute Force Costs ─────────────────────────────
   {
-    const st = cut(4), wBurn = Wd('burning', 4);
+    const st = cut(4), wPop = safeWd(null, 4, 0.4);
     add({
       id: 'S04', at: st, note: 'Scene 2: High angle flight over server towers, burning cash HUD',
       draw(lt, d, t, blit) {
@@ -469,51 +484,50 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        const pop = clamp((t - wBurn) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.3, 1.0, eob(pop));
-          drawCard(540, 510, 840, 260, '#DC2626', sc);
-          drawFittedText('BRUTE FORCE COSTS', 0, -48, 780, '900 38px Inter, sans-serif', '#FCA5A5');
-          drawFittedText('$100M+ PER RUN', 0, 30, 780, '900 78px Inter, sans-serif', '#EF4444');
+          drawCard(540, 510, 860, 260, '#DC2626', sc);
+          drawFittedText('BRUTE FORCE COSTS', 0, -48, 800, '900 38px Inter, sans-serif', '#FCA5A5');
+          drawFittedText(lineText(4).toUpperCase(), 0, 30, 800, '900 58px Inter, sans-serif', '#EF4444');
           ctx.restore();
         }
       }
     });
     cue(st, 'whoosh');
-    cue(wBurn, 'ding', { gain: 0.8 });
+    cue(wPop, 'ding', { gain: 0.8 });
   }
 
-  // ── Shot 05 (Line 5): "Then researchers tested a brand new trick." ──
+  // ── Shot 05 (Line 5): The New Discovery / Trick ─────────────────────
   {
-    const st = cut(5), wTrick = Wd('trick', 5);
+    const st = cut(5), wPop = safeWd(null, 5, 0.4);
     add({
       id: 'S05', at: st, note: 'Scene 3: Perfectly framed wide view of full 4-layer 3D Neural Network',
       draw(lt, d, t, blit) {
         const k = eio(clamp(lt / d));
-        // Slow majestic drift framing entire neural architecture (-4.2 to +4.2)
         neuralNodes.forEach((n, i) => n.scale.setScalar(1.0 + 0.12 * Math.sin(t * 4 + i)));
         shoot(sceneNeural, V3(-3.5, 1.2, 14.5), V3(1.5, 0.4, 13.5), V3(0, 0.1, 0), null, k, { ...LOOKS.cyber, fov: 44 });
         blit();
 
         drawClubWatermark(t);
 
-        const pop = clamp((t - wTrick) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.3, 1.0, eob(pop));
-          drawCard(540, 480, 840, 240, '#10B981', sc);
-          drawFittedText('SCIENTIFIC BREAKTHROUGH', 0, -45, 780, '900 38px Inter, sans-serif', '#67E8F9');
-          drawFittedText('A BRAND NEW TRICK', 0, 30, 780, '900 74px Inter, sans-serif', '#10B981');
+          drawCard(540, 480, 860, 240, '#10B981', sc);
+          drawFittedText('SCIENTIFIC DISCOVERY', 0, -45, 800, '900 38px Inter, sans-serif', '#67E8F9');
+          drawFittedText(lineText(5).toUpperCase(), 0, 30, 800, '900 62px Inter, sans-serif', '#10B981');
           ctx.restore();
         }
       }
     });
     cue(st, 'whoosh');
-    cue(wTrick, 'ding', { gain: 0.9 });
+    cue(wPop, 'ding', { gain: 0.9 });
   }
 
-  // ── Shot 06 (Line 6): "Instead of adding billions more parameters," ──
+  // ── Shot 06 (Line 6): Parameter Bloat vs Architecture ────────────────
   {
-    const st = cut(6), wBill = Wd('billions', 6);
+    const st = cut(6), wPop = safeWd(null, 6, 0.4);
     add({
       id: 'S06', at: st, note: 'Scene 3: Orbit view of neural network with parameter scale card',
       draw(lt, d, t, blit) {
@@ -524,12 +538,12 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        const pop = clamp((t - wBill) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.3, 1.0, eob(pop));
-          drawCard(540, 500, 840, 260, '#64748B', sc);
-          drawFittedText('OLD SCALING APPROACH', 0, -45, 780, '900 38px Inter, sans-serif', '#CBD5E1');
-          drawFittedText('+100 BILLION PARAMETERS', 0, 32, 780, '900 62px Inter, sans-serif', '#F87171');
+          drawCard(540, 500, 860, 260, '#64748B', sc);
+          drawFittedText('OLD SCALING APPROACH', 0, -45, 800, '900 38px Inter, sans-serif', '#CBD5E1');
+          drawFittedText(lineText(6).toUpperCase(), 0, 32, 800, '900 56px Inter, sans-serif', '#F87171');
           ctx.restore();
         }
       }
@@ -537,14 +551,13 @@ export function buildShots(E) {
     cue(st, 'whoosh');
   }
 
-  // ── Shot 07 (Line 7): "they reorganized the neural pathways." ──
+  // ── Shot 07 (Line 7): Neural Pathway Reorganization ─────────────────
   {
-    const st = cut(7), wNeural = Wd('neural', 7);
+    const st = cut(7), wPop = safeWd(null, 7, 0.4);
     add({
       id: 'S07', at: st, note: 'Scene 3: Synapses pulse bright gold as pathways rewire dynamically',
       draw(lt, d, t, blit) {
         const k = eio(clamp(lt / d));
-        // Golden synaptic pulse effect
         neuralLineMat.color.set(t % 0.4 > 0.2 ? '#FACC15' : '#10B981');
         neuralNodes.forEach((n, i) => n.scale.setScalar(1.0 + 0.18 * Math.sin(t * 8 + i)));
         shoot(sceneNeural, V3(3.8, 1.2, 13.0), V3(0, 0.2, 11.5), V3(0, 0, 0), null, k, { ...LOOKS.cyber, fov: 42 });
@@ -552,23 +565,23 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        const pop = clamp((t - wNeural) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.4, 1.0, eob(pop));
-          drawCard(540, 500, 840, 260, '#10B981', sc);
-          drawFittedText('ARCHITECTURAL REVOLUTION', 0, -45, 780, '900 38px Inter, sans-serif', '#6EE7B7');
-          drawFittedText('REORGANIZED SYNAPSES', 0, 32, 780, '900 66px Inter, sans-serif', '#34D399');
+          drawCard(540, 500, 860, 260, '#10B981', sc);
+          drawFittedText('ARCHITECTURAL REVOLUTION', 0, -45, 800, '900 38px Inter, sans-serif', '#6EE7B7');
+          drawFittedText(lineText(7).toUpperCase(), 0, 32, 800, '900 58px Inter, sans-serif', '#34D399');
           ctx.restore();
         }
       }
     });
     cue(st, 'whoosh');
-    cue(wNeural, 'pop', { gain: 0.8 });
+    cue(wPop, 'pop', { gain: 0.8 });
   }
 
-  // ── Shot 08 (Line 8): "The result? The model scored ninety-eight percent" ──
+  // ── Shot 08 (Line 8): 3D Gold Trophy & Animated Benchmark Bar Chart ──
   {
-    const st = cut(8), wRes = Wd('result', 8), wPct = Wd('percent', 8);
+    const st = cut(8), wPop = safeWd(null, 8, 0.45);
     add({
       id: 'S08', at: st, note: 'Scene 4: 3D Championship Gold Trophy & Animated Benchmark Bar Chart',
       draw(lt, d, t, blit) {
@@ -581,41 +594,38 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        // 2D Benchmark Dashboard with Animated Growing Bars
-        const pop = clamp((t - wPct) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.4, 1.0, eob(pop));
           drawCard(540, 530, 860, 420, '#10B981', sc);
 
-          drawFittedText('🏆 BENCHMARK EVALUATION (MMLU)', 0, -145, 800, '900 36px Inter, sans-serif', '#6EE7B7');
-          drawFittedText('98.4% ACCURACY', 0, -65, 800, '900 86px Inter, sans-serif', '#FACC15');
+          drawFittedText('🏆 BENCHMARK EVALUATION', 0, -145, 800, '900 36px Inter, sans-serif', '#6EE7B7');
+          drawFittedText(lineText(8).toUpperCase(), 0, -65, 800, '900 64px Inter, sans-serif', '#FACC15');
 
-          // Animated Bar 1: New Model (Green)
-          const barAnim = eo(clamp((t - wPct - 0.1) / 0.5));
+          const barAnim = eo(clamp((t - wPop - 0.1) / 0.5));
           const w1 = lerp(0, 580, barAnim);
           const w2 = lerp(0, 410, barAnim);
 
           ctx.fillStyle = '#10B981';
           ctx.beginPath(); ctx.roundRect(-290, 20, w1, 44, 10); ctx.fill();
-          drawFittedText('TINY AI (OURS) - 98.4%', -270 + w1 / 2, 42, w1 - 20, '800 24px Inter, sans-serif', '#FFFFFF');
+          drawFittedText('NEW MODEL: #1 GLOBALLY', -270 + w1 / 2, 42, Math.max(20, w1 - 20), '800 24px Inter, sans-serif', '#FFFFFF');
 
-          // Animated Bar 2: Baseline Model (Gray)
           ctx.fillStyle = '#475569';
           ctx.beginPath(); ctx.roundRect(-290, 85, w2, 44, 10); ctx.fill();
-          drawFittedText('FRONTIER MODEL - 72.1%', -270 + w2 / 2, 107, w2 - 20, '800 24px Inter, sans-serif', '#E2E8F0');
+          drawFittedText('LEGACY BASELINE', -270 + w2 / 2, 107, Math.max(20, w2 - 20), '800 24px Inter, sans-serif', '#E2E8F0');
 
-          drawFittedText('TEST EVALUATION PASSED', 0, 160, 800, '700 24px Inter, sans-serif', '#94A3B8');
+          drawFittedText('EVALUATION VERIFIED', 0, 160, 800, '700 24px Inter, sans-serif', '#94A3B8');
           ctx.restore();
         }
       }
     });
     cue(st, 'whoosh');
-    cue(wPct, 'stamp', { gain: 1.0 });
+    cue(wPop, 'stamp', { gain: 1.0 });
   }
 
-  // ── Shot 09 (Line 9): "on benchmarks that usually crush flagship models." ──
+  // ── Shot 09 (Line 9): Crushing Frontier Models ──────────────────────
   {
-    const st = cut(9), wCrush = Wd('crush', 9);
+    const st = cut(9), wPop = safeWd(null, 9, 0.4);
     add({
       id: 'S09', at: st, note: 'Scene 4: Camera pulls back revealing full gold podium victory',
       draw(lt, d, t, blit) {
@@ -627,23 +637,23 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        const pop = clamp((t - wCrush) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.3, 1.0, eob(pop));
-          drawCard(540, 500, 840, 260, '#F59E0B', sc);
-          drawFittedText('FLAGSHIP PERFORMANCE', 0, -45, 780, '900 38px Inter, sans-serif', '#FDE68A');
-          drawFittedText('CRUSHES STANDARD SOTA', 0, 35, 780, '900 66px Inter, sans-serif', '#FBBF24');
+          drawCard(540, 500, 860, 260, '#F59E0B', sc);
+          drawFittedText('FLAGSHIP DOMINANCE', 0, -45, 800, '900 38px Inter, sans-serif', '#FDE68A');
+          drawFittedText(lineText(9).toUpperCase(), 0, 35, 800, '900 58px Inter, sans-serif', '#FBBF24');
           ctx.restore();
         }
       }
     });
     cue(st, 'whoosh');
-    cue(wCrush, 'boing', { gain: 0.8 });
+    cue(wPop, 'boing', { gain: 0.8 });
   }
 
-  // ── Shot 10 (Line 10): "It runs seventy times faster," ──
+  // ── Shot 10 (Line 10): 70X Faster / Speed Highway ───────────────────
   {
-    const st = cut(10), wFast = Wd('faster', 10);
+    const st = cut(10), wPop = safeWd(null, 10, 0.4);
     add({
       id: 'S10', at: st, note: 'Scene 5: 3D Speed Accelerator Highway + Circular Radial Speedometer HUD',
       draw(lt, d, t, blit) {
@@ -655,23 +665,20 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        // 2D Circular Radial Speedometer HUD
-        const pop = clamp((t - wFast) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.4, 1.0, eob(pop));
-          drawCard(540, 520, 840, 380, '#3B82F6', sc);
+          drawCard(540, 520, 860, 380, '#3B82F6', sc);
 
-          drawFittedText('INFERENCE SPEED GAUGE', 0, -135, 780, '900 38px Inter, sans-serif', '#93C5FD');
+          drawFittedText('INFERENCE SPEED GAUGE', 0, -135, 800, '900 38px Inter, sans-serif', '#93C5FD');
 
-          // Circular Arc Dial
-          const speedAnim = eo(clamp((t - wFast - 0.1) / 0.5));
+          const speedAnim = eo(clamp((t - wPop - 0.1) / 0.5));
           ctx.lineWidth = 14;
           ctx.strokeStyle = '#1E293B';
           ctx.beginPath();
           ctx.arc(0, 10, 95, Math.PI * 0.8, Math.PI * 2.2);
           ctx.stroke();
 
-          // Glowing Speed Sweep Arc
           ctx.strokeStyle = '#34D399';
           ctx.shadowColor = '#34D399';
           ctx.shadowBlur = 22;
@@ -680,20 +687,19 @@ export function buildShots(E) {
           ctx.stroke();
           ctx.shadowBlur = 0;
 
-          const currentX = Math.round(lerp(1, 70, speedAnim));
-          drawFittedText(`${currentX}X FASTER`, 0, 15, 780, '900 74px Inter, sans-serif', '#60A5FA');
-          drawFittedText('REAL-TIME HARDWARE INFERENCE', 0, 115, 780, '800 28px Inter, sans-serif', '#BFDBFE');
+          drawFittedText(lineText(10).toUpperCase(), 0, 15, 800, '900 62px Inter, sans-serif', '#60A5FA');
+          drawFittedText('REAL-TIME HARDWARE EXECUTION', 0, 115, 800, '800 28px Inter, sans-serif', '#BFDBFE');
           ctx.restore();
         }
       }
     });
     cue(st, 'whoosh');
-    cue(wFast, 'ding', { gain: 0.9 });
+    cue(wPop, 'ding', { gain: 0.9 });
   }
 
-  // ── Shot 11 (Line 11): "uses ninety percent less electricity," ──
+  // ── Shot 11 (Line 11): 90% Less Electricity / Eco Battery ───────────
   {
-    const st = cut(11), wLess = Wd('less', 11);
+    const st = cut(11), wPop = safeWd(null, 11, 0.4);
     add({
       id: 'S11', at: st, note: 'Scene 5: 3D Eco Green Battery Cell + Energy Reduction HUD',
       draw(lt, d, t, blit) {
@@ -706,38 +712,35 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        // 2D Battery & Energy Reduction HUD
-        const pop = clamp((t - wLess) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.4, 1.0, eob(pop));
-          drawCard(540, 520, 840, 360, '#10B981', sc);
+          drawCard(540, 520, 860, 360, '#10B981', sc);
 
-          drawFittedText('ENERGY CONSUMPTION', 0, -120, 780, '900 38px Inter, sans-serif', '#6EE7B7');
-          drawFittedText('-90% ELECTRICITY', 0, -40, 780, '900 78px Inter, sans-serif', '#34D399');
+          drawFittedText('ENERGY CONSUMPTION', 0, -120, 800, '900 38px Inter, sans-serif', '#6EE7B7');
+          drawFittedText(lineText(11).toUpperCase(), 0, -40, 800, '900 64px Inter, sans-serif', '#34D399');
 
-          // Segmented Battery Bar
           ctx.strokeStyle = '#10B981';
           ctx.lineWidth = 5;
           ctx.strokeRect(-220, 30, 440, 50);
           ctx.fillStyle = '#10B981';
           ctx.fillRect(222, 45, 16, 20);
 
-          // Power draw level
           ctx.fillStyle = '#34D399';
           ctx.fillRect(-210, 40, 65, 30);
 
-          drawFittedText('DRAWS ONLY 10% OF TRADITIONAL POWER', 0, 120, 780, '800 28px Inter, sans-serif', '#A7F3D0');
+          drawFittedText('DRAWS ONLY 10% OF TRADITIONAL POWER', 0, 120, 800, '800 28px Inter, sans-serif', '#A7F3D0');
           ctx.restore();
         }
       }
     });
     cue(st, 'whoosh');
-    cue(wLess, 'pop', { gain: 0.8 });
+    cue(wPop, 'pop', { gain: 0.8 });
   }
 
-  // ── Shot 12 (Line 12): "and can run locally on an everyday laptop." ──
+  // ── Shot 12 (Line 12): Everyday Workstation Code Terminal ────────────
   {
-    const st = cut(12), wLap = Wd('laptop', 12);
+    const st = cut(12), wPop = safeWd(null, 12, 0.4);
     add({
       id: 'S12', at: st, note: 'Scene 6: 3D Laptop on desk + Monospace Code Terminal HUD',
       draw(lt, d, t, blit) {
@@ -747,37 +750,35 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        // 2D Monospace Terminal HUD
-        const pop = clamp((t - wLap) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.3, 1.0, eob(pop));
           drawCard(540, 520, 860, 350, '#8B5CF6', sc);
 
-          drawFittedText('HARDWARE COMPATIBILITY', 0, -118, 800, '900 36px Inter, sans-serif', '#DDD6FE');
-          drawFittedText('💻 RUNS ON EVERYDAY LAPTOP', 0, -58, 800, '900 60px Inter, sans-serif', '#A78BFA');
+          drawFittedText('DEPLOYMENT ARCHITECTURE', 0, -118, 800, '900 36px Inter, sans-serif', '#DDD6FE');
+          drawFittedText(lineText(12).toUpperCase(), 0, -58, 800, '900 54px Inter, sans-serif', '#A78BFA');
 
-          // Terminal window body
           ctx.fillStyle = '#0F172A';
           ctx.fillRect(-380, -5, 760, 115);
           ctx.strokeStyle = '#334155';
           ctx.lineWidth = 2;
           ctx.strokeRect(-380, -5, 760, 115);
 
-          drawFittedText('> python run_model.py --weights 3GB', -350, 25, 700, '600 22px Courier New', '#34D399', 'left');
-          drawFittedText('[OK] VRAM: 2.1 GB used | Tokens/sec: 145.2', -350, 70, 700, '600 22px Courier New', '#4ADE80', 'left');
+          drawFittedText('> python run_inference.py --weights active', -350, 25, 700, '600 22px Courier New', '#34D399', 'left');
+          drawFittedText('[OK] Latency: 4.8ms | Cost: $0.00 | Status: Optimal', -350, 70, 700, '600 22px Courier New', '#4ADE80', 'left');
 
-          drawFittedText('ZERO CLOUD APIS REQUIRED', 0, 140, 800, '800 26px Inter, sans-serif', '#C4B5FD');
+          drawFittedText('ACCESSIBLE HARDWARE DEPLOYMENT', 0, 140, 800, '800 26px Inter, sans-serif', '#C4B5FD');
           ctx.restore();
         }
       }
     });
     cue(st, 'whoosh');
-    cue(wLap, 'ding', { gain: 0.9 });
+    cue(wPop, 'ding', { gain: 0.9 });
   }
 
-  // ── Shot 13 (Line 13): "Which is why engineers are calling this a turning point." ──
+  // ── Shot 13 (Line 13): Global Turning Point ─────────────────────────
   {
-    const st = cut(13), wTurn = Wd('turning', 13);
+    const st = cut(13), wPop = safeWd(null, 13, 0.4);
     add({
       id: 'S13', at: st, note: 'Scene 6: Camera rises revealing major turning point card',
       draw(lt, d, t, blit) {
@@ -787,23 +788,23 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        const pop = clamp((t - wTurn) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.3, 1.0, eob(pop));
-          drawCard(540, 500, 840, 250, '#FACC15', sc);
-          drawFittedText('GLOBAL AI MILESTONE', 0, -45, 780, '900 38px Inter, sans-serif', '#FEF08A');
-          drawFittedText('MAJOR TURNING POINT', 0, 35, 780, '900 72px Inter, sans-serif', '#FACC15');
+          drawCard(540, 500, 860, 250, '#FACC15', sc);
+          drawFittedText('GLOBAL AI MILESTONE', 0, -45, 800, '900 38px Inter, sans-serif', '#FEF08A');
+          drawFittedText(lineText(13).toUpperCase(), 0, 35, 800, '900 58px Inter, sans-serif', '#FACC15');
           ctx.restore();
         }
       }
     });
     cue(st, 'whoosh');
-    cue(wTurn, 'stamp', { gain: 0.9 });
+    cue(wPop, 'stamp', { gain: 0.9 });
   }
 
-  // ── Shot 14 (Line 14): "Because tomorrow's most powerful AI" ──
+  // ── Shot 14 (Line 14): Tomorrow's AI ────────────────────────────────
   {
-    const st = cut(14), wPower = Wd('powerful', 14);
+    const st = cut(14);
     add({
       id: 'S14', at: st, note: 'Scene 2: High altitude majestic sweep across server horizon',
       draw(lt, d, t, blit) {
@@ -817,11 +818,11 @@ export function buildShots(E) {
     cue(st, 'whoosh');
   }
 
-  // ── Shot 15 (Line 15): "might not come from a trillion dollar data center," ──
+  // ── Shot 15 (Line 15): Beyond Trillion Dollar Data Centers ──────────
   {
-    const st = cut(15), wTrill = Wd('trillion', 15);
+    const st = cut(15), wPop = safeWd(null, 15, 0.4);
     add({
-      id: 'S15', at: st, note: 'Scene 2: Red Neon Alert across $1 Trillion Data Center',
+      id: 'S15', at: st, note: 'Scene 2: Red Neon Alert across Server Horizon',
       draw(lt, d, t, blit) {
         const k = eio(clamp(lt / d));
         shoot(sceneServers, V3(0, 4.0, -6), V3(0, 2.0, 0), V3(0, 1.0, -25), null, k, LOOKS.warning);
@@ -829,25 +830,25 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        const pop = clamp((t - wTrill) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.4, 1.0, eob(pop));
           drawCard(540, 500, 860, 280, '#DC2626', sc);
-          drawFittedText('THE FUTURE IS CLEAR', 0, -50, 800, '900 40px Inter, sans-serif', '#FCA5A5');
-          drawFittedText('NO $1T DATA CENTER NEEDED', 0, 30, 800, '900 64px Inter, sans-serif', '#EF4444');
+          drawFittedText('THE FUTURE IS HERE', 0, -50, 800, '900 40px Inter, sans-serif', '#FCA5A5');
+          drawFittedText(lineText(15).toUpperCase(), 0, 30, 800, '900 54px Inter, sans-serif', '#EF4444');
           ctx.restore();
         }
       }
     });
     cue(st, 'whoosh');
-    cue(wTrill, 'ding', { gain: 0.9 });
+    cue(wPop, 'ding', { gain: 0.9 });
   }
 
-  // ── Shot 16 (Line 16): "and it all started when..." ──
+  // ── Shot 16 (Line 16): Infinite Loop & DSAI COEP Outro ───────────────
   {
-    const st = cut(16), wStart = Wd('started', 16);
+    const st = cut(16), wPop = safeWd(null, 16, 0.35);
     add({
-      id: 'S16', at: st, note: 'Infinite Loop: Returns to $3 laptop desk with COEP DSAI Club CTA',
+      id: 'S16', at: st, note: 'Infinite Loop: Returns to laptop workstation with DSAI COEP CTA',
       draw(lt, d, t, blit) {
         const k = eio(clamp(lt / d));
         shoot(sceneDuel, V3(0, 3.5, 5), V3(-2.6, 1.2, -1.0), V3(-2.6, 0.3, -4), null, k, LOOKS.cyber);
@@ -855,13 +856,12 @@ export function buildShots(E) {
 
         drawClubWatermark(t);
 
-        // Branded Outro Card
-        const pop = clamp((t - wStart) / 0.2);
+        const pop = clamp((t - wPop) / 0.2);
         if (pop > 0) {
           const sc = lerp(1.3, 1.0, eob(pop));
           drawCard(540, 520, 880, 320, '#10B981', sc);
-          drawFittedText('FOLLOW FOR WEEKLY AI BREAKDOWNS', 0, -85, 820, '900 36px Inter, sans-serif', '#34D399');
-          drawFittedText('@coep_dsai', 0, -20, 820, '900 78px Inter, sans-serif', '#FACC15');
+          drawFittedText('FOLLOW FOR WEEKLY AI RESEARCH', 0, -85, 820, '900 36px Inter, sans-serif', '#34D399');
+          drawFittedText('@dsai_coep', 0, -20, 820, '900 80px Inter, sans-serif', '#FACC15');
           drawFittedText("COEP'S DATA SCIENCE & AI CLUB", 0, 60, 820, '800 32px Inter, sans-serif', '#FFFFFF');
           drawFittedText('Looping to beginning...', 0, 115, 820, '600 24px Inter, sans-serif', '#94A3B8');
           ctx.restore();
@@ -869,7 +869,7 @@ export function buildShots(E) {
       }
     });
     cue(st, 'whoosh');
-    cue(wStart, 'pop', { gain: 0.9 });
+    cue(wPop, 'pop', { gain: 0.9 });
   }
 
   return { shots: S, cues: CUES };

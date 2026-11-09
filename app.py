@@ -2,11 +2,11 @@
 
 A lightweight, zero-cost ($0) web dashboard built with Streamlit.
 Enables club members to:
-1. Browse and scrape weekly AI news with virality scoring (supports custom keywords like NVIDIA).
-2. Select a story or write a custom topic/prompt to generate viral shorts scripts.
+1. Browse and scrape weekly AI news with virality scoring (supports custom keywords like NVIDIA, Sthanika, OpenAI).
+2. Select any story to auto-generate a 100% tailored viral script with a 0-2s hook and fast 17 cuts.
 3. Switch between 3D visual styles (Neon Cyber, Deep Space Noir, Clean Emerald, Red Alert) and voices.
 4. Synthesize studio-grade voiceover with frame-accurate WordBoundary sync.
-5. Render and preview 1080x1920 vertical MP4 shorts with in-browser playback & direct download.
+5. Render and preview 1080x1920 vertical MP4 shorts with live, cache-busted playback & direct download.
 """
 
 import json
@@ -16,6 +16,7 @@ import shutil
 import subprocess
 import sys
 import time
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -38,21 +39,29 @@ if not VENV_PYTHON.exists():
 STYLES = {
     "Neon Cyber 3D (Electric Blue & Cyan)": {
         "id": "neon-explainer",
+        "primary": "#00F0FF",
+        "accent": "#38BDF8",
         "desc": "Pulsing server farm, 3D Neural Net architecture, Gold Trophy Podium, Accelerator Highway, Battery Dial, & Club Watermark.",
         "badge": "⚡ Recommended",
     },
     "Deep Space Noir 3D (Gold & Amber Cinema)": {
         "id": "deep-space-noir",
+        "primary": "#FACC15",
+        "accent": "#F59E0B",
         "desc": "Ultra-dark space void, amber/gold laser wireframes, deep camera depth-of-field, and dramatic high-contrast lighting.",
         "badge": "🌌 Cinematic Noir",
     },
     "Clean Emerald Tech 3D (Emerald & Platinum)": {
         "id": "clean-emerald",
+        "primary": "#10B981",
+        "accent": "#34D399",
         "desc": "Sleek graphite & emerald green lab aesthetic, clinical wireframe grids, and bright data visualization HUDs.",
         "badge": "🌿 Clean Tech",
     },
     "Red Alert Crisis 3D (Crimson & Hazard)": {
         "id": "red-alert",
+        "primary": "#EF4444",
+        "accent": "#F87171",
         "desc": "Ominous red emergency strobes, high-contrast warning cards, and dramatic cluster disruption visuals.",
         "badge": "🚨 Crisis Alert",
     },
@@ -78,7 +87,6 @@ st.set_page_config(
 # ── Custom CSS ──────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-    /* Dark cyber theme with cyan/emerald accents */
     .main-header {
         background: linear-gradient(135deg, #0B132B 0%, #1C2541 50%, #030712 100%);
         padding: 24px;
@@ -148,7 +156,6 @@ def load_cached_news() -> List[Dict[str, Any]]:
             return json.loads(SCRAPER_CACHE.read_text(encoding="utf-8"))
         except Exception:
             pass
-    # If no cache exists, run initial scrape
     return run_news_scraper()
 
 
@@ -179,9 +186,8 @@ def load_project_script() -> Dict[str, Any]:
         "gap": 0.20,
         "music": "bounce",
         "lines": [
-            {"text": "This week, a tiny three dollar AI experiment"},
-            {"text": "just beat a hundred million dollar supercomputer."},
-            {"text": "And the biggest tech giants are scrambling."},
+            {"text": "This week, a new AI breakthrough just stunned researchers,"},
+            {"text": "disrupting what was thought possible with current models."},
         ]
     }
 
@@ -200,6 +206,7 @@ def switch_style(style_id: str) -> bool:
 
     if preset_file.exists():
         shutil.copy2(preset_file, src_shots)
+        st.session_state["active_theme_id"] = style_id
         return True
     return False
 
@@ -256,8 +263,8 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("### 🏷️ Club Identity")
-    show_watermark = st.checkbox("Show '⚡ COEP DSAI CLUB' Header Pill", value=True)
-    club_handle = st.text_input("Club Social Handle", value="@coep_dsai")
+    show_watermark = st.checkbox("Show '⚡ DSAI COEP' Header Pill", value=True)
+    club_handle = st.text_input("Club Social Handle", value="@dsai_coep")
 
     st.markdown("---")
     st.caption("COEP Technological University • Data Science & AI Club")
@@ -277,16 +284,16 @@ tabs = st.tabs([
 # ═════════════════════════════════════════════════════════════════════════
 with tabs[0]:
     st.markdown("### 🌐 Live AI News Radar & Virality Scorer")
-    st.write("Scrapes Google News RSS, Hacker News Algolia API, and Hugging Face Daily Papers. Enter any keyword (e.g. `NVIDIA`, `DeepSeek`, `Blackwell`, `OpenAI`) to gather fresh breaking stories.")
+    st.write("Scrapes Google News RSS, Hacker News Algolia API, and Hugging Face Daily Papers. Enter any keyword (e.g. `Sthanika`, `NVIDIA`, `Blackwell`, `OpenAI`, `Perplexity`) to discover fresh breaking stories.")
 
     col_search, col_btn, col_min_score = st.columns([2.5, 1.2, 1.3])
     with col_search:
-        search_query = st.text_input("Topic / Keyword Search", placeholder="e.g. NVIDIA, OpenAI, Claude, DeepSeek...")
+        search_query = st.text_input("Topic / Keyword Search", placeholder="e.g. Sthanika, Jev, NVIDIA, Claude, DeepSeek...")
     with col_btn:
         st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
         scrape_clicked = st.button("⚡ Scrape News", type="primary", use_container_width=True)
     with col_min_score:
-        min_score = st.slider("Min Virality Score", 4.0, 10.0, 6.5, 0.5)
+        min_score = st.slider("Min Virality Score", 4.0, 10.0, 6.0, 0.5)
 
     if scrape_clicked:
         with st.spinner(f"Scraping live stories for '{search_query or 'General AI'}'..."):
@@ -306,7 +313,7 @@ with tabs[0]:
             if not search_query or search_query.lower() in s.get("title", "").lower() or search_query.lower() in s.get("summary", "").lower():
                 filtered_stories.append(s)
 
-    st.caption(f"Displaying {len(filtered_stories)} stories (sorted by virality score):")
+    st.caption(f"Displaying {len(filtered_stories)} stories matching query (sorted by virality score):")
 
     # Render stories as cards
     for idx, story in enumerate(filtered_stories):
@@ -330,8 +337,10 @@ with tabs[0]:
             col_pick, col_link = st.columns([1.5, 8.5])
             with col_pick:
                 if st.button("⚡ Use For Video", key=f"use_story_{idx}"):
-                    # Update session state and generate tailored script
+                    # 1. Update session state with this specific story
                     st.session_state["selected_story"] = story
+
+                    # 2. Automatically generate the tailored 17-cut script
                     agent = ScriptAgent()
                     tailored = agent.generate_script_from_story(
                         story_title=story.get("title", ""),
@@ -339,7 +348,13 @@ with tabs[0]:
                         source=story.get("source", "AI News"),
                     )
                     agent.save_script(tailored, PROJECT_DIR / "script.json")
-                    st.success(f"Generated tailored script for '{story.get('title')[:40]}...'! Go to Tab 2 to inspect or edit.")
+
+                    # 3. Invalidate editor cache and trigger immediate UI refresh
+                    st.session_state["script_version"] = st.session_state.get("script_version", 0) + 1
+                    st.success(f"Generated tailored script for '{story.get('title')[:45]}...'!")
+                    time.sleep(0.3)
+                    st.rerun()
+
             with col_link:
                 if story.get("url"):
                     st.markdown(f"<a href='{story.get('url')}' target='_blank' style='font-size: 13px; color: #38BDF8;'>🔗 View Original Source Article</a>", unsafe_allow_html=True)
@@ -358,7 +373,7 @@ with tabs[1]:
     sel = st.session_state.get("selected_story")
     if sel:
         st.info(f"📌 Active Story Context: **{sel.get('title')}** (Source: {sel.get('source')})")
-        if st.button("🔄 Re-generate Script from Active Story"):
+        if st.button("🔄 Re-generate Dynamic Script for Active Story"):
             agent = ScriptAgent()
             tailored = agent.generate_script_from_story(
                 story_title=sel.get("title", ""),
@@ -366,6 +381,7 @@ with tabs[1]:
                 source=sel.get("source", "AI News"),
             )
             agent.save_script(tailored, PROJECT_DIR / "script.json")
+            st.session_state["script_version"] = st.session_state.get("script_version", 0) + 1
             st.rerun()
 
     col_title, col_pace = st.columns([3, 1])
@@ -386,8 +402,11 @@ with tabs[1]:
         for i, ln in enumerate(lines)
     ])
 
+    # Dynamic key ensures cache bust when new story is picked
+    editor_key = f"script_editor_{st.session_state.get('script_version', 0)}"
     edited_df = st.data_editor(
         df_lines,
+        key=editor_key,
         use_container_width=True,
         num_rows="dynamic",
         column_config={
@@ -424,26 +443,33 @@ with tabs[1]:
 with tabs[2]:
     st.markdown("### 🎨 Visual & Acoustic Engine Configuration")
 
+    active_id = st.session_state.get("active_theme_id", "neon-explainer")
+    active_style_match = [k for k, v in STYLES.items() if v["id"] == active_id]
+    active_title = active_style_match[0] if active_style_match else "Neon Cyber 3D"
+
+    st.markdown(f"#### 🌟 Active 3D Theme: **{active_title}**")
+    st.info(f"Theme Details: {STYLES.get(active_title, {}).get('desc')}")
+
     col_s1, col_s2 = st.columns(2)
     with col_s1:
-        st.markdown("#### 🌟 3D Visual Scenes in Active Engine")
+        st.markdown("#### 🎬 3D Multi-Scene Architecture")
         st.markdown("""
-        - **Scene 1: The Duel** — Sleek aluminum laptop workstation vs ominous \$100M supercomputer tower.
+        - **Scene 1: The Duel** — Workstation Laptop vs ominous Supercomputer tower with alert LEDs.
         - **Scene 2: The Server Farm** — Receding monolith server aisles with flashing cyan and emerald rack LEDs.
         - **Scene 3: 3D Neural Network** — Fully framed 4-layer multi-layer perceptron with pulsing synaptic rewiring.
-        - **Scene 4: Benchmark Podium** — 3D Gold Championship Trophy Cup, 3-tiered podium, and animated 98.4% bar chart.
+        - **Scene 4: Benchmark Podium** — 3D Gold Championship Trophy Cup, 3-tiered podium, and animated bar chart.
         - **Scene 5: High-Speed & Eco HUD** — Rushing accelerator highway grid, 70X speedometer gauge, and 3D green eco battery cell.
         - **Scene 6: Everyday Workstation** — Desk with terminal code execution log and global turning point announcement.
         """)
 
     with col_s2:
-        st.markdown("#### 🔊 Audio Pipeline Settings")
+        st.markdown("#### 🔊 Live Audio Pipeline Parameters")
         st.markdown(f"""
         - **Active Voice:** `{selected_voice_code}` ({selected_voice_name})
         - **Speaking Speed Rate:** `+{speed_percent}%` (Natural conversational flow with ample animation view time)
-        - **Cadence Engine:** Sentence-level continuous synthesis (Zero artificial dead-air pauses)
-        - **Timestamp Protocol:** Microsoft Speech `WordBoundary` events directly mapped to word tokens
-        - **Audio Concat Engine:** Bit-exact 48kHz stereo WAV concatenation with exact gap spacing
+        - **Club Social Handle:** `{club_handle}` (Rendered on Outro Card & Header Pill)
+        - **Cadence Protocol:** Sentence-level continuous synthesis with bit-exact WAV silence concatenation
+        - **Timestamp Sync:** Microsoft Speech native `WordBoundary` events mapped to script tokens
         """)
 
 
@@ -453,6 +479,9 @@ with tabs[2]:
 with tabs[3]:
     st.markdown("### 🎬 Render Studio & In-Browser Player")
     st.write("Generate audio, calculate frame cues, render 3D scenes via Chrome headless compositor, and preview or download the finished MP4.")
+
+    curr_script_info = load_project_script()
+    st.info(f"Target Video Script: **{curr_script_info.get('title', 'This Week In AI')}** ({len(curr_script_info.get('lines', []))} cuts)")
 
     col_render_btn, col_check_btn = st.columns([2, 2])
     with col_render_btn:
@@ -511,15 +540,16 @@ with tabs[3]:
             # 4. Render frames to video
             progress_bar.progress(70, text="Step 4/4: Rendering 3D animation frames...")
             st.write("Headless Chrome 3D compositor rendering frames...")
-            render_out = PROJECT_DIR / "renders" / "this_week_in_ai_v4.mp4"
+            render_out = PROJECT_DIR / "renders" / "latest_short.mp4"
             res_video = subprocess.run(["node", "tools/capture.mjs", "video", str(render_out), "--draft"], cwd=str(PROJECT_DIR), capture_output=True, text=True)
             if res_video.returncode != 0:
                 st.error(f"Video Render Failed:\n{res_video.stderr or res_video.stdout}")
                 st.stop()
 
-            # Copy to output
-            dest_video = OUTPUT_DIR / "this_week_in_ai_v4.mp4"
+            # Copy to output and record render timestamp
+            dest_video = OUTPUT_DIR / "latest_short.mp4"
             shutil.copy2(render_out, dest_video)
+            st.session_state["last_render_time"] = datetime.now().strftime("%I:%M:%S %p")
 
             # Generate contact sheet
             subprocess.run(["node", "tools/capture.mjs", "sheet"], cwd=str(PROJECT_DIR), capture_output=True, text=True)
@@ -534,15 +564,19 @@ with tabs[3]:
     st.markdown("---")
     st.markdown("#### 📱 Finished Video Preview & Download")
 
-    video_path = OUTPUT_DIR / "this_week_in_ai_v4.mp4"
+    video_path = OUTPUT_DIR / "latest_short.mp4"
+    if not video_path.exists():
+        video_path = OUTPUT_DIR / "this_week_in_ai_v4.mp4"
+
     contact_sheet_path = OUTPUT_DIR / "review_v4_contact_sheet.jpg"
 
     col_vid, col_sheet = st.columns([1, 1.2])
 
     with col_vid:
         if video_path.exists():
-            st.video(str(video_path))
+            # Pass raw bytes to bypass any browser URL cache
             file_bytes = video_path.read_bytes()
+            st.video(file_bytes)
             st.download_button(
                 label="⬇️ Download MP4 (1080×1920 Short)",
                 data=file_bytes,
@@ -551,12 +585,14 @@ with tabs[3]:
                 type="primary",
                 use_container_width=True,
             )
-            st.caption(f"File size: {len(file_bytes) / (1024 * 1024):.2f} MB | Resolution: 1080×1920 | Aspect: 9:16")
+            render_ts = st.session_state.get("last_render_time", "Latest Build")
+            st.caption(f"Status: Fresh Render ({render_ts}) | Size: {len(file_bytes) / (1024 * 1024):.2f} MB | Aspect: 9:16 (1080×1920)")
         else:
             st.info("No rendered video found in `output/` yet. Click 'Render Full Short' above to generate one!")
 
     with col_sheet:
         if contact_sheet_path.exists():
-            st.image(str(contact_sheet_path), caption="Multi-Scene Contact Sheet (Frame-by-Frame Progression)", use_container_width=True)
+            sheet_bytes = contact_sheet_path.read_bytes()
+            st.image(sheet_bytes, caption="Multi-Scene Contact Sheet (Frame-by-Frame Progression)", use_container_width=True)
         else:
             st.caption("Contact sheet will appear here after render.")
