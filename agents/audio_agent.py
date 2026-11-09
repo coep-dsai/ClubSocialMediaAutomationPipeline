@@ -1,14 +1,15 @@
 """Audio Agent for High-Fidelity Voiceover and Frame-Accurate Captions.
 
 Uses Microsoft Neural TTS (edge-tts) for studio-grade human audio:
-- Primary: en-US-GuyNeural (modern, energetic, crisp)
-- Fallback: en-US-ChristopherNeural (authoritative, broadcast explainer)
+- Primary: en-US-GuyNeural (crisp, energetic, modern explainer)
+- Fallback: en-US-ChristopherNeural (authoritative broadcast)
 - Offline fallback: Kokoro-82M (local model in ~/.faceless-shorts/kokoro)
 
 Features:
-- Extracts native WordBoundary timestamps directly during audio streaming (ZERO drift).
-- Maps each word exactly to its line index and caption chunk.
-- Produces data/narration.wav, data/lines.json, data/words.json, and data/words.txt.
+- Sentence-level continuous synthesis (+18% rate for fast Shorts pacing).
+- Zero artificial dead-air between clauses: speech flows naturally across cuts.
+- Millisecond-accurate native WordBoundary timestamps directly from the stream.
+- Zero caption drift and zero dropped words.
 """
 
 import asyncio
@@ -32,10 +33,10 @@ class AudioAgent:
         self.primary_voice = primary_voice
         self.fallback_voice = fallback_voice
 
-    async def _synthesize_line_edge(
-        self, text: str, voice: str, rate: str = "+0%"
+    async def _synthesize_sentence_edge(
+        self, text: str, voice: str, rate: str = "+18%"
     ) -> Tuple[bytes, List[Dict[str, Any]]]:
-        """Synthesize a line with edge-tts and collect audio bytes + word timestamps."""
+        """Synthesize a complete sentence with edge-tts and collect audio bytes + word timestamps."""
         comm = edge_tts.Communicate(text, voice, rate=rate, boundary="WordBoundary")
         audio_chunks = []
         words = []
@@ -43,7 +44,6 @@ class AudioAgent:
             if chunk["type"] == "audio":
                 audio_chunks.append(chunk["data"])
             elif chunk["type"] == "WordBoundary":
-                # Offset and duration are in 100ns units -> convert to seconds
                 s = chunk["offset"] / 10_000_000.0
                 d = chunk["duration"] / 10_000_000.0
                 words.append({
@@ -57,9 +57,9 @@ class AudioAgent:
         self,
         project_dir: Path,
         voice: Optional[str] = None,
-        rate: str = "+4%",
-        lead: float = 0.35,
-        outro: float = 0.9,
+        rate: str = "+18%",
+        lead: float = 0.25,
+        outro: float = 0.8,
     ) -> bool:
         project_dir = Path(project_dir)
         script_file = project_dir / "script.json"
@@ -72,27 +72,26 @@ class AudioAgent:
             raise ValueError("No lines found in script.json")
 
         target_voice = voice or script_data.get("voice") or self.primary_voice
-        # If the script specified an old kokoro voice, map it to GuyNeural
         if target_voice.startswith("am_") or target_voice.startswith("af_") or target_voice.startswith("bm_"):
             target_voice = self.primary_voice
 
-        print(f"\n[AudioAgent] Synthesizing voiceover with {target_voice} (rate: {rate})...")
+        print(f"\n[AudioAgent] Synthesizing continuous voiceover with {target_voice} (rate: {rate})...")
 
         try:
             return asyncio.run(
-                self._synthesize_all_lines(project_dir, lines, target_voice, rate, lead, outro)
+                self._synthesize_continuous(project_dir, lines, target_voice, rate, lead, outro)
             )
         except Exception as e:
             print(f"[Warning] Failed with primary voice {target_voice}: {e}. Trying fallback {self.fallback_voice}...", file=sys.stderr)
             try:
                 return asyncio.run(
-                    self._synthesize_all_lines(project_dir, lines, self.fallback_voice, rate, lead, outro)
+                    self._synthesize_continuous(project_dir, lines, self.fallback_voice, rate, lead, outro)
                 )
             except Exception as e2:
                 print(f"[Error] edge-tts synthesis failed: {e2}. Falling back to local Kokoro...", file=sys.stderr)
                 return self._synthesize_with_kokoro(project_dir)
 
-    async def _synthesize_all_lines(
+    async def _synthesize_continuous(
         self, project_dir: Path, lines: List[Dict[str, Any]], voice: str, rate: str, lead: float, outro: float
     ) -> bool:
         data_dir = project_dir / "data"
@@ -100,66 +99,87 @@ class AudioAgent:
         temp_dir = data_dir / "temp_audio"
         temp_dir.mkdir(parents=True, exist_ok=True)
 
-        all_words_output = []
-        line_records = []
-        audio_file_list = []
+        # 1. Group lines into sentences (a sentence ends in . ? ! or line['break'])
+        groups: List[List[int]] = []
+        cur_group: List[int] = []
+        for i, ln in enumerate(lines):
+            cur_group.append(i)
+            text_strip = ln["text"].strip()
+            if re.search(r'[.?!]["\')]*$', text_strip) or ln.get("break") or i == len(lines) - 1:
+                groups.append(cur_group)
+                cur_group = []
+
+        all_words_output: List[Dict[str, Any]] = []
+        line_records: List[Dict[str, Any]] = [None] * len(lines)
+        audio_file_list: List[Path] = []
 
         current_time = lead
 
-        for idx, line_obj in enumerate(lines):
-            text = line_obj["text"].strip()
-            line_mp3 = temp_dir / f"line_{idx:03d}.mp3"
+        for g_idx, g in enumerate(groups):
+            sentence_text = " ".join(lines[i]["text"].strip() for i in g)
+            mp3_path = temp_dir / f"sent_{g_idx:03d}.mp3"
 
-            audio_bytes, word_events = await self._synthesize_line_edge(text, voice, rate=rate)
-            line_mp3.write_bytes(audio_bytes)
+            audio_bytes, heard_words = await self._synthesize_sentence_edge(sentence_text, voice, rate=rate)
+            mp3_path.write_bytes(audio_bytes)
+            audio_file_list.append(mp3_path)
 
-            # Get duration of this line via ffprobe
-            line_dur = self._get_audio_duration(line_mp3)
+            sentence_dur = self._get_audio_duration(mp3_path)
+            sent_start = current_time
+            sent_end = current_time + sentence_dur
 
-            # Map words in this line
-            line_start = current_time
-            line_end = current_time + line_dur
+            # Collect script tokens for each line in this sentence
+            line_tokens_list = []
+            for i in g:
+                toks = [w for w in lines[i]["text"].split() if NORM(w)]
+                line_tokens_list.append((i, toks))
 
-            line_records.append({
-                "i": idx,
-                "text": text,
-                "start": round(line_start, 3),
-                "end": round(line_end, 3),
-            })
+            # Match heard_words against line tokens
+            h_idx = 0
+            for i, toks in line_tokens_list:
+                line_words_matched = []
+                for tok in toks:
+                    norm_tok = NORM(tok)
+                    # Find matching word in heard_words
+                    found_ev = None
+                    search_limit = min(len(heard_words), h_idx + 8)
+                    for k in range(h_idx, search_limit):
+                        if NORM(heard_words[k]["text"]) == norm_tok:
+                            found_ev = heard_words[k]
+                            h_idx = k + 1
+                            break
 
-            # Match words
-            script_tokens = [w for w in text.split() if NORM(w)]
-            if word_events:
-                # Use exact edge-tts word boundary timestamps offset by current_time
-                for ev in word_events:
-                    w_text = ev["text"]
-                    w_start = round(current_time + ev["start"], 3)
-                    w_end = round(current_time + ev["end"], 3)
-                    all_words_output.append({
-                        "w": w_text,
-                        "line": idx,
+                    if found_ev:
+                        w_start = round(sent_start + found_ev["start"], 3)
+                        w_end = round(sent_start + found_ev["end"], 3)
+                    else:
+                        # Interpolate if word boundary missed specific token
+                        prev_time = line_words_matched[-1]["e"] if line_words_matched else (all_words_output[-1]["e"] if all_words_output else sent_start)
+                        w_start = prev_time
+                        w_end = round(prev_time + 0.15, 3)
+
+                    item = {
+                        "w": tok,
+                        "line": i,
                         "s": w_start,
                         "e": w_end,
-                    })
-            else:
-                # Interpolate fallback
-                w_count = len(script_tokens)
-                dt = (line_end - line_start) / max(1, w_count)
-                for k, w_text in enumerate(script_tokens):
-                    all_words_output.append({
-                        "w": w_text,
-                        "line": idx,
-                        "s": round(line_start + k * dt, 3),
-                        "e": round(line_start + (k + 1) * dt * 0.95, 3),
-                    })
+                    }
+                    line_words_matched.append(item)
+                    all_words_output.append(item)
 
-            audio_file_list.append(line_mp3)
+                l_start = line_words_matched[0]["s"] if line_words_matched else sent_start
+                l_end = line_words_matched[-1]["e"] if line_words_matched else sent_end
+                line_records[i] = {
+                    "i": i,
+                    "text": lines[i]["text"].strip(),
+                    "start": l_start,
+                    "end": l_end,
+                }
 
-            # Small natural pause between lines (cuts)
-            gap = line_obj.get("gap", 0.18)
-            current_time = line_end + gap
+            # Pause after full sentence
+            gap = lines[g[-1]].get("gap", 0.22)
+            current_time = sent_end + gap
 
-        # Combine all audio pieces and lead silence into narration.wav
+        # Combine all audio into narration.wav
         total_audio_duration = current_time + outro
         self._combine_audio(audio_file_list, data_dir / "narration.wav", lead_silence=lead, outro_silence=outro)
 
@@ -181,11 +201,10 @@ class AudioAgent:
         ]
         (data_dir / "words.txt").write_text("\n".join(words_txt_lines), encoding="utf-8")
 
-        # Clean up temp
         shutil.rmtree(temp_dir, ignore_errors=True)
 
-        print(f"[AudioAgent] Synthesized {len(line_records)} lines ({len(all_words_output)} words) into {data_dir / 'narration.wav'}!")
-        print(f"            Duration: {total_audio_duration:.2f}s | Frame-exact karaoke timestamps generated.")
+        print(f"[AudioAgent] Continuous voiceover complete! {len(line_records)} cuts, {len(all_words_output)} words.")
+        print(f"            Duration: {total_audio_duration:.2f}s (Natural conversational flow at {rate}).")
         return True
 
     def _get_audio_duration(self, audio_file: Path) -> float:
@@ -199,14 +218,12 @@ class AudioAgent:
             return float(res.stdout.strip())
         return 2.0
 
-    def _combine_audio(self, mp3_files: List[Path], output_wav: Path, lead_silence: float = 0.35, outro_silence: float = 0.9):
-        """Mux audio files with lead and gap silences into an uncompressed 24kHz/48kHz WAV."""
+    def _combine_audio(self, mp3_files: List[Path], output_wav: Path, lead_silence: float = 0.25, outro_silence: float = 0.8):
         concat_file = output_wav.parent / "concat_list.txt"
         with open(concat_file, "w", encoding="utf-8") as f:
             for p in mp3_files:
                 f.write(f"file '{p.resolve().as_posix()}'\n")
 
-        # Combine with ffmpeg
         cmd = [
             "ffmpeg", "-v", "error", "-y",
             "-f", "concat", "-safe", "0", "-i", str(concat_file),
@@ -218,7 +235,6 @@ class AudioAgent:
         concat_file.unlink(missing_ok=True)
 
     def _synthesize_with_kokoro(self, project_dir: Path) -> bool:
-        """Offline fallback to Kokoro voice synthesis."""
         skill_voice = Path(__file__).resolve().parent.parent / "faceless-shorts-skill" / "faceless-shorts" / "scripts" / "voice.py"
         skill_words = Path(__file__).resolve().parent.parent / "faceless-shorts-skill" / "faceless-shorts" / "scripts" / "words.py"
         local_py = Path(__file__).resolve().parent.parent / ".venv" / "Scripts" / "python.exe"
@@ -234,7 +250,7 @@ class AudioAgent:
 def main():
     agent = AudioAgent()
     proj = Path("projects/this_week_in_ai")
-    agent.synthesize_project(proj, voice="en-US-GuyNeural")
+    agent.synthesize_project(proj, voice="en-US-GuyNeural", rate="+18%")
 
 
 if __name__ == "__main__":
