@@ -93,9 +93,23 @@ def heartbeat(**_):
     one = lambda d, f: np.sin(2 * np.pi * f * tt(d)) * env(int(d * SR), 0.004, 7)
     x = np.concatenate([one(0.16, 58), np.zeros(int(0.09 * SR)), one(0.2, 52) * 0.75]); return lp(x, 300) * 1.0
 
-FX = dict(inhale=inhale, heartbeat=heartbeat, whoosh=whoosh, slide=slide, pop=pop, plop=plop, gulp=gulp, boing=boing, bubbles=bubbles, sizzle=sizzle,
+def ding(**_):
+    t = tt(1.4); x = sum(np.sin(2 * np.pi * f * t) * g for f, g in [(1318, 1), (2637, 0.35), (3951, 0.12)]) * env(len(t), 0.002, 4); return x * 0.5
+def chirp(d=1.0, **_):
+    x = np.zeros(int(d * SR))
+    for k, st in enumerate(np.arange(0, d - 0.12, 0.17)):
+        i = int(st * SR); c = sweep(3200 + (k % 3) * 300, 4400, 0.08) * env(int(0.08 * SR), 0.004, 6); x[i:i + len(c)] += c[:len(x) - i] * (0.6 + 0.4 * rng.random())
+    return x * 0.4
+def chug(d=2.0, **_):
+    x = np.zeros(int(d * SR)); one = bp(noise(0.14), 200, 1600) * env(int(0.14 * SR), 0.005, 6)
+    for k, st in enumerate(np.arange(0, d - 0.15, 0.22)): i = int(st * SR); x[i:i + len(one)] += one * (1 if k % 2 == 0 else 0.6)
+    return x * 0.7
+def stampit(**_):
+    t = tt(0.18); x = np.sin(2 * np.pi * 95 * t) * env(len(t), 0.001, 10) + bp(noise(0.18), 1500, 5000) * env(len(t), 0.001, 14) * 0.6; return x * 0.9
+
+FX = dict(ding=ding, chirp=chirp, chug=chug, stamp=stampit, inhale=inhale, heartbeat=heartbeat, whoosh=whoosh, slide=slide, pop=pop, plop=plop, gulp=gulp, boing=boing, bubbles=bubbles, sizzle=sizzle,
           sparkle=sparkle, thud=thud, slam=slam, tock=tock, zip=zip_, alarm=alarm)
-LEVEL = dict(inhale=-15, heartbeat=-8, whoosh=-17, slide=-19, pop=-14, plop=-15, gulp=-11, boing=-15, bubbles=-21, sizzle=-18, sparkle=-17,
+LEVEL = dict(ding=-17, chirp=-19, chug=-20, stamp=-12, inhale=-15, heartbeat=-8, whoosh=-17, slide=-19, pop=-14, plop=-15, gulp=-11, boing=-15, bubbles=-21, sizzle=-18, sparkle=-17,
              thud=-11, slam=-9, tock=-18, zip=-14, alarm=-17)
 
 
@@ -120,6 +134,24 @@ def music_bed():
     fade = np.ones(N); fo = int(1.2 * SR); fade[-fo:] = np.linspace(1, 0, fo)
     return x / (np.abs(x).max() + 1e-9) * fade
 
+def music_bounce():
+    """light comedy: oom-pah bass + staccato plucked melody, 118 BPM, major (script.json "music": "bounce")"""
+    bpm = 118; beat = 60 / bpm; x = np.zeros(N)
+    prog = [(130.8, [261.6, 329.6, 392.0]), (174.6, [261.6, 349.2, 440.0]), (196.0, [246.9, 293.7, 392.0]), (130.8, [261.6, 329.6, 392.0])]
+    mel = [0, 2, 1, 2, 0, 1, 2, 1]
+    pl = lambda f, d, g: (np.sin(2 * np.pi * f * tt(d)) + 0.4 * np.sin(4 * np.pi * f * tt(d)) + 0.15 * np.sin(6 * np.pi * f * tt(d))) * env(int(d * SR), 0.003, 9) * g
+    for k in range(int(DUR / beat) + 1):
+        bass, ch = prog[(k // 8) % 4]; i = int(k * beat * SR)
+        b = pl(bass if k % 2 == 0 else bass * 1.5, 0.3, 0.35) if k % 2 == 0 else pl(ch[0] / 2 * 1.5, 0.22, 0.18)
+        if i + len(b) < N: x[i:i + len(b)] += b
+        if k % 2 == 1:
+            c = sum(pl(f, 0.16, 0.07) for f in ch)
+            if i + len(c) < N: x[i:i + len(c)] += c
+        f = ch[mel[k % 8]] * 2; m = pl(f, 0.18, 0.09); j = i + int(beat / 2 * SR) if k % 4 == 3 else i
+        if j + len(m) < N and k % 8 not in (3, 7): x[j:j + len(m)] += m
+    x = lp(x, 4200); fade = np.ones(N); fo = int(1.2 * SR); fade[-fo:] = np.linspace(1, 0, fo)
+    return x / (np.abs(x).max() + 1e-9) * fade
+
 def music_tension():
     """low drone + slow minor pulse, for mysterious / tense explainers (script.json "music": "tension")"""
     t = np.arange(N) / SR; x = np.zeros(N)
@@ -132,6 +164,45 @@ def music_tension():
         if i + len(pg) < N: x[i:i + len(pg)] += pg
     x = lp(x, 2200); fade = np.ones(N); fo = int(1.5 * SR); fade[-fo:] = np.linspace(1, 0, fo); fi = int(0.8 * SR); fade[:fi] *= np.linspace(0, 1, fi)
     return x / (np.abs(x).max() + 1e-9) * fade
+
+def music_synthwave():
+    """Cyberpunk driving synthwave: 112 BPM driving synth bass, retro arpeggio, and filtered pads."""
+    bpm = 112; beat = 60 / bpm; x = np.zeros(N)
+    prog = [43.65, 51.91, 38.89, 32.70]
+    chord_pads = [
+        [174.61, 207.65, 261.63],
+        [207.65, 261.63, 311.13],
+        [155.56, 196.00, 233.08],
+        [130.81, 164.81, 196.00],
+    ]
+    step = beat / 4
+    n_steps = int(DUR / step) + 1
+    for k in range(n_steps):
+        root = prog[(k // 16) % len(prog)]
+        freq = root * (2 if (k % 4) in (1, 3) else 1)
+        dur = 0.16
+        t = tt(dur)
+        bass_hit = sum((1.0 / h) * np.sin(2 * np.pi * (freq * h) * t) for h in range(1, 6))
+        bass_hit *= env(len(t), 0.005, 12) * 0.16
+        idx = int(k * step * SR)
+        if idx + len(bass_hit) < N:
+            x[idx:idx + len(bass_hit)] += bass_hit
+
+    bar = beat * 4
+    n_bars = int(np.ceil(DUR / bar)) + 1
+    for b in range(n_bars):
+        ch = chord_pads[b % len(chord_pads)]
+        st = int(b * bar * SR); n = int(bar * SR)
+        if st >= N: break
+        t = tt(bar)
+        e = np.minimum(1, t / 0.5) * np.minimum(1, (bar - t) / 0.5)
+        pad = sum(np.sin(2 * np.pi * f * t) + 0.3 * np.sin(2 * np.pi * (f * 1.5) * t) for f in ch) * e * 0.08
+        x[st:st + n] += pad[:max(0, min(n, N - st))]
+
+    x = lp(x, 3800)
+    fade = np.ones(N); fo = int(1.2 * SR); fade[-fo:] = np.linspace(1, 0, fo)
+    return x / (np.abs(x).max() + 1e-9) * fade
+
 
 def load_audio(f):
     out = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(f), '-f', 'f32le', '-ac', '2', '-ar', str(SR), '-'], capture_output=True, check=True).stdout
@@ -147,11 +218,28 @@ if vf.exists():
     rms = np.sqrt(np.mean(voice ** 2) + 1e-12); voice *= db(-19) / rms
     mix += voice
 # music
-mus = script.get('music', 'bed')
+mus = str(script.get('music', 'synthwave')).lower()
 if mus and mus != 'none':
-    m = music_bed() if mus == 'bed' else music_tension() if mus == 'tension' else None
-    if m is None:
-        a = load_audio(P / mus)[:N]; m = np.zeros(N); m[:len(a)] = a.mean(1); m /= np.abs(m).max() + 1e-9
+    m = None
+    if mus in ('synthwave', 'cyber'):
+        m = music_synthwave()
+    elif mus in ('bed', 'chill'):
+        m = music_bed()
+    elif mus in ('tension', 'noir'):
+        m = music_tension()
+    elif mus in ('bounce', 'comedy'):
+        m = music_bounce()
+    elif (P / mus).exists():
+        try:
+            a = load_audio(P / mus)[:N]
+            m = np.zeros(N)
+            m[:len(a)] = a.mean(1)
+            m /= np.abs(m).max() + 1e-9
+        except Exception:
+            m = music_synthwave()
+    else:
+        m = music_synthwave()
+
     m = np.stack([m, m], 1) * db(-24 if voice is not None else -20)
     if voice is not None:                                                        # duck under the voice
         lev = np.abs(voice.mean(1)); lev = signal.lfilter([1 - 0.9995], [1, -0.9995], lev); lev /= lev.max() + 1e-9
