@@ -32,6 +32,7 @@ class StyleDefinition:
     has_template: bool
     template_folder: str
     key_features: List[str] = field(default_factory=list)
+    scenes: List[str] = field(default_factory=list)
 
 
 STYLES: Dict[str, StyleDefinition] = {
@@ -56,6 +57,14 @@ STYLES: Dict[str, StyleDefinition] = {
             "Midday sun with warm shadows",
             "One-word captions with zero drift",
         ],
+        scenes=[
+            "Scene 1: The Crazy Hook — Wide crane-down on sunny 3D main street as hero encounters the absurd situation.",
+            "Scene 2: Character Reaction & Close-Up — 2D cartoon face reacts with dynamic expressions (smug, shock, worried).",
+            "Scene 3: The Bureaucratic Counter — Interior post office / shop with wooden cubbies, scale, and clerk.",
+            "Scene 4: The Loophole Test — Interactive physical prop (platform scale, ticket booth, parcel pile).",
+            "Scene 5: The Meadow Journey — Steam train rolling across green countryside with smoke particles.",
+            "Scene 6: The Payoff & Punchline — Return to front porch with comic sound effects and giant stamped seals.",
+        ],
     ),
     "deep-dive": StyleDefinition(
         id="deep-dive",
@@ -76,6 +85,13 @@ STYLES: Dict[str, StyleDefinition] = {
             "Translucent cyan glass shader (#4FD1E8) with glowing organs",
             "Macro camera zooms through tissue or chip circuits",
             "Shallow focus (aperture 0.003-0.006)",
+        ],
+        scenes=[
+            "Scene 1: Real-World Lab / Room — Researcher in sunlit room with shallow focus pushing in on the dilemma.",
+            "Scene 2: Translucent Cyan X-Ray — The body transforms into cyan fresnel glass with glowing brain & neural cortex.",
+            "Scene 3: Microscopic Flight — High-speed macro journey through matrix weights, blood vessels, or silicon channels.",
+            "Scene 4: Benchmark Pressure Pulse — The x-ray body pulses gold & cyan under high-stakes test stress.",
+            "Scene 5: Victory & Resolution — Return to the sunlit real world proving efficiency beats brute force.",
         ],
     ),
     "inside-out": StyleDefinition(
@@ -98,6 +114,13 @@ STYLES: Dict[str, StyleDefinition] = {
             "Distinct cyan inside-the-system cutaways",
             "Fast 1-2 second rapid educational cuts",
         ],
+        scenes=[
+            "Scene 1: Flat Vector Setup — Friendly vector character on cream parchment background with bold caption.",
+            "Scene 2: Transparent Cutaway — Minimalist cutaway reveal into the core mechanism.",
+            "Scene 3: Cross-Section Flow — Vector arrows tracing algorithmic paths and data routing.",
+            "Scene 4: Comparative Split — Side-by-side metric comparison with bright yellow callouts.",
+            "Scene 5: Clean Payoff — Final vector diagram summary with key lesson.",
+        ],
     ),
     "stick-story": StyleDefinition(
         id="stick-story",
@@ -118,6 +141,13 @@ STYLES: Dict[str, StyleDefinition] = {
             "Gold numbered step cards on every key action point",
             "Night setups have warm character outline glows",
             "One visual idea per sentence clause",
+        ],
+        scenes=[
+            "Scene 1: The Crisis — Black stick figure with wide emotive white eyes facing an urgent technical problem.",
+            "Scene 2: Step 1 (Gold Card) — Gold numbered card pops in (Step 1: Isolate the bottleneck).",
+            "Scene 3: Step 2 (Action) — Animated stick figure executing the strategic solution.",
+            "Scene 4: Night Silhouette — Darkened environment where the stick character glows with a warm outline.",
+            "Scene 5: Safe Resolution — Green checkmark badge confirming mission success.",
         ],
     ),
     "night-file": StyleDefinition(
@@ -140,6 +170,13 @@ STYLES: Dict[str, StyleDefinition] = {
             "Typewriter letter-by-letter caption animation",
             "Deliberate, slow camera drifts (3-5s per shot)",
         ],
+        scenes=[
+            "Scene 1: The Dark Basement — Shadowy 3D room illuminated by a single dramatic overhead spotlight.",
+            "Scene 2: The Red Subject — Anonymous silhouettes in dark rim-light while the key hacker/system glows solid red.",
+            "Scene 3: The Evidence Dossier — Polaroids, typewriter printouts, and classified folders pinned to the board.",
+            "Scene 4: Slow Camera Drift — Deliberate cinematic tracking through the crime scene.",
+            "Scene 5: Unsolved Payoff — Crimson stamp slamming onto the file case.",
+        ],
     ),
     "paper-atlas": StyleDefinition(
         id="paper-atlas",
@@ -161,6 +198,13 @@ STYLES: Dict[str, StyleDefinition] = {
             "Maps first: where, then who, then what",
             "Caladea serif on torn paper strips",
         ],
+        scenes=[
+            "Scene 1: Parchment Map Unfold — Textured aged paper unfolding across the screen with drop shadows.",
+            "Scene 2: Gold Ribbon Era — Ornate gold ribbon declaring the breakthrough date and era.",
+            "Scene 3: Crimson Route & Silicon Lines — Cut-paper routes tracing global trade, chip supply, or model evolution.",
+            "Scene 4: Cut-Paper Silhouettes — Historic machinery and founders rendered as layered paper cutouts.",
+            "Scene 5: Wax Seal Payoff — Crimson and gold royal seal stamping the verdict into the parchment.",
+        ],
     ),
     "neon-explainer": StyleDefinition(
         id="neon-explainer",
@@ -181,6 +225,14 @@ STYLES: Dict[str, StyleDefinition] = {
             "Dynamic neon palettes (Cyberpunk, Emerald, Noir, Red Alert)",
             "Synchronized 3D card HUDs with live story facts",
             "Official COEP Data Science & AI Club branding",
+        ],
+        scenes=[
+            "Scene 1: The Duel — Workstation Laptop vs ominous Supercomputer tower with alert LEDs.",
+            "Scene 2: The Server Farm — Receding monolith server aisles with flashing cyan and emerald rack LEDs.",
+            "Scene 3: 3D Neural Network — Fully framed 4-layer multi-layer perceptron with pulsing synaptic rewiring.",
+            "Scene 4: Benchmark Podium — 3D Gold Championship Trophy Cup, 3-tiered podium, and animated bar chart.",
+            "Scene 5: High-Speed & Eco HUD — Rushing accelerator highway grid, 70X speedometer gauge, and 3D green eco battery cell.",
+            "Scene 6: Everyday Workstation — Desk with terminal code execution log and official @dsai_coep outro card.",
         ],
     ),
 }

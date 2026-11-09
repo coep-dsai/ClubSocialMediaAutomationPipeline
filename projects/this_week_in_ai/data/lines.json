@@ -1,108 +1,108 @@
 {
   "voice": "en-US-GuyNeural",
-  "duration": 51.988,
+  "duration": 56.48,
   "lines": [
     {
       "i": 0,
-      "text": "This week, Indian AI lab Sthanika unveiled Sieve version three,",
+      "text": "This week, Nvidia CEO Jensen Huang's letter to staff about affair,",
       "start": 0.395,
-      "end": 3.418
+      "end": 3.793
     },
     {
       "i": 1,
-      "text": "and it just tied for first globally on decision benchmarks,",
-      "start": 3.566,
-      "end": 5.975
+      "text": "and developers are scrambling to benchmark their clusters.",
+      "start": 4.055,
+      "end": 6.486
     },
     {
       "i": 2,
-      "text": "beating established giants like Perplexity and Jev.",
-      "start": 6.214,
-      "end": 8.566
+      "text": "Sending shockwaves across the entire AI hardware market.",
+      "start": 7.623,
+      "end": 10.601
     },
     {
       "i": 3,
-      "text": "For years, the industry assumed top frontier intelligence",
-      "start": 9.687,
-      "end": 12.54
+      "text": "For years, companies poured billions into GPU farms,",
+      "start": 11.731,
+      "end": 14.584
     },
     {
       "i": 4,
-      "text": "demanded billions of dollars from Silicon Valley monopolies.",
-      "start": 12.562,
-      "end": 15.358
+      "text": "assuming hardware speedups would continue without limits.",
+      "start": 14.766,
+      "end": 17.266
     },
     {
       "i": 5,
-      "text": "Then Sthanika's engineering team tested a new paradigm.",
-      "start": 16.483,
-      "end": 19.256
+      "text": "Then engineers discovered a surprising software bottleneck.",
+      "start": 18.383,
+      "end": 21.304
     },
     {
       "i": 6,
-      "text": "Instead of blindly throwing brute-force parameters at the model,",
-      "start": 20.375,
-      "end": 23.103
+      "text": "Instead of blaming memory bandwidth or thermal limits,",
+      "start": 22.443,
+      "end": 24.921
     },
     {
       "i": 7,
-      "text": "they streamlined the internal reasoning pathways.",
-      "start": 23.353,
-      "end": 25.432
+      "text": "they analyzed the kernel execution pathways.",
+      "start": 25.137,
+      "end": 27.443
     },
     {
       "i": 8,
-      "text": "The result? It scored number one globally",
-      "start": 26.547,
-      "end": 29.475
+      "text": "The result? Benchmarks revealed extreme speed variance",
+      "start": 28.567,
+      "end": 32.097
     },
     {
       "i": 9,
-      "text": "on complex decision benchmarks that crush larger systems.",
-      "start": 29.497,
-      "end": 32.395
+      "text": "across server workloads that usually run at peak compute.",
+      "start": 32.12,
+      "end": 34.802
     },
     {
       "i": 10,
-      "text": "It delivers lightning-fast inference,",
-      "start": 33.535,
-      "end": 35.217
+      "text": "With optimized kernels running up to seventy times faster,",
+      "start": 35.915,
+      "end": 38.62
     },
     {
       "i": 11,
-      "text": "uses ninety percent less electricity,",
-      "start": 35.376,
-      "end": 37.251
+      "text": "saving millions in redundant server power,",
+      "start": 38.859,
+      "end": 40.734
     },
     {
       "i": 12,
-      "text": "and can run locally on an everyday workstation.",
-      "start": 37.433,
-      "end": 39.535
+      "text": "and proving that software optimization beats raw hardware.",
+      "start": 40.995,
+      "end": 43.654
     },
     {
       "i": 13,
-      "text": "Which is why researchers call this India's biggest AI milestone.",
-      "start": 40.667,
-      "end": 43.77
+      "text": "Engineers are calling this an urgent wake-up call for AI clusters.",
+      "start": 44.775,
+      "end": 48.003
     },
     {
       "i": 14,
-      "text": "Because tomorrow's most powerful AI",
-      "start": 44.895,
-      "end": 46.657
+      "text": "Because the true speed of next-gen AI",
+      "start": 49.123,
+      "end": 50.76
     },
     {
       "i": 15,
-      "text": "is no longer locked behind a trillion dollar data center,",
-      "start": 46.68,
-      "end": 49.123
+      "text": "depends on code architecture, not just trillion dollar chips,",
+      "start": 50.783,
+      "end": 53.578
     },
     {
       "i": 16,
       "text": "and it all started when...",
-      "start": 49.305,
-      "end": 50.293
+      "start": 53.748,
+      "end": 54.771
     }
   ]
 }

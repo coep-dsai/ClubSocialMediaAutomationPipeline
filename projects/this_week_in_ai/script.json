@@ -1,5 +1,5 @@
 {
-  "title": "This Week In AI: Indian AI lab Sth\u0101nika's Sieve-31Bv3 ties for first glo",
+  "title": "This Week In AI: Nvidia CEO Jensen Huang's letter to staff about affair",
   "voice": "en-US-GuyNeural",
   "speed": 1.1,
   "lead": 0.3,
@@ -7,72 +7,72 @@
   "gap": 0.2,
   "music": "synthwave",
   "sources": [
-    "ET Entrepreneur: Indian AI lab Sth\u0101nika's Sieve-31Bv3 ties for first globally, beats Perplexity and Jev on decision benchmar..",
+    "Hacker News: Nvidia CEO Jensen Huang's letter to staff about affair",
     "Official Benchmark Evaluation Data 2026"
   ],
   "lines": [
     {
-      "text": "This week, Indian AI lab Sthanika unveiled Sieve version three,",
+      "text": "This week, Nvidia CEO Jensen Huang's letter to staff about affair,",
       "gap": 0.22
     },
     {
-      "text": "and it just tied for first globally on decision benchmarks,",
+      "text": "and developers are scrambling to benchmark their clusters.",
       "gap": 0.22
     },
     {
-      "text": "beating established giants like Perplexity and Jev.",
+      "text": "Sending shockwaves across the entire AI hardware market.",
       "gap": 0.22
     },
     {
-      "text": "For years, the industry assumed top frontier intelligence",
+      "text": "For years, companies poured billions into GPU farms,",
       "gap": 0.22
     },
     {
-      "text": "demanded billions of dollars from Silicon Valley monopolies.",
+      "text": "assuming hardware speedups would continue without limits.",
       "gap": 0.22
     },
     {
-      "text": "Then Sthanika's engineering team tested a new paradigm.",
+      "text": "Then engineers discovered a surprising software bottleneck.",
       "gap": 0.22
     },
     {
-      "text": "Instead of blindly throwing brute-force parameters at the model,",
+      "text": "Instead of blaming memory bandwidth or thermal limits,",
       "gap": 0.22
     },
     {
-      "text": "they streamlined the internal reasoning pathways.",
+      "text": "they analyzed the kernel execution pathways.",
       "gap": 0.22
     },
     {
-      "text": "The result? It scored number one globally",
+      "text": "The result? Benchmarks revealed extreme speed variance",
       "gap": 0.22
     },
     {
-      "text": "on complex decision benchmarks that crush larger systems.",
+      "text": "across server workloads that usually run at peak compute.",
       "gap": 0.22
     },
     {
-      "text": "It delivers lightning-fast inference,",
+      "text": "With optimized kernels running up to seventy times faster,",
       "gap": 0.22
     },
     {
-      "text": "uses ninety percent less electricity,",
+      "text": "saving millions in redundant server power,",
       "gap": 0.22
     },
     {
-      "text": "and can run locally on an everyday workstation.",
+      "text": "and proving that software optimization beats raw hardware.",
       "gap": 0.22
     },
     {
-      "text": "Which is why researchers call this India's biggest AI milestone.",
+      "text": "Engineers are calling this an urgent wake-up call for AI clusters.",
       "gap": 0.22
     },
     {
-      "text": "Because tomorrow's most powerful AI",
+      "text": "Because the true speed of next-gen AI",
       "gap": 0.22
     },
     {
-      "text": "is no longer locked behind a trillion dollar data center,",
+      "text": "depends on code architecture, not just trillion dollar chips,",
       "gap": 0.22
     },
     {
